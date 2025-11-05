@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "689b49b370888dbaac946d02",
+    "email": "vancongng1908@gmail.com",
+    "password": "$2b$10$TGVSYocgiWY6lzKF14X2zekwtptPbZ6EznYR9XMZBBSZqSSmwMgn2",
+    "firstName": "Dao",
+    "lastName": "Duong",
+    "gender": "OTHER",
+    "dateOfBirth": "2003-06-12T17:00:00.000Z",
+    "address": "",
+    "phoneNumber": "",
+    "avatar": "",
+    "status": "ACTIVE",
+    "resetPasswordToken": null,
+    "resetPasswordExpire": null,
+    "verifyEmailToken": "$2b$10$abcdefghijkABCDEFGHIJKlmnopqrstuvWXyz1234567890abcd",
+    "verifyEmailExpire": "2025-08-13T14:18:31.221Z",
+    "roles": ["68ab08443bcdb61e096249c1"],
+    "is2FAEnabled": true,
+    "fcmTokens": [
+      "e16JDK8GkrD3GFUI804_sr:APA91bFUO1BXI8ntvcMzBCnE5TqKZAhZk7q3fKuvQW5kOxH6yKkizscAVztZD5pliCcf7YwWBFRWqs3d0-eTIc_EbAfTQko5ywB7jn3skQZHp3qG5nBx4gU"
+    ],
+    "createdAt": "2025-08-12T14:03:31.234Z",
+    "updatedAt": "2025-08-24T13:17:50.342Z",
+    "__v": 1
+  }
+]

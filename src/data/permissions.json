@@ -1,0 +1,233 @@
+[
+  {
+    "_id": "68ab09673bcdb61e096249c9",
+    "description": "Get User List Paginate",
+    "originalUrl": "/api/v1/user",
+    "method": "GET",
+    "module": "USER",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:45:27.219Z",
+    "updatedAt": "2025-08-24T12:45:27.219Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab09a23bcdb61e096249cb",
+    "description": "Get User Infomation",
+    "originalUrl": "/api/v1/user/:id",
+    "method": "GET",
+    "module": "USER",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:46:26.293Z",
+    "updatedAt": "2025-08-24T12:46:26.293Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab09d23bcdb61e096249cd",
+    "description": "Update Role User",
+    "originalUrl": "/api/v1/user/:id/roles",
+    "method": "PATCH",
+    "module": "USER",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:47:14.067Z",
+    "updatedAt": "2025-08-24T12:47:14.067Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab09f63bcdb61e096249cf",
+    "description": "BAN USER",
+    "originalUrl": "/api/v1/user/:id/ban",
+    "method": "POST",
+    "module": "USER",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:47:50.690Z",
+    "updatedAt": "2025-08-24T12:47:50.690Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0a033bcdb61e096249d1",
+    "description": "UNBAN USER",
+    "originalUrl": "/api/v1/user/:id/unban",
+    "method": "POST",
+    "module": "USER",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:48:03.198Z",
+    "updatedAt": "2025-08-24T12:48:03.198Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0aab3bcdb61e096249d3",
+    "description": "Get All Role Panigate",
+    "originalUrl": "/api/v1/role",
+    "method": "GET",
+    "module": "ROLE",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:50:51.014Z",
+    "updatedAt": "2025-08-24T12:50:51.014Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0aed3bcdb61e096249d5",
+    "description": "Get All Role",
+    "originalUrl": "/api/v1/role/all",
+    "method": "GET",
+    "module": "ROLE",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:51:57.386Z",
+    "updatedAt": "2025-08-24T12:51:57.386Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0b043bcdb61e096249d7",
+    "description": "Get Role Information",
+    "originalUrl": "/api/v1/role/:id",
+    "method": "GET",
+    "module": "ROLE",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:52:20.298Z",
+    "updatedAt": "2025-08-24T12:52:20.298Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0b863bcdb61e096249d9",
+    "description": "Update Role Infor",
+    "originalUrl": "/api/v1/role/:id",
+    "method": "PUT",
+    "module": "ROLE",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:54:30.117Z",
+    "updatedAt": "2025-08-24T12:54:30.117Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0bae3bcdb61e096249db",
+    "description": "Hard Delete Role",
+    "originalUrl": "/api/v1/role/:id/hard",
+    "method": "DELETE",
+    "module": "ROLE",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:55:10.352Z",
+    "updatedAt": "2025-08-24T12:55:10.352Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0be63bcdb61e096249dd",
+    "description": "Hard Delete Permission",
+    "originalUrl": "/api/v1/permission/:id/hard",
+    "method": "DELETE",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:56:06.660Z",
+    "updatedAt": "2025-08-24T12:56:06.660Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0c183bcdb61e096249e1",
+    "description": "Get All Permission Panigate",
+    "originalUrl": "/api/v1/permission",
+    "method": "GET",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:56:56.634Z",
+    "updatedAt": "2025-08-24T12:56:56.634Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0c293bcdb61e096249e3",
+    "description": "Get All Permission",
+    "originalUrl": "/api/v1/permission/all",
+    "method": "GET",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:57:13.291Z",
+    "updatedAt": "2025-08-24T12:57:13.291Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0c413bcdb61e096249e5",
+    "description": "Get Permission Information",
+    "originalUrl": "/api/v1/permission/:id",
+    "method": "GET",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:57:37.503Z",
+    "updatedAt": "2025-08-24T12:57:37.503Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0c523bcdb61e096249e7",
+    "description": "Create Permission",
+    "originalUrl": "/api/v1/permission",
+    "method": "POST",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:57:54.402Z",
+    "updatedAt": "2025-08-24T12:57:54.402Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0c6b3bcdb61e096249e9",
+    "description": "Update Permission Infor",
+    "originalUrl": "/api/v1/permission/:id",
+    "method": "PUT",
+    "module": "PERMISSION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T12:58:19.870Z",
+    "updatedAt": "2025-08-24T12:58:19.870Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0d287f968048a97bd6dd",
+    "description": "Create Notification",
+    "originalUrl": "/api/v1/notification",
+    "method": "POST",
+    "module": "NOTIFICATION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T13:01:28.991Z",
+    "updatedAt": "2025-08-24T13:01:28.991Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0d637f968048a97bd6df",
+    "description": "Get User All Notification Panigate",
+    "originalUrl": "/api/v1/notification",
+    "method": "GET",
+    "module": "NOTIFICATION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T13:02:27.136Z",
+    "updatedAt": "2025-08-24T13:02:27.136Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0d867f968048a97bd6e1",
+    "description": "Mask All Notification As Read",
+    "originalUrl": "/api/v1/notification/all",
+    "method": "PATCH",
+    "module": "NOTIFICATION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T13:03:02.866Z",
+    "updatedAt": "2025-08-24T13:03:02.866Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0d937f968048a97bd6e3",
+    "description": "Mask  Notification As Read",
+    "originalUrl": "/api/v1/notification/:id",
+    "method": "PATCH",
+    "module": "NOTIFICATION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T13:03:15.849Z",
+    "updatedAt": "2025-08-24T13:03:15.849Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab0dc77f968048a97bd6e5",
+    "description": "Hard Delete Notification",
+    "originalUrl": "/api/v1/notification/:id",
+    "method": "DELETE",
+    "module": "NOTIFICATION",
+    "isPublic": false,
+    "createdAt": "2025-08-24T13:04:07.680Z",
+    "updatedAt": "2025-08-24T13:04:07.680Z",
+    "__v": 0
+  }
+]

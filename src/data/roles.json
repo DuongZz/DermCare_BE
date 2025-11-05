@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "68ab07f43bcdb61e096249bf",
+    "name": "ADMIN",
+    "description": "Project Manager",
+    "permissions": [
+      "68ab09673bcdb61e096249c9",
+      "68ab09a23bcdb61e096249cb",
+      "68ab09d23bcdb61e096249cd",
+      "68ab09f63bcdb61e096249cf",
+      "68ab0a033bcdb61e096249d1",
+      "68ab0aab3bcdb61e096249d3",
+      "68ab0aed3bcdb61e096249d5",
+      "68ab0b043bcdb61e096249d7",
+      "68ab0b863bcdb61e096249d9",
+      "68ab0bae3bcdb61e096249db",
+      "68ab0be63bcdb61e096249dd",
+      "68ab0c183bcdb61e096249e1",
+      "68ab0c293bcdb61e096249e3",
+      "68ab0c413bcdb61e096249e5",
+      "68ab0c523bcdb61e096249e7",
+      "68ab0c6b3bcdb61e096249e9",
+      "68ab0d287f968048a97bd6dd",
+      "68ab0d637f968048a97bd6df",
+      "68ab0d867f968048a97bd6e1",
+      "68ab0d937f968048a97bd6e3",
+      "68ab0dc77f968048a97bd6e5"
+    ],
+    "createdAt": "2025-08-24T12:39:16.597Z",
+    "updatedAt": "2025-08-24T13:10:43.355Z",
+    "__v": 0
+  },
+  {
+    "_id": "68ab08443bcdb61e096249c1",
+    "name": "USER",
+    "description": "",
+    "permissions": [],
+    "createdAt": "2025-08-24T12:40:36.293Z",
+    "updatedAt": "2025-08-24T12:40:36.293Z",
+    "__v": 0
+  }
+]

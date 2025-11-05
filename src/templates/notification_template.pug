@@ -1,0 +1,27 @@
+//- templates/notification_template.pug
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title #{title}
+    style.
+      body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
+      .container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+      .footer { margin-top: 20px; font-size: 12px; color: #666; }
+  body
+    .container
+      h2 #{title}
+      if message
+        p #{message}
+      if userName
+        p Hello, #{userName}
+      if errorMessage
+        h4 Error Message:
+        pre #{errorMessage}
+      if errorStack
+        h4 Stack Trace:
+        pre #{errorStack}
+      if supportEmail
+        p Contact support: #{supportEmail}
+      .footer
+        p &copy; #{year} #{appName}

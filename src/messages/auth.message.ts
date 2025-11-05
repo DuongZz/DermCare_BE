@@ -1,0 +1,31 @@
+export default {
+  //Success
+  LOGOUT_SUCCESS: 'Logout success',
+  GET_MY_DEVICES_SUCCESS: 'Get my devices success',
+  LOGIN_SUCCESS: 'Login success',
+  RESEND_SUCCESS: 'Resend success',
+  QRCODE_SENTED_SUCCESSFULLY: 'QR code sent successfully',
+  SETUP_2FA_SUCCESSFULLY: 'Setup 2FA successfully',
+  DISABLE_2FA_SUCCESS: 'Disable 2FA successfully',
+
+  //Error
+  TOKEN_NOT_FOUND: 'Token not found',
+  INVALID_CREDENTIALS: 'Email or password is incorrect',
+  TOO_MANY_LOGIN_ATTEMPTS: 'Too many login attempts',
+  ACCOUNT_IS_BANNED: 'Account is banned',
+  ACCOUNT_IS_NOT_VERIFIED: 'Account is not verified',
+  ACCOUNT_MUST_VERIFY_2FA: 'Account must verify 2FA',
+  INVALID_GOOGLE_TOKEN: 'Invalid Google token',
+  ACCOUNT_IS_NOT_PENDING: 'Account is not pending',
+  INVALID_OTP: 'Invalid OTP',
+  ACCOUNT_IS_ACTIVE: 'Account is active',
+  ACCOUNT_IS_NOT_ACTIVE: 'Account is not active',
+  INVALID_TOKEN: 'Invalid token',
+  GENERATE_SECRET_FAILED: 'Generate secret failed',
+  OTP_NOT_FOUND: 'OTP not found',
+  OTP_REQUIRED: 'OTP is required',
+  OTP_INVALID: 'OTP is invalid',
+  ALREADY_ENABLED: '2FA is already enabled',
+  OTP_SECRET_NOT_FOUND: 'OTP secret not found',
+  OTP_2FA_NOT_ENABLED: '2FA is not enabled',
+} as const

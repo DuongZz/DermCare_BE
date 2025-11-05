@@ -1,0 +1,16 @@
+export default {
+    NO_FCM_TOKEN_FOUND_NOTIFICATION_SKIP: 'No FCM token found, notification will be skipped',
+    INVALID_TARGET_TYPE: 'Invalid target type for notification',
+    SENT_SUCCESSFULLY: 'Notification sent successfully',
+    USERID_IS_REQUIRE: 'User ID is required for USER target type',
+    ROLEID_IS_REQUIRE: 'Role ID is required for ROLE target type',
+    USER_NOT_FOUND: 'User not found',
+    NOT_FOUND: 'Notification not found',
+    USER_NOTIFICATIONS_FETCHED: 'User notifications fetched successfully',
+    NOTIFICATIONS_FETCHED: 'Notifications fetched successfully',
+    MARKED_AS_READ: 'Notification marked as read',
+    NO_UNREAD: 'No unread notifications found',
+    ALL_MARKED_AS_READ: 'All notifications marked as read',
+    DELETED: 'Notification deleted successfully',
+    NO_PERMISSION: 'You do not have permission to access this notification',
+} as const
