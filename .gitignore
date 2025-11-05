@@ -116,3 +116,5 @@ dist/
 #env
 .env*
 
+#readme
+README.md
