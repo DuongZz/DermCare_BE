@@ -6,7 +6,7 @@ import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const edit = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
-  const { username, name } = req.body;
+  const { email, fullName } = req.body;
 
   const userRepository = getRepository(User);
   try {
@@ -17,8 +17,8 @@ export const edit = async (req: Request, res: Response, next: NextFunction) => {
       return next(customError);
     }
 
-    user.username = username;
-    user.name = name;
+    user.email = email;
+    user.fullName = fullName;
 
     try {
       await userRepository.save(user);

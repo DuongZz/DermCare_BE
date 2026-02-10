@@ -11,16 +11,19 @@ import morgan from 'morgan';
 
 import './utils/response/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
-import { getLanguage } from './middleware/getLanguage';
 import routes from './routes';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';
 
 export const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    credentials: true,
+  }),
+);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(getLanguage);
 
 try {
   const accessLogStream = fs.createWriteStream(path.join(__dirname, '../log/access.log'), {

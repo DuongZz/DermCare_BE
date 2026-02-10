@@ -8,8 +8,14 @@ const config: ConnectionOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  synchronize: false,
+  synchronize: true,
   logging: false,
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
   entities: ['src/typeorm/entities/**/*.ts'],
   migrations: ['src/typeorm/migrations/**/*.ts'],
   subscribers: ['src/typeorm/subscriber/**/*.ts'],

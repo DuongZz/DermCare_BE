@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-import { Role, Language } from './types';
+import { Gender, Role } from './types';
 
 @Entity('users')
 export class User {
@@ -9,35 +9,37 @@ export class User {
   id: number;
 
   @Column({
+    nullable: false,
+  })
+  fullName: string;
+
+  @Column({
+    nullable: false,
     unique: true,
   })
   email: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   password: string;
 
   @Column({
-    nullable: true,
-    unique: true,
-  })
-  username: string;
-
-  @Column({
+    enum: Gender,
     nullable: true,
   })
-  name: string;
+  gender: string;
 
   @Column({
-    default: 'STANDARD' as Role,
-    length: 30,
+    nullable: false,
+  })
+  dateOfBirth: Date;
+
+  @Column({
+    enum: Role,
+    default: Role.PATIENT,
   })
   role: string;
-
-  @Column({
-    default: 'en-US' as Language,
-    length: 15,
-  })
-  language: string;
 
   @Column()
   @CreateDateColumn()
@@ -46,10 +48,6 @@ export class User {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
-
-  setLanguage(language: Language) {
-    this.language = language;
-  }
 
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);

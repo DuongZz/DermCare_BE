@@ -5,7 +5,7 @@ import { User } from 'typeorm/entities/users/User';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
+  const { email, password, fullName, gender, dateOfBirth } = req.body;
 
   const userRepository = getRepository(User);
   try {
@@ -22,6 +22,9 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       const newUser = new User();
       newUser.email = email;
       newUser.password = password;
+      newUser.fullName = fullName;
+      newUser.gender = gender;
+      newUser.dateOfBirth = dateOfBirth;
       newUser.hashPassword();
       await userRepository.save(newUser);
 
