@@ -6,4 +6,5 @@ export type JwtPayload = {
   email: string;
   role: Role;
   created_at: Date;
+  rememberMe?: boolean;
 };

@@ -7,7 +7,7 @@ import { CustomError } from 'utils/response/custom-error/CustomError';
 import { ErrorValidation } from 'utils/response/custom-error/types';
 
 export const validatorRegister = (req: Request, res: Response, next: NextFunction) => {
-  let { email, password, passwordConfirm, fullName, gender, dateOfBirth } = req.body;
+  let { email, password, passwordConfirm, fullName, gender, dateOfBirth, phone, address } = req.body;
   const errorsValidation: ErrorValidation[] = [];
 
   email = !email ? '' : email;
@@ -16,6 +16,8 @@ export const validatorRegister = (req: Request, res: Response, next: NextFunctio
   fullName = !fullName ? '' : fullName;
   gender = !gender ? '' : gender;
   dateOfBirth = !dateOfBirth ? '' : dateOfBirth;
+  phone = !phone ? '' : phone;
+  address = !address ? '' : address;
 
   // Normalization for Vietnamese input
   if (gender === 'Nam') gender = 'MALE';
@@ -34,10 +36,6 @@ export const validatorRegister = (req: Request, res: Response, next: NextFunctio
 
   if (!validator.isEmail(email)) {
     errorsValidation.push({ email: 'Email is invalid' });
-  }
-
-  if (validator.isEmpty(email)) {
-    errorsValidation.push({ email: 'Email is required' });
   }
 
   if (validator.isEmpty(password)) {
@@ -72,6 +70,16 @@ export const validatorRegister = (req: Request, res: Response, next: NextFunctio
     errorsValidation.push({ dateOfBirth: 'Date of birth is required' });
   } else if (!validator.isISO8601(dateOfBirth)) {
     errorsValidation.push({ dateOfBirth: 'Date of birth must be in YYYY-MM-DD format' });
+  }
+
+  if (!validator.isEmpty(phone)) {
+    if (!validator.isMobilePhone(phone, 'vi-VN')) {
+      errorsValidation.push({ phone: 'Phone number is invalid' });
+    }
+  }
+
+  if (validator.isEmpty(address)) {
+    errorsValidation.push({ address: 'Address is required' });
   }
 
   if (errorsValidation.length !== 0) {

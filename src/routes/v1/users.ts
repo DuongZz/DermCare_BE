@@ -1,12 +1,14 @@
 import { Router } from 'express';
 
-import { list, show, edit, destroy } from 'controllers/users';
+import { list, show, edit, destroy, me } from 'controllers/users';
 import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { validatorEdit } from 'middleware/validation/users';
 import { Role } from 'typeorm/entities/users/types';
 
 const router = Router();
+
+router.get('/me', [checkJwt], me);
 
 router.get('/', [checkJwt, checkRole([Role.ADMIN])], list);
 

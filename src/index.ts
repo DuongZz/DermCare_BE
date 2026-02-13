@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
@@ -13,6 +14,7 @@ import './utils/response/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';
+import './utils/redis';
 
 export const app = express();
 app.use(
@@ -22,6 +24,7 @@ app.use(
   }),
 );
 app.use(helmet());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -47,3 +50,5 @@ app.listen(port, () => {
 (async () => {
   await dbCreateConnection();
 })();
+
+// Force restart

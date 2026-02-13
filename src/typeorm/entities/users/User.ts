@@ -36,6 +36,22 @@ export class User {
   dateOfBirth: Date;
 
   @Column({
+    unique: true,
+    nullable: true,
+  })
+  phone: string;
+
+  @Column({
+    nullable: true,
+  })
+  address: string;
+
+  @Column({
+    nullable: true,
+  })
+  refreshToken: string;
+
+  @Column({
     enum: Role,
     default: Role.PATIENT,
   })
