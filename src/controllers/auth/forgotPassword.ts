@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 import { User } from 'typeorm/entities/users/User';
+import { otpResetPasswordTemplate } from 'utils/emailTemplates';
 import { redisClient } from 'utils/redis';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { sendEmail } from 'utils/sendEmail';
@@ -23,14 +24,12 @@ export const sendOtp = async (req: Request, res: Response, next: NextFunction) =
       return next(customError);
     }
 
-    // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Save to Redis with 5 minutes expiration
     await redisClient.set(`otp:${email}`, otp, 'EX', 300);
 
-    // Send Email
-    await sendEmail(email, 'Password Reset OTP', `Your OTP for password reset is: ${otp}`);
+    const emailContent = otpResetPasswordTemplate(otp);
+    await sendEmail(email, emailContent.subject, emailContent.text, emailContent.html);
 
     res.customSuccess(200, 'OTP sent to email');
   } catch (err) {

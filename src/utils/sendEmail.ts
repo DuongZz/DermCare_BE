@@ -5,15 +5,17 @@ import { CustomError } from 'utils/response/custom-error/CustomError';
 export const sendEmail = async (to: string, subject: string, text: string, html?: string) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: process.env.EMAIL_SERVICE,
+      port: 587,
+      secure: false,
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // App Password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     const mailOptions = {
-      from: process.env.GMAIL_USER,
+      from: process.env.EMAIL_USER,
       to,
       subject,
       text,
