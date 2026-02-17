@@ -1,12 +1,22 @@
 import bcrypt from 'bcryptjs';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 
-import { Gender, Role } from './types';
+import { Appointment } from './appointment';
+import { Gender, Role } from './enum';
+import { MedicalInfo } from './medicalInfo';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     nullable: false,
@@ -64,6 +74,15 @@ export class User {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToOne(() => MedicalInfo, (medicalInfo) => medicalInfo.user)
+  medicalInfo: MedicalInfo;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.patient)
+  patientAppointments: Appointment[];
+
+  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  doctorAppointments: Appointment[];
 
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import { getRepository } from 'typeorm';
 
-import { Role } from 'typeorm/entities/users/types';
-import { User } from 'typeorm/entities/users/User';
+import { Role } from 'typeorm/entities/enum';
+import { User } from 'typeorm/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 import { generateAccessToken, generateRefreshToken } from 'utils/createJwtToken';
 import { CustomError } from 'utils/response/custom-error/CustomError';

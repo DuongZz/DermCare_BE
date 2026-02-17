@@ -10,7 +10,7 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import './utils/response/customSuccess';
+import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';

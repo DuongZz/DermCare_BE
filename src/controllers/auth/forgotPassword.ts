@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-import { User } from 'typeorm/entities/users/User';
+import { User } from 'typeorm/entities/user';
 import { otpResetPasswordTemplate } from 'utils/emailTemplates';
 import { redisClient } from 'utils/redis';
 import { CustomError } from 'utils/response/custom-error/CustomError';
