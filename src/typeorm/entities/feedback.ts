@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 
 import { Appointment } from './appointment';
+import { Rating } from './enum';
 import { User } from './user';
 
 @Entity('feedback')
@@ -34,6 +35,7 @@ export class Feedback {
   appointmentId: string;
 
   @Column({
+    enum: Rating,
     nullable: false,
   })
   rate: number;

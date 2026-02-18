@@ -70,3 +70,13 @@ export const ConversationStatus = {
 } as const;
 
 export type ConversationStatus = typeof ConversationStatus[keyof typeof ConversationStatus];
+
+export const Rating = {
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  FOUR: 4,
+  FIVE: 5,
+} as const;
+
+export type Rating = typeof Rating[keyof typeof Rating];
