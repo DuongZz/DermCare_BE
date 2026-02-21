@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { User } from './user';
 
@@ -7,25 +15,41 @@ export class Doctor {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   user_id: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   avatar: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   specialization: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   qualifications: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
+  workPlace: string;
+
+  @Column({
+    nullable: true,
+    default: 0,
+  })
   rating: number;
 
-  @Column()
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updated_at: Date;
 
   @OneToOne(() => User)

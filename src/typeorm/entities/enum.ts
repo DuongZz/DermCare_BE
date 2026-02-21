@@ -80,3 +80,12 @@ export const Rating = {
 } as const;
 
 export type Rating = typeof Rating[keyof typeof Rating];
+
+export const SkinDisease = {
+  ECZEMA_DERMATITIS: 'Eczema/Dermatitis',
+  ECZEMA: 'Eczema',
+  PSORIASIS: 'Psoriasis',
+  FUNGAL_INFECTION: 'Fungal Infection',
+  COSMETIC_DERMATOLOGY: 'Cosmetic Dermatology',
+  SKIN_CANCER: 'Skin Cancer',
+} as const;
