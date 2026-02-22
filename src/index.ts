@@ -14,7 +14,7 @@ import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';
-import './utils/redis';
+import './configs/redis';
 
 export const app = express();
 app.use(

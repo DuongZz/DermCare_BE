@@ -89,3 +89,15 @@ export const SkinDisease = {
   COSMETIC_DERMATOLOGY: 'Cosmetic Dermatology',
   SKIN_CANCER: 'Skin Cancer',
 } as const;
+
+export const DOCTOR_QUALIFICATION = {
+  BS: 'BS',
+  THS_BS: 'ThS.BS',
+  TS_BS: 'TS.BS',
+  BS_CKI: 'BS.CKI',
+  BS_CKII: 'BS.CKII',
+  PGS_TS_BS: 'PGS.TS.BS',
+  GS_TS_BS: 'GS.TS.BS',
+} as const;
+
+export type DOCTOR_QUALIFICATION = typeof DOCTOR_QUALIFICATION[keyof typeof DOCTOR_QUALIFICATION];

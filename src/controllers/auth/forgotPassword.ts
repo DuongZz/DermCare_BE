@@ -3,10 +3,10 @@ import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 import { User } from 'typeorm/entities/user';
-import { otpResetPasswordTemplate } from 'utils/emailTemplates';
-import { redisClient } from 'utils/redis';
+import { otpResetPasswordTemplate } from 'consts/emailTemplates';
+import { redisClient } from 'configs/redis';
 import { CustomError } from 'utils/response/custom-error/CustomError';
-import { sendEmail } from 'utils/sendEmail';
+import { sendEmail } from 'providers/sendEmail';
 
 export const sendOtp = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;

@@ -1,21 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 import { User } from './user';
 
 @Entity('doctors')
 export class Doctor {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column({
+  @PrimaryColumn({
     nullable: false,
   })
   user_id: string;
