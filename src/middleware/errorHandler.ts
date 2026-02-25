@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { CustomError } from '../utils/response/custom-error/CustomError';
+import { CustomSuccess } from '../utils/response/custom-success/customSuccess';
 
-export const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
-  return res.status(err.HttpStatusCode).json(err.JSON);
+export const errorHandler = (err: CustomError | CustomSuccess, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof CustomSuccess) {
+    return res.customSuccess(err.httpStatusCode, err.message, err.data);
+  }
+  return res
+    .status((err as CustomError).HttpStatusCode || 500)
+    .json((err as CustomError).JSON || { message: err.message });
 };

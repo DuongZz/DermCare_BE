@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { Role } from '../typeorm/entities/users/types';
+import { Role } from '../typeorm/entities/enum';
 import { CustomError } from '../utils/response/custom-error/CustomError';
 
 export const checkRole = (roles: Role[], isSelfAllowed = false) => {
@@ -10,7 +10,7 @@ export const checkRole = (roles: Role[], isSelfAllowed = false) => {
 
     let errorSelfAllowed: string | null = null;
     if (isSelfAllowed) {
-      if (id === parseInt(requestId)) {
+      if (id === requestId) {
         return next();
       }
       errorSelfAllowed = 'Self allowed action.';

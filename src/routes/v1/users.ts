@@ -1,14 +1,17 @@
 import { Router } from 'express';
 
-import { list, show, edit, destroy, me } from 'controllers/users';
+import { list, show, edit, destroy, me, getMedicalInfo, updateMedicalInfo } from 'controllers/users';
 import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { validatorEdit } from 'middleware/validation/users';
-import { Role } from 'typeorm/entities/users/types';
+import { Role } from 'typeorm/entities/enum';
 
 const router = Router();
 
 router.get('/me', [checkJwt], me);
+
+router.get('/me/medical-info', [checkJwt], getMedicalInfo);
+router.patch('/me/medical-info', [checkJwt], updateMedicalInfo);
 
 router.get('/', [checkJwt, checkRole([Role.ADMIN])], list);
 
