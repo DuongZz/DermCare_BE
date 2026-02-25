@@ -30,7 +30,7 @@ export class User {
   email: string;
 
   @Column({
-    nullable: false,
+    nullable: true,
   })
   password: string;
 
@@ -41,9 +41,19 @@ export class User {
   gender: string;
 
   @Column({
-    nullable: false,
+    nullable: true,
   })
   dateOfBirth: Date;
+
+  @Column({
+    nullable: true,
+  })
+  provider: string;
+
+  @Column({
+    nullable: true,
+  })
+  providerId: string;
 
   @Column({
     unique: true,

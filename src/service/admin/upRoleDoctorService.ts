@@ -25,6 +25,7 @@ export const upRoleDoctorService = async (id: string) => {
   }
   const doctor = new Doctor();
   doctor.user_id = id;
+  doctor.avatar = process.env.AVT_DEFAULT;
   await doctorRepository.save(doctor);
 
   return { user, doctor };
