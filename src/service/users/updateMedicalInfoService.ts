@@ -6,10 +6,10 @@ import { UpdateMedicalInfoInput } from '../../interfaces/user';
 export const updateMedicalInfoService = async (userId: string, data: UpdateMedicalInfoInput) => {
   const { skinType, bloodGroup, allergies, emergencyContact, currentMedications, chronicConditions } = data;
   const medicalInfoRepository = getRepository(MedicalInfo);
-  let medicalInfo = await medicalInfoRepository.findOne({ where: { userId } });
+  let medicalInfo = await medicalInfoRepository.findOne({ where: { user: { id: userId } } });
 
   if (!medicalInfo) {
-    medicalInfo = medicalInfoRepository.create({ userId });
+    medicalInfo = medicalInfoRepository.create({ user: { id: userId } });
   }
 
   if (skinType !== undefined) medicalInfo.skinType = skinType;

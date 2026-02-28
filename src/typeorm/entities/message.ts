@@ -21,16 +21,6 @@ export class Message {
   @Column({
     nullable: false,
   })
-  conversationId: string;
-
-  @Column({
-    nullable: false,
-  })
-  senderId: string;
-
-  @Column({
-    nullable: false,
-  })
   content: string;
 
   @Column({

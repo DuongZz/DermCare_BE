@@ -18,7 +18,7 @@ export const createDoctorScheduleService = async (doctorId: string, dateStr: str
     throw new CustomError(400, 'Validation', 'Không thể tạo ca khám cho một ngày trong quá khứ!');
   }
 
-  const templates = await templateRepo.find({ where: { doctorId, isAvailable: true } });
+  const templates = await templateRepo.find({ where: { doctor: { user_id: doctorId }, isAvailable: true } });
   if (!templates || templates.length === 0) {
     throw new CustomError(404, 'General', 'Bác sĩ chưa lặp lịch làm việc hoặc đang chọn nghỉ cả tuần.');
   }

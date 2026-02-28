@@ -22,16 +22,6 @@ export class Diagnosis {
   @Column({
     nullable: false,
   })
-  patientId: string;
-
-  @Column({
-    nullable: true,
-  })
-  appointmentId: string;
-
-  @Column({
-    nullable: false,
-  })
   AIResult: string;
 
   @Column({

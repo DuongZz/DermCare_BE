@@ -16,12 +16,6 @@ export class DoctorWorkTemplate {
   id: string;
 
   @Column({
-    type: 'uuid',
-    nullable: false,
-  })
-  doctorId: string;
-
-  @Column({
     nullable: false,
   })
   dayOfWeek: string;

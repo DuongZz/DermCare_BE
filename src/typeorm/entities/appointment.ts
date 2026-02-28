@@ -19,16 +19,6 @@ export class Appointment {
   @Column({
     nullable: false,
   })
-  patientId: string;
-
-  @Column({
-    nullable: false,
-  })
-  doctorId: string;
-
-  @Column({
-    nullable: false,
-  })
   appointmentDate: Date;
 
   @Column({
@@ -39,6 +29,7 @@ export class Appointment {
   @Column({
     enum: AppointmentStatus,
     nullable: false,
+    default: AppointmentStatus.PENDING,
   })
   appointmentStatus: string;
 
@@ -51,12 +42,6 @@ export class Appointment {
     nullable: false,
   })
   price: number;
-
-  @Column({
-    enum: PaymentStatus,
-    nullable: false,
-  })
-  paymentStatus: string;
 
   @Column()
   @CreateDateColumn()

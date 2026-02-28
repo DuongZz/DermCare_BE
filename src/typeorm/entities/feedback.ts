@@ -20,21 +20,6 @@ export class Feedback {
   id: string;
 
   @Column({
-    nullable: false,
-  })
-  patientId: string;
-
-  @Column({
-    nullable: false,
-  })
-  doctorId: string;
-
-  @Column({
-    nullable: false,
-  })
-  appointmentId: string;
-
-  @Column({
     enum: Rating,
     nullable: false,
   })
