@@ -12,19 +12,19 @@ export const validatorLogin = (req: Request, res: Response, next: NextFunction) 
   password = !password ? '' : password;
 
   if (!validator.isEmail(email)) {
-    errorsValidation.push({ email: 'Email is invalid' });
+    errorsValidation.push({ email: 'Email không hợp lệ' });
   }
 
   if (validator.isEmpty(email)) {
-    errorsValidation.push({ email: 'Email field is required' });
+    errorsValidation.push({ email: 'Email không được để trống' });
   }
 
   if (validator.isEmpty(password)) {
-    errorsValidation.push({ password: 'Password field is required' });
+    errorsValidation.push({ password: 'Mật khẩu không được để trống' });
   }
 
   if (errorsValidation.length !== 0) {
-    const customError = new CustomError(400, 'Validation', 'Login validation error', null, null, errorsValidation);
+    const customError = new CustomError(400, 'Validation', 'Đăng nhập thất bại', null, null, errorsValidation);
     return next(customError);
   }
   return next();

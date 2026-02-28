@@ -9,10 +9,10 @@ export const upRoleDoctorService = async (id: string) => {
   const userRepository = getRepository(User);
   const user = await userRepository.findOne(id);
   if (!user) {
-    throw new CustomError(404, 'General', 'User not found');
+    throw new CustomError(404, 'General', 'Người dùng không tồn tại');
   }
   if (user.role === Role.DOCTOR) {
-    throw new CustomError(400, 'General', 'User is already a doctor');
+    throw new CustomError(400, 'General', 'Tài khoản này đã là Bác sĩ');
   }
 
   user.role = Role.DOCTOR;
@@ -21,7 +21,7 @@ export const upRoleDoctorService = async (id: string) => {
   const doctorRepository = getRepository(Doctor);
   const existingDoctor = await doctorRepository.findOne({ where: { user_id: id } });
   if (existingDoctor) {
-    throw new CustomError(400, 'General', 'Doctor record already exists for this user');
+    throw new CustomError(400, 'General', 'Hồ sơ Bác sĩ đã tồn tại cho tài khoản này');
   }
   const doctor = new Doctor();
   doctor.user_id = id;

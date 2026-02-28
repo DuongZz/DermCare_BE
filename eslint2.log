@@ -1,0 +1,14 @@
+﻿
+D:\Code\Dermcare-BE\temp-node-empress-type-orm\src\controllers\doctorSchedule\getDoctorScheduleController.ts
+   6:3  error  Delete `··`                     prettier/prettier
+   7:1  error  Delete `····`                   prettier/prettier
+   9:1  error  Delete `····`                   prettier/prettier
+  10:1  error  Replace `········` with `····`  prettier/prettier
+  12:1  error  Delete `····`                   prettier/prettier
+  13:1  error  Delete `··`                     prettier/prettier
+  14:5  error  Delete `····`                   prettier/prettier
+  15:1  error  Delete `··`                     prettier/prettier
+
+✖ 8 problems (8 errors, 0 warnings)
+  8 errors and 0 warnings potentially fixable with the `--fix` option.
+

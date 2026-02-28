@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { updateDoctorInfoService } from 'service/doctor/updateDoctorInfoService';
+import { UpdateDoctorInfoInput } from 'interfaces/doctor';
 
 export const updateDoctorInfoController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.jwtPayload.id;
-    const data = req.body;
+    const data = req.body as UpdateDoctorInfoInput;
     const doctor = await updateDoctorInfoService(id, data);
     res.status(200).json({
       success: true,

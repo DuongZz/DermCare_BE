@@ -35,55 +35,55 @@ export const validatorRegister = (req: Request, res: Response, next: NextFunctio
   req.body.dateOfBirth = dateOfBirth;
 
   if (!validator.isEmail(email)) {
-    errorsValidation.push({ email: 'Email is invalid' });
+    errorsValidation.push({ email: 'Email không hợp lệ' });
   }
 
   if (validator.isEmpty(password)) {
-    errorsValidation.push({ password: 'Password is required' });
+    errorsValidation.push({ password: 'Mật khẩu không được để trống' });
   }
 
   if (!validator.isLength(password, { min: ConstsUser.PASSWORD_MIN_CHAR })) {
     errorsValidation.push({
-      password: `Password must be at least ${ConstsUser.PASSWORD_MIN_CHAR} characters`,
+      password: `Mật khẩu phải có ít nhất ${ConstsUser.PASSWORD_MIN_CHAR} ký tự`,
     });
   }
 
   if (validator.isEmpty(passwordConfirm)) {
-    errorsValidation.push({ passwordConfirm: 'Confirm password is required' });
+    errorsValidation.push({ passwordConfirm: 'Xác nhận mật khẩu không được để trống' });
   }
 
   if (!validator.equals(password, passwordConfirm)) {
-    errorsValidation.push({ passwordConfirm: 'Passwords must match' });
+    errorsValidation.push({ passwordConfirm: 'Mật khẩu và xác nhận mật khẩu không khớp' });
   }
 
   if (validator.isEmpty(fullName)) {
-    errorsValidation.push({ fullName: 'Full name is required' });
+    errorsValidation.push({ fullName: 'Họ tên không được để trống' });
   }
 
   if (validator.isEmpty(gender)) {
-    errorsValidation.push({ gender: 'Gender is required' });
+    errorsValidation.push({ gender: 'Giới tính không được để trống' });
   } else if (!Object.values(Gender).includes(gender as Gender)) {
-    errorsValidation.push({ gender: 'Gender must be MALE, FEMALE or OTHER' });
+    errorsValidation.push({ gender: 'Giới tính phải là Nam, Nữ hoặc Khác' });
   }
 
   if (validator.isEmpty(dateOfBirth)) {
-    errorsValidation.push({ dateOfBirth: 'Date of birth is required' });
+    errorsValidation.push({ dateOfBirth: 'Ngày sinh không được để trống' });
   } else if (!validator.isISO8601(dateOfBirth)) {
-    errorsValidation.push({ dateOfBirth: 'Date of birth must be in YYYY-MM-DD format' });
+    errorsValidation.push({ dateOfBirth: 'Ngày sinh phải là định dạng YYYY-MM-DD' });
   }
 
   if (!validator.isEmpty(phone)) {
     if (!validator.isMobilePhone(phone, 'vi-VN')) {
-      errorsValidation.push({ phone: 'Phone number is invalid' });
+      errorsValidation.push({ phone: 'Số điện thoại không hợp lệ' });
     }
   }
 
   if (validator.isEmpty(address)) {
-    errorsValidation.push({ address: 'Address is required' });
+    errorsValidation.push({ address: 'Địa chỉ không được để trống' });
   }
 
   if (errorsValidation.length !== 0) {
-    const customError = new CustomError(400, 'Validation', 'Register validation error', null, null, errorsValidation);
+    const customError = new CustomError(400, 'Validation', 'Đăng ký thất bại', null, null, errorsValidation);
     return next(customError);
   }
   return next();

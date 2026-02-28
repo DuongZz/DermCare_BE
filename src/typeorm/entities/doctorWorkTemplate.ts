@@ -8,46 +8,58 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-import { User } from './user';
-import { ScheduleStatus } from './enum';
+import { Doctor } from './doctor';
 
-@Entity('doctorSchedule')
-export class DoctorSchedule {
+@Entity('doctorWorkTemplate')
+export class DoctorWorkTemplate {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: 'date',
+    type: 'uuid',
     nullable: false,
   })
-  date: Date;
+  doctorId: string;
 
   @Column({
     nullable: false,
   })
-  startTime: string;
+  dayOfWeek: string;
 
   @Column({
     nullable: false,
   })
-  endTime: string;
+  morningStartTime: string;
 
   @Column({
     nullable: false,
+  })
+  morningEndTime: string;
+
+  @Column({
+    nullable: false,
+  })
+  afternoonStartTime: string;
+
+  @Column({
+    nullable: false,
+  })
+  afternoonEndTime: string;
+
+  @Column({
+    nullable: false,
+  })
+  isAvailable: boolean;
+
+  @Column({
+    nullable: false,
+  })
+  slotDuration: number;
+
+  @Column({
+    nullable: true,
   })
   price: number;
-
-  @Column({
-    nullable: false,
-  })
-  isBooked: boolean;
-
-  @Column({
-    enum: ScheduleStatus,
-    default: ScheduleStatus.AVAILABLE,
-    nullable: false,
-  })
-  status: string;
 
   @Column()
   @CreateDateColumn()
@@ -57,7 +69,7 @@ export class DoctorSchedule {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => Doctor, (doctor) => doctor.doctorWorkTemplates)
   @JoinColumn({ name: 'doctorId' })
-  doctor: User;
+  doctor: Doctor;
 }

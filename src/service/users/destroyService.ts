@@ -8,7 +8,7 @@ export const deleteUser = async (id: string) => {
   const user = await userRepository.findOne({ where: { id } });
 
   if (!user) {
-    throw new CustomError(404, 'General', 'Not Found', [`User with id:${id} doesn't exists.`]);
+    throw new CustomError(404, 'General', 'Không tìm thấy', [`Người dùng có id:${id} không tồn tại.`]);
   }
   await userRepository.delete(id);
   return { id: user.id, name: user.fullName, email: user.email };

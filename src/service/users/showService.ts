@@ -10,7 +10,7 @@ export const getUser = async (id: string) => {
   });
 
   if (!user) {
-    throw new CustomError(404, 'General', `User with id:${id} not found.`, ['User not found.']);
+    throw new CustomError(404, 'General', `Không tìm thấy tài khoản với id:${id}`, ['Người dùng không tồn tại.']);
   }
   return user;
 };

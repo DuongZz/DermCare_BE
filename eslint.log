@@ -1,0 +1,6 @@
+﻿
+D:\Code\Dermcare-BE\temp-node-empress-type-orm\src\controllers\doctorSchedule\getDoctorScheduleController.ts
+  1:1  error  There should be at least one empty line between import groups  import/order
+
+✖ 1 problem (1 error, 0 warnings)
+

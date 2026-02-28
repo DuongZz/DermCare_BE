@@ -8,9 +8,9 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const user = await getUser(id);
-    res.customSuccess(200, 'User found', user);
+    res.customSuccess(200, 'Tìm thấy người dùng', user);
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
+    const customError = new CustomError(400, 'Raw', 'Có lỗi xảy ra', null, err);
     return next(customError);
   }
 };

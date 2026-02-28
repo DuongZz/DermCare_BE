@@ -22,9 +22,9 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
       path: '/',
     });
 
-    res.customSuccess(200, 'Logout successfully.', null);
+    res.customSuccess(200, 'Đăng xuất thành công.', null);
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Logout failed', null, err);
+    const customError = new CustomError(400, 'Raw', 'Có lỗi khi đăng xuất', null, err);
     return next(customError);
   }
 };
