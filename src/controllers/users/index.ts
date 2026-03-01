@@ -5,3 +5,5 @@ export * from './showController';
 export * from './meController';
 export * from './getMedicalInfoController';
 export * from './updateMedicalInfoController';
+export * from './bookingAppointmentController';
+export * from './getPublicDoctorScheduleController';

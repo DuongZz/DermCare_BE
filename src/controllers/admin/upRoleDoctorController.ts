@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { upRoleDoctorService } from 'service/admin/upRoleDoctorService';
+import { upRoleDoctorService } from '../../service/admin/upRoleDoctorService';
 
 export const upRoleDoctorController = async (req: Request, res: Response, next: NextFunction) => {
   try {

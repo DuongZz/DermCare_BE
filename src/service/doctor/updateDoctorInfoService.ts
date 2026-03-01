@@ -10,9 +10,9 @@ export const updateDoctorInfoService = async (id: string, data: UpdateDoctorInfo
   if (!doctor) {
     throw new CustomError(404, 'General', 'Lỗi tìm kiếm Bác sĩ', ['Bác sĩ không tồn tại']);
   }
-  doctor.specialization = data.specialization;
-  doctor.qualifications = data.qualifications;
-  doctor.workPlace = data.workPlace;
+  if (data.specialization !== undefined) doctor.specialization = data.specialization;
+  if (data.qualifications !== undefined) doctor.qualifications = data.qualifications;
+  if (data.workPlace !== undefined) doctor.workPlace = data.workPlace;
   await doctorRepository.save(doctor);
   return doctor;
 };

@@ -3,13 +3,15 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
 
-import { AppointmentStatus, PaymentStatus } from './enum';
+import { AppointmentStatus } from './enum';
 import { User } from './user';
+import { Payment } from './payment';
 
 @Entity('appointments')
 export class Appointment {
@@ -58,4 +60,7 @@ export class Appointment {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'doctorId' })
   doctor: User;
+
+  @OneToMany(() => Payment, (payment) => payment.appointment)
+  payments: Payment[];
 }

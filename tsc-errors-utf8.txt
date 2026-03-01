@@ -1,2 +1,0 @@
-﻿src/service/workTemplate/createWorkTemplateService.ts(9,47): error TS2353: Object literal may only specify known properties, and 'doctorId' does not exist in type 'string[] | Date | ObjectID | FindConditions<DoctorWorkTemplate> | number[] | Date[] | ObjectID[]'.
-src/service/workTemplate/createWorkTemplateService.ts(13,14): error TS2551: Property 'doctorId' does not exist on type 'DoctorWorkTemplate'. Did you mean 'doctor'?

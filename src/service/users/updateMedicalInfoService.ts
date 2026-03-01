@@ -6,7 +6,11 @@ import { UpdateMedicalInfoInput } from '../../interfaces/user';
 export const updateMedicalInfoService = async (userId: string, data: UpdateMedicalInfoInput) => {
   const { skinType, bloodGroup, allergies, emergencyContact, currentMedications, chronicConditions } = data;
   const medicalInfoRepository = getRepository(MedicalInfo);
-  let medicalInfo = await medicalInfoRepository.findOne({ where: { user: { id: userId } } });
+  let medicalInfo = await medicalInfoRepository
+    .createQueryBuilder('medicalInfo')
+    .leftJoinAndSelect('medicalInfo.user', 'user')
+    .where('user.id = :userId', { userId })
+    .getOne();
 
   if (!medicalInfo) {
     medicalInfo = medicalInfoRepository.create({ user: { id: userId } });
