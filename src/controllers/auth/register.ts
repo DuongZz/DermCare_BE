@@ -24,10 +24,9 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       newUser.password = password;
       newUser.fullName = fullName;
       newUser.phone = phone;
-      // The original code had gender, dateOfBirth, address. The instruction removes them.
-      // newUser.gender = gender;
-      // newUser.dateOfBirth = dateOfBirth;
-      // newUser.address = address;
+      newUser.gender = gender;
+      newUser.dateOfBirth = dateOfBirth;
+      newUser.address = address;
 
       newUser.hashPassword();
       await userRepository.save(newUser);

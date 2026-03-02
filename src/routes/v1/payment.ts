@@ -1,19 +1,23 @@
 import { Router } from 'express';
 
-import { createMomoPaymentController } from '../../controllers/payment/createMomoPaymentController';
-import { momoIpnController } from '../../controllers/payment/momoIpnController';
 import { checkPaymentTimeoutController } from '../../controllers/payment/checkPaymentTimeoutController';
+import { createMomoPaymentController } from '../../controllers/payment/createMomoPaymentController';
+import { createZaloPaymentController } from '../../controllers/payment/createZaloPaymentController';
+import { momoIpnController } from '../../controllers/payment/momoIpnController';
+import { zalopayCallbackController } from '../../controllers/payment/zalopayCallbackController';
 import { checkJwt } from '../../middleware/checkJwt';
 
 const router = Router();
 
-// Route gọi Payment tạo đơn cho Mono (Chỉ User đã login mới gọi được)
+// === MoMo ===
 router.post('/momo/create', [checkJwt], createMomoPaymentController);
-
-// Route Webhook IPN cho Server Momo gọi về (Không check JWT vì server ngoài gọi)
 router.post('/momo/ipn', momoIpnController);
 
-// Route Frontend gọi để đối soát TimeOut
+// === ZaloPay ===
+router.post('/zalopay/create', [checkJwt], createZaloPaymentController);
+router.post('/zalopay/callback', zalopayCallbackController);
+
+// === Chung ===
 router.post('/check-timeout', [checkJwt], checkPaymentTimeoutController);
 
 export default router;

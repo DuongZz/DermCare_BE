@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { getUser } from 'service/users/showService';
+import { getUser } from 'service/admin/showService';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const show = async (req: Request, res: Response, next: NextFunction) => {

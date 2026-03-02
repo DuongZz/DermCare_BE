@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { PaymentStatus } from './enum';
+import { PaymentMethod, PaymentStatus } from './enum';
 import { User } from './user';
 import { Appointment } from './appointment';
 
@@ -20,8 +20,11 @@ export class Payment {
   @Column()
   amount: number;
 
-  @Column()
-  paymentMethod: string;
+  @Column({
+    enum: PaymentMethod,
+    nullable: false,
+  })
+  paymentMethod: PaymentMethod;
 
   @Column({
     enum: PaymentStatus,

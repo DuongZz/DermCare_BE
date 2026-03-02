@@ -109,3 +109,10 @@ export const ScheduleStatus = {
 } as const;
 
 export type ScheduleStatus = typeof ScheduleStatus[keyof typeof ScheduleStatus];
+
+export const PaymentMethod = {
+  MOMO: 'MOMO',
+  ZALOPAY: 'ZALOPAY',
+} as const;
+
+export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];

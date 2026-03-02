@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { deleteUser } from 'service/users/destroyService';
+import { deleteUser } from 'service/admin/destroyService';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const destroy = async (req: Request, res: Response, next: NextFunction) => {

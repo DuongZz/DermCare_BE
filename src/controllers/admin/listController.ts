@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { listUsers } from 'service/users/listService';
+import { listUsers } from 'service/admin/listService';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const list = async (req: Request, res: Response, next: NextFunction) => {

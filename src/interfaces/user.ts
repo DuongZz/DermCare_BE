@@ -1,6 +1,9 @@
 export interface EditUserInput {
-  email: string;
-  fullName: string;
+  fullName?: string;
+  phone?: string;
+  gender?: string;
+  dateOfBirth?: Date;
+  address?: string;
 }
 
 export interface UpdateMedicalInfoInput {
