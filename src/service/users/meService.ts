@@ -23,7 +23,7 @@ export const getMe = async (id: string) => {
   });
 
   if (!user) {
-    throw new CustomError(404, 'General', 'User not found');
+    throw new CustomError(404, 'General', 'Người dùng không tồn tại');
   }
 
   // If user is a doctor, fetch and merge doctor-specific fields

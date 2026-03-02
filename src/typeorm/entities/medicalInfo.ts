@@ -16,9 +16,6 @@ export class MedicalInfo {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  userId: string;
-
   @Column({
     enum: SkinType,
     nullable: true,

@@ -23,6 +23,6 @@ export const getDoctorsService = async () => {
       .getMany();
     return doctors;
   } catch (err) {
-    throw new CustomError(400, 'Raw', 'Error fetching doctors', null, err);
+    throw new CustomError(400, 'Raw', 'Lỗi khi lấy danh sách bác sĩ', null, err);
   }
 };

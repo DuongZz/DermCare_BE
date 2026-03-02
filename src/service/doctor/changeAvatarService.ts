@@ -11,7 +11,7 @@ export const changeAvatarService = async (id: string, file: Express.Multer.File)
     const doctor = await doctorRepository.findOne({ where: { user_id: id } });
 
     if (!doctor) {
-      throw new CustomError(404, 'General', 'Doctor not found');
+      throw new CustomError(404, 'General', 'Bác sĩ không tồn tại');
     }
 
     // Create a unique file name
@@ -28,7 +28,7 @@ export const changeAvatarService = async (id: string, file: Express.Multer.File)
 
     if (uploadError) {
       console.error('Supabase Upload Error:', uploadError);
-      throw new CustomError(500, 'Raw', 'Failed to upload avatar to Supabase', null, uploadError);
+      throw new CustomError(500, 'Raw', 'Lỗi khi upload ảnh đại diện lên Supabase', null, uploadError);
     }
 
     // Get the public URL

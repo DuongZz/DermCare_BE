@@ -7,8 +7,18 @@ services:
         limits:
           cpus: '0.90'
           # memory: 400M
-    command: /bin/sh -c "echo 'Running API on production!' && npm run build && npm start"
+    command: /bin/sh -c "echo 'Running API on production!' && npm run build && NODE_PATH=./dist node ./dist/index.js"
     ports:
       - '4000:4000'
     env_file:
-      - ./config/prod.env
+      - ./.env
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: dermcare_cloudflare_tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiOGY2OTdkMmVhYmE3Y2Y4MTYxYTNkNDhiYjZlNGNkMTciLCJ0IjoiZTI3NTRjZDEtNDMwOS00OTUxLWI4ZWYtNDNkYjgzMzI3YzA2IiwicyI6IlpHSTVaakppWTJNdE9EWTJZaTAwTVRBNUxUbGlaRFF0WkRrMU5ESmhNemxpTjJNdyJ9
+    depends_on:
+      - be_boilerplate

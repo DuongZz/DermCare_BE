@@ -13,12 +13,12 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
     const user = await userRepository.findOne({ where: { id } });
 
     if (!user) {
-      const customError = new CustomError(404, 'General', 'Not Found', [`User ${name} not found.`]);
+      const customError = new CustomError(404, 'General', 'Không tìm thấy', [`Không tìm thấy tài khoản ${name}.`]);
       return next(customError);
     }
 
     if (!user.checkIfPasswordMatch(password)) {
-      const customError = new CustomError(400, 'General', 'Not Found', ['Incorrect password']);
+      const customError = new CustomError(400, 'General', 'Không tìm thấy', ['Mật khẩu không chính xác']);
       return next(customError);
     }
 
@@ -26,9 +26,9 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
     user.hashPassword();
     userRepository.save(user);
 
-    res.customSuccess(200, 'Password successfully changed.');
+    res.customSuccess(200, 'Đổi mật khẩu thành công.');
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
+    const customError = new CustomError(400, 'Raw', 'Có lỗi xảy ra', null, err);
     return next(customError);
   }
 };

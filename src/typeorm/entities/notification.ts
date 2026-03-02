@@ -18,11 +18,6 @@ export class Notification {
   @Column({
     nullable: false,
   })
-  recipientId: string;
-
-  @Column({
-    nullable: false,
-  })
   title: string;
 
   @Column({

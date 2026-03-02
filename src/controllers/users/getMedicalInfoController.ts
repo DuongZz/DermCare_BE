@@ -8,9 +8,9 @@ export const getMedicalInfo = async (req: Request, res: Response, next: NextFunc
 
   try {
     const medicalInfo = await getMedicalInfoService(userId);
-    res.customSuccess(200, 'Medical info found', medicalInfo);
+    res.customSuccess(200, 'Đã tìm thấy hồ sơ y tế', medicalInfo);
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
+    const customError = new CustomError(400, 'Raw', 'Có lỗi xảy ra', null, err);
     return next(customError);
   }
 };

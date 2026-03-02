@@ -23,21 +23,6 @@ export class Conversation {
   @Column({
     nullable: false,
   })
-  patientId: string;
-
-  @Column({
-    nullable: false,
-  })
-  doctorId: string;
-
-  @Column({
-    nullable: false,
-  })
-  appointmentId: string;
-
-  @Column({
-    nullable: false,
-  })
   status: string;
 
   @Column({

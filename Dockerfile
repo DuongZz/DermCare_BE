@@ -1,11 +1,11 @@
-FROM node:14.17.0-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
 COPY ./package.json .
 COPY ./package-lock.json .
 
-RUN npm install && npm cache clean --force
+RUN npm install --legacy-peer-deps && npm cache clean --force
 
 COPY . .
 

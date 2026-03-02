@@ -4,13 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  OneToMany,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
 
 import { User } from './user';
+import { ScheduleStatus } from './enum';
 
 @Entity('doctorSchedule')
 export class DoctorSchedule {
@@ -18,14 +17,10 @@ export class DoctorSchedule {
   id: string;
 
   @Column({
+    type: 'date',
     nullable: false,
   })
-  doctorId: string;
-
-  @Column({
-    nullable: false,
-  })
-  availableDate: Date;
+  date: Date;
 
   @Column({
     nullable: false,
@@ -40,7 +35,19 @@ export class DoctorSchedule {
   @Column({
     nullable: false,
   })
+  price: number;
+
+  @Column({
+    nullable: false,
+  })
   isBooked: boolean;
+
+  @Column({
+    enum: ScheduleStatus,
+    default: ScheduleStatus.AVAILABLE,
+    nullable: false,
+  })
+  status: string;
 
   @Column()
   @CreateDateColumn()

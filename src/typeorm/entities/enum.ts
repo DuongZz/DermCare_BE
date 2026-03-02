@@ -101,3 +101,18 @@ export const DOCTOR_QUALIFICATION = {
 } as const;
 
 export type DOCTOR_QUALIFICATION = typeof DOCTOR_QUALIFICATION[keyof typeof DOCTOR_QUALIFICATION];
+
+export const ScheduleStatus = {
+  AVAILABLE: 'AVAILABLE',
+  BOOKED: 'BOOKED',
+  CANCELLED: 'CANCELLED',
+} as const;
+
+export type ScheduleStatus = typeof ScheduleStatus[keyof typeof ScheduleStatus];
+
+export const PaymentMethod = {
+  MOMO: 'MOMO',
+  ZALOPAY: 'ZALOPAY',
+} as const;
+
+export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];

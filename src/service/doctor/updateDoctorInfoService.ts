@@ -2,19 +2,17 @@ import { getRepository } from 'typeorm';
 
 import { Doctor } from 'typeorm/entities/doctor';
 import { CustomError } from 'utils/response/custom-error/CustomError';
+import { UpdateDoctorInfoInput } from 'interfaces/doctor';
 
-export const updateDoctorInfoService = async (
-  id: string,
-  data: { specialization: string; qualifications: string; workPlace: string },
-) => {
+export const updateDoctorInfoService = async (id: string, data: UpdateDoctorInfoInput) => {
   const doctorRepository = getRepository(Doctor);
   const doctor = await doctorRepository.findOne({ where: { user_id: id } });
   if (!doctor) {
-    throw new CustomError(404, 'General', 'Doctor not found', ['Doctor not found']);
+    throw new CustomError(404, 'General', 'Lỗi tìm kiếm Bác sĩ', ['Bác sĩ không tồn tại']);
   }
-  doctor.specialization = data.specialization;
-  doctor.qualifications = data.qualifications;
-  doctor.workPlace = data.workPlace;
+  if (data.specialization !== undefined) doctor.specialization = data.specialization;
+  if (data.qualifications !== undefined) doctor.qualifications = data.qualifications;
+  if (data.workPlace !== undefined) doctor.workPlace = data.workPlace;
   await doctorRepository.save(doctor);
   return doctor;
 };
