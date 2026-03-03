@@ -8,11 +8,15 @@ import {
   getPublicDoctorScheduleController,
   getMyAppointmentController,
   updateMyProfileController,
+  getPublicSpecializationController,
 } from 'controllers/users';
+import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
 import { checkJwt } from 'middleware/checkJwt';
 
 const router = Router();
 
+router.get('/public-specialization', getPublicSpecializationController);
+router.get('/public-doctors', getDoctorsController);
 router.get('/me', [checkJwt], me);
 router.patch('/me', [checkJwt], updateMyProfileController);
 router.get('/me/appointments', [checkJwt], getMyAppointmentController);

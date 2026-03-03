@@ -14,6 +14,7 @@ import { Appointment } from './appointment';
 import { Diagnosis } from './diagnosis';
 import { Message } from './message';
 import { User } from './user';
+import { ConversationStatus, ConversationType } from './enum';
 
 @Entity('conversation')
 export class Conversation {
@@ -21,9 +22,16 @@ export class Conversation {
   id: string;
 
   @Column({
-    nullable: false,
+    enum: ConversationType,
+    default: ConversationType.AI_ASSISTANT,
   })
-  status: string;
+  type: ConversationType;
+
+  @Column({
+    enum: ConversationStatus,
+    default: ConversationStatus.AI_CONSULTING,
+  })
+  status: ConversationStatus;
 
   @Column({
     nullable: true,
@@ -34,6 +42,12 @@ export class Conversation {
     nullable: true,
   })
   timestamp: Date;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  diagnosisInfo: any;
 
   @Column()
   @CreateDateColumn()

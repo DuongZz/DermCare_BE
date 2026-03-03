@@ -55,17 +55,9 @@ export const AppointmentStatus = {
 
 export type AppointmentStatus = typeof AppointmentStatus[keyof typeof AppointmentStatus];
 
-export const DiagnosisStatus = {
-  AI_PENDING: 'AI_PENDING',
-  CONSULTING: 'CONSULTING',
-  FINALIZED: 'FINALIZED',
-} as const;
-
-export type DiagnosisStatus = typeof DiagnosisStatus[keyof typeof DiagnosisStatus];
-
 export const ConversationStatus = {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
+  AI_CONSULTING: 'AI_CONSULTING',
+  DOCTOR_CONSULTING: 'DOCTOR_CONSULTING',
   COMPLETED: 'COMPLETED',
 } as const;
 
@@ -116,3 +108,10 @@ export const PaymentMethod = {
 } as const;
 
 export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];
+
+export const ConversationType = {
+  AI_ASSISTANT: 'AI_ASSISTANT',
+  DOCTOR_CONSULTATION: 'DOCTOR_CONSULTATION',
+} as const;
+
+export type ConversationType = typeof ConversationType[keyof typeof ConversationType];

@@ -2,6 +2,7 @@ import 'dotenv/config';
 import 'reflect-metadata';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -10,15 +11,28 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import passport from 'passport';
+import { Server } from 'socket.io';
 
 import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
+import { configureSocket } from './socket';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';
 import './configs/redis';
 import './configs/passport';
 
 export const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
+// Khởi tạo các handler của socket
+configureSocket(io);
+
 app.use(
   cors({
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
@@ -46,7 +60,7 @@ app.use('/', routes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 

@@ -1,0 +1,1 @@
+﻿src/typeorm/entities/conversation.ts(32,33): error TS2339: Property 'AI_CONSULTING' does not exist on type '{ readonly PENDING: "PENDING"; readonly IN_PROGRESS: "IN_PROGRESS"; readonly COMPLETED: "COMPLETED"; }'.
