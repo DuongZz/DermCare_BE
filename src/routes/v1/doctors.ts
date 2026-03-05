@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { changeAvatarController } from 'controllers/doctor/changeAvatarController';
 import { getAllDoctorsController } from 'controllers/doctor/getAllDoctorsController';
 import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
@@ -18,7 +19,11 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/all', getAllDoctorsController);
 router.patch('/update-info', [checkJwt, checkRole([Role.DOCTOR])], updateDoctorInfoController);
-router.patch('/update-avatar', [checkJwt, checkRole([Role.DOCTOR]), upload.single('avatar')], changeAvatarController);
+router.patch(
+  '/update-avatar',
+  [checkJwt, checkRole([Role.DOCTOR]), upload.single('avatar'), uploadToSupabase('avatars')],
+  changeAvatarController,
+);
 
 router.post('/work-template', [checkJwt, checkRole([Role.DOCTOR])], createWorkTemplateController);
 router.get('/schedule', [checkJwt, checkRole([Role.DOCTOR])], getDoctorScheduleController);

@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import multer from 'multer';
 
+import { uploadToSupabase } from 'middleware/uploadSupabase';
 import {
+  analyzeAiController,
   createAiConversationController,
   getConversationsController,
   getConversationMessagesController,
@@ -9,20 +12,18 @@ import {
 import { checkJwt } from 'middleware/checkJwt';
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-// Lệnh bắt buộc xác thực đăng nhập
 router.use(checkJwt);
 
-// Tạo mới hoặc tiếp tục hội thoại với AI
 router.post('/ai', createAiConversationController);
 
-// Lấy danh sách hội thoại của user
 router.get('/', getConversationsController);
 
-// Lấy lịch sử tin nhắn trong 1 hội thoại
 router.get('/:id/messages', getConversationMessagesController);
 
-// Lấy bác sĩ theo chuyên khoa (sau khi AI chẩn đoán) - ?specialization=Da+liễu+Bệnh+lý
+router.post('/:id/analyze', upload.single('file'), uploadToSupabase('disease_picture'), analyzeAiController);
+
 router.get('/doctors', getDoctorBySpecializationController);
 
 export default router;

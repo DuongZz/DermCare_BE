@@ -23,7 +23,7 @@ import './configs/passport';
 
 export const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, {
+export const io = new Server(httpServer, {
   cors: {
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
     methods: ['GET', 'POST'],

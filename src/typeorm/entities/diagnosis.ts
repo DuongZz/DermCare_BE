@@ -25,6 +25,9 @@ export class Diagnosis {
   AIResult: string; // Tên bệnh cụ thể AI chẩn đoán (vd: "Eczema", "Psoriasis")
 
   @Column({
+    type: 'decimal',
+    precision: 5,
+    scale: 3,
     nullable: false,
   })
   AIConfidence: number; // Độ tin cậy 0-1

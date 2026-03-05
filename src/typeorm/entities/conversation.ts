@@ -41,6 +41,11 @@ export class Conversation {
   @Column({
     nullable: true,
   })
+  title: string;
+
+  @Column({
+    nullable: true,
+  })
   timestamp: Date;
 
   @Column({
