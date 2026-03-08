@@ -31,6 +31,10 @@ export const configureSocket = (io: Server) => {
     const user = socket.data.user as JwtPayload;
     console.log(`[Socket] User connected: ${user.email} (ID: ${user.id})`);
 
+    // Join personal room for notifications
+    socket.join(`user_${user.id}`);
+    console.log(`[Socket] User ${user.email} joined personal room: user_${user.id}`);
+
     // Tham gia phòng chat của 1 conversation cụ thể
     socket.on('join_conversation', (conversationId: string) => {
       socket.join(conversationId);
@@ -53,7 +57,10 @@ export const configureSocket = (io: Server) => {
         const userRepository = getRepository(User);
 
         // Find conversation
-        const conversation = await conversationRepository.findOne({ where: { id: conversationId } });
+        const conversation = await conversationRepository.findOne({
+          where: { id: conversationId },
+          relations: ['patient', 'doctor'],
+        });
         if (!conversation) {
           socket.emit('error', { message: 'Conversation not found' });
           return;
@@ -98,6 +105,26 @@ export const configureSocket = (io: Server) => {
             role: sender.role,
           },
         });
+
+        // Create persistent notification for the other participant
+        try {
+          // Identify the recipient (the one who is NOT the sender)
+          const recipientId = user.role === 'DOCTOR' ? conversation.patient.id : conversation.doctor.id;
+          if (recipientId) {
+            const { createNotificationsService } = await import('../service/notifications/createNotificationsService');
+            await createNotificationsService(
+              'Tin nhắn mới',
+              `Bạn có tin nhắn mới từ ${sender.fullName}: "${content.substring(0, 50)}${
+                content.length > 50 ? '...' : ''
+              }"`,
+              'NOTI_MESSAGE',
+              conversationId,
+              recipientId,
+            );
+          }
+        } catch (notiErr) {
+          console.error('[Socket] Error creating notification for message:', notiErr);
+        }
       } catch (err: any) {
         console.error('[Socket] Error in send_message handler:', err);
         socket.emit('error', {

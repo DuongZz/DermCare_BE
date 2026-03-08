@@ -60,6 +60,20 @@ export const bookingAppointmentService = async (patientId: string, doctorId: str
 
     await queryRunner.commitTransaction();
 
+    // Notify Doctor (Post-transaction)
+    try {
+      const { createNotificationsService } = await import('../notifications/createNotificationsService');
+      await createNotificationsService(
+        'Bạn có lịch hẹn mới',
+        `Có bệnh nhân đặt lịch khám lúc ${time} giờ ngày ${date}`,
+        'NOTI_APPOINTMENT',
+        appointment.id,
+        doctorId,
+      );
+    } catch (notiErr) {
+      console.error('Error creating notification for booking:', notiErr);
+    }
+
     return appointment;
   } catch (err) {
     await queryRunner.rollbackTransaction();

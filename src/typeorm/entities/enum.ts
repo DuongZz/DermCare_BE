@@ -115,3 +115,10 @@ export const ConversationType = {
 } as const;
 
 export type ConversationType = typeof ConversationType[keyof typeof ConversationType];
+
+export const typeNotification = {
+  NOTI_APPOINTMENT: 'NOTI_APPOINTMENT',
+  NOTI_MESSAGE: 'NOTI_MESSAGE',
+} as const;
+
+export type typeNotification = typeof typeNotification[keyof typeof typeNotification];

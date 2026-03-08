@@ -8,7 +8,7 @@ import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
 import { updateDoctorInfoController } from 'controllers/doctor/updateDoctorInfoController';
 import { createDoctorScheduleController } from 'controllers/doctorSchedule/createDoctorScheduleController';
 import { getDoctorScheduleController } from 'controllers/doctorSchedule/getDoctorScheduleController';
-import { createWorkTemplateController } from 'controllers/workTemplate';
+import { createWorkTemplateController, getWorkTemplateController } from 'controllers/workTemplate';
 import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSchedule/validatorCreateDoctorSchedule';
@@ -26,6 +26,7 @@ router.patch(
 );
 
 router.post('/work-template', [checkJwt, checkRole([Role.DOCTOR])], createWorkTemplateController);
+router.get('/work-template', [checkJwt, checkRole([Role.DOCTOR])], getWorkTemplateController);
 router.get('/schedule', [checkJwt, checkRole([Role.DOCTOR])], getDoctorScheduleController);
 router.post(
   '/schedule',

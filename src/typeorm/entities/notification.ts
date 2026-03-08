@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 
 import { User } from './user';
+import { Appointment } from './appointment';
 
 @Entity('notifications')
 export class Notification {
@@ -24,6 +25,11 @@ export class Notification {
     nullable: false,
   })
   type: string;
+
+  @Column({
+    nullable: true,
+  })
+  content: string;
 
   @Column({
     nullable: false,
@@ -42,6 +48,10 @@ export class Notification {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToOne(() => Appointment, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'appointmentId' })
+  appointment: Appointment;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'recipientId' })

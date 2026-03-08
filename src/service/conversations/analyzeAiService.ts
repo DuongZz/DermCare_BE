@@ -263,6 +263,20 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
     });
   }
 
+  // 9. Notify Patient
+  try {
+    const { createNotificationsService } = await import('../notifications/createNotificationsService');
+    await createNotificationsService(
+      'Kết quả phân tích AI',
+      `Kết quả chẩn đoán sơ bộ cho hình ảnh của bạn đã có: ${aiResponse.disease_name}.`,
+      'NOTI_AI_RESULT',
+      diagnosis.id,
+      patientId,
+    );
+  } catch (notiErr) {
+    console.error('Error creating notification for AI analysis:', notiErr);
+  }
+
   return {
     diagnosisId: diagnosis.id,
     messageId: userImageMessageId || userTextMessageId,
