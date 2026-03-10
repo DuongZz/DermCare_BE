@@ -34,7 +34,8 @@ export const createNotificationsService = async (
 
   // Emit real-time notification via Socket.io
   try {
-    const { io } = await import('../../index');
+    const { getIo } = await import('../../socket/socketInstance');
+    const io = getIo();
     if (io) {
       io.to(`user_${recipientId}`).emit('new_notification', savedNotification);
     }

@@ -8,12 +8,14 @@ import { Diagnosis } from 'typeorm/entities/diagnosis';
 import { Message } from 'typeorm/entities/message';
 import { User } from 'typeorm/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
-import { io } from 'index';
 import { supabase } from 'configs/supabase';
 import { AnalyzeRequest } from 'interfaces/analyzeRequest';
 
+import { getIo } from '../../socket/socketInstance';
+
 export const analyzeAiService = async (data: AnalyzeRequest) => {
   const { conversationId, patientId, fileBuffer, fileName, mimeType, fileUrl, description } = data;
+  const io = getIo();
 
   const conversationRepository = getRepository(Conversation);
   const diagnosisRepository = getRepository(Diagnosis);

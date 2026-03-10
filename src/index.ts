@@ -18,19 +18,22 @@ import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
 import { configureSocket } from './socket';
 import { dbCreateConnection } from './typeorm/dbCreateConnection';
+import { setIo } from './socket/socketInstance';
 import './configs/redis';
 import './configs/passport';
 
 export const app = express();
 const httpServer = http.createServer(app);
-export const io = new Server(httpServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
-// Khởi tạo các handler của socket
+
+// Set global socket instance and configure handlers
+setIo(io);
 configureSocket(io);
 
 app.use(
