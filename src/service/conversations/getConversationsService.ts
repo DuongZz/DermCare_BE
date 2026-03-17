@@ -4,29 +4,39 @@ import { Conversation } from 'typeorm/entities/conversation';
 import { Role } from 'typeorm/entities/enum';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
-export const getConversationsService = async (userId: string, role: string): Promise<Conversation[]> => {
+export const getConversationsService = async (
+  userId: string,
+  role: string,
+  status?: string,
+  page: number = 1,
+): Promise<{ conversations: Conversation[]; total: number }> => {
   const conversationRepository = getRepository(Conversation);
+  const limit = 5;
+  const skip = (page - 1) * limit;
 
-  // If PATIENT, get all conversations where patientId = userId
-  // If DOCTOR, get all conversations where doctorId = userId OR where they might need to supervise?
-  // Let's stick to simple mapping: Patient sees their chats, Doctor sees their chats.
-  let whereClause = {};
+  const whereClause: any = {};
 
   if (role === Role.PATIENT) {
-    whereClause = { patient: { id: userId } };
+    whereClause.patient = { id: userId };
   } else if (role === Role.DOCTOR) {
-    whereClause = { doctor: { id: userId } };
+    whereClause.doctor = { id: userId };
   } else {
     throw new CustomError(403, 'General', 'Admin user does not have conversations');
   }
 
-  const conversations = await conversationRepository.find({
+  if (status) {
+    whereClause.status = status;
+  }
+
+  const [conversations, total] = await conversationRepository.findAndCount({
     where: whereClause,
-    relations: ['patient', 'doctor'],
+    relations: ['patient', 'doctor', 'doctor.doctorProfile'],
     order: {
       updated_at: 'DESC',
     },
+    take: limit,
+    skip: skip,
   });
 
-  return conversations;
+  return { conversations, total };
 };

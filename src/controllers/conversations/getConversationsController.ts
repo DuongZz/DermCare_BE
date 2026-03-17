@@ -6,9 +6,15 @@ export const getConversationsController = async (req: Request, res: Response, ne
   try {
     const userId = req.jwtPayload.id;
     const role = req.jwtPayload.role;
+    const { status, page } = req.query;
 
-    const conversations = await getConversationsService(userId, role);
-    res.customSuccess(200, 'Lấy danh sách hội thoại thành công', conversations);
+    const result = await getConversationsService(
+      userId,
+      role,
+      status as string,
+      page ? parseInt(page as string, 10) : 1,
+    );
+    res.customSuccess(200, 'Lấy danh sách hội thoại thành công', result);
   } catch (error) {
     next(error);
   }

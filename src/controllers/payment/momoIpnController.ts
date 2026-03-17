@@ -5,8 +5,9 @@ import { getRepository } from 'typeorm';
 
 import { momoConfig } from '../../configs/momo';
 import { Appointment } from '../../typeorm/entities/appointment';
-import { PaymentStatus, AppointmentStatus } from '../../typeorm/entities/enum';
+import { PaymentStatus, AppointmentStatus, ConversationStatus } from '../../typeorm/entities/enum';
 import { Payment } from '../../typeorm/entities/payment';
+import { Conversation } from '../../typeorm/entities/conversation';
 
 export const momoIpnController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -43,7 +44,10 @@ export const momoIpnController = async (req: Request, res: Response, next: NextF
     const paymentRepo = getRepository(Payment);
     const appointmentRepo = getRepository(Appointment);
 
-    const payment = await paymentRepo.findOne({ where: { appTransId: orderId }, relations: ['appointment'] });
+    const payment = await paymentRepo.findOne({
+      where: { appTransId: orderId },
+      relations: ['appointment', 'appointment.conversation'],
+    });
 
     if (!payment) {
       console.error(`Momo IPN: Không tìm thấy giao dịch ${orderId}`);
@@ -60,6 +64,14 @@ export const momoIpnController = async (req: Request, res: Response, next: NextF
       if (payment.appointment) {
         payment.appointment.appointmentStatus = AppointmentStatus.CONFIRMED;
         await appointmentRepo.save(payment.appointment);
+
+        // Update Conversation to DOCTOR_CONSULTING
+        if ((payment.appointment as any).conversation) {
+          const conversationRepo = getRepository(Conversation);
+          const conversation = (payment.appointment as any).conversation;
+          conversation.status = ConversationStatus.DOCTOR_CONSULTING;
+          await conversationRepo.save(conversation);
+        }
       }
 
       await paymentRepo.save(payment);

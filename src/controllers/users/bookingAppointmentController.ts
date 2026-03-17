@@ -7,14 +7,20 @@ export const bookingAppointmentController = async (req: Request, res: Response, 
   try {
     const doctorId = req.params.doctorId;
     const patientId = req.jwtPayload.id;
-    const { appointmentDate, appointmentTime } = req.body;
+    const { appointmentDate, appointmentTime, conversationId } = req.body;
 
     if (!doctorId || !appointmentDate || !appointmentTime) {
       const customError = new CustomError(400, 'Validation', 'Thiếu thông tin đặt lịch');
       return next(customError);
     }
 
-    const booking = await bookingAppointmentService(patientId, doctorId, appointmentDate, appointmentTime);
+    const booking = await bookingAppointmentService(
+      patientId,
+      doctorId,
+      appointmentDate,
+      appointmentTime,
+      conversationId,
+    );
     res.customSuccess(200, 'Đặt lịch khám thành công', booking);
   } catch (error) {
     const customError = new CustomError(

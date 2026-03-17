@@ -4,5 +4,5 @@ export const zaloPayConfig = {
   key2: process.env.ZALOPAY_KEY2,
   endpoint: process.env.ZALOPAY_ENDPOINT,
   redirectUrl: process.env.APP_URL_FRONTEND,
-  callbackUrl: process.env.APP_URL_BACKEND,
+  callbackUrl: `${process.env.APP_URL_BACKEND}/v1/payments/zalopay/callback`,
 };

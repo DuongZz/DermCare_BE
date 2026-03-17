@@ -5,6 +5,8 @@ import { getRepository } from 'typeorm';
 import { Conversation } from 'typeorm/entities/conversation';
 import { Message } from 'typeorm/entities/message';
 import { User } from 'typeorm/entities/user';
+import { Doctor } from 'typeorm/entities/doctor';
+import { ConversationStatus } from 'typeorm/entities/enum';
 import { JwtPayload } from 'types/JwtPayload';
 
 export const configureSocket = (io: Server) => {
@@ -73,6 +75,46 @@ export const configureSocket = (io: Server) => {
           return;
         }
 
+        // Chuyển sang tư vấn trực tiếp nếu bác sĩ nhắn tin lần đầu trong phiên AI
+        if (sender.role === 'DOCTOR' && conversation.status === ConversationStatus.AI_CONSULTING) {
+          conversation.status = ConversationStatus.DOCTOR_CONSULTING;
+          conversation.title = `Tư vấn với BS. ${sender.fullName}`;
+          await conversationRepository.save(conversation);
+
+          // Tạo tin nhắn hệ thống thông báo bác sĩ đã tham gia
+          const joinMessage = messageRepository.create({
+            conversation,
+            content: `Bác sĩ **${sender.fullName}** đã tham gia cuộc hội thoại`,
+            type: 'text',
+            timestamp: Date.now(),
+            isAiMessage: true,
+          });
+          await messageRepository.save(joinMessage);
+
+          // Phát thông báo cập nhật hội thoại cho Client để đổi giao diện/tiêu đề ngay lập tức
+          io.to(conversationId).emit('conversation_updated', {
+            id: conversation.id,
+            status: conversation.status,
+            title: conversation.title,
+          });
+
+          // Phát luôn tin nhắn hệ thống mới cho người dùng
+          io.to(conversationId).emit('new_message', {
+            id: joinMessage.id,
+            content: joinMessage.content,
+            type: joinMessage.type,
+            timestamp: joinMessage.timestamp,
+            created_at: joinMessage.created_at,
+            conversationId: conversation.id,
+            isAiMessage: true,
+            sender: {
+              id: 'system',
+              fullName: 'Hệ thống',
+              role: 'AI',
+            },
+          });
+        }
+
         // Tạo tin nhắn mới trong DB
         const newMessage = messageRepository.create({
           conversation,
@@ -90,6 +132,21 @@ export const configureSocket = (io: Server) => {
           throw saveErr;
         }
 
+        // Fetch doctor profile if sender is DOCTOR
+        let senderAvatar = null;
+        let senderTitle = sender.fullName;
+
+        if (sender.role === 'DOCTOR') {
+          const doctorRepo = getRepository(Doctor);
+          const doctorProfile = await doctorRepo.findOne({ where: { user_id: sender.id } });
+          if (doctorProfile) {
+            senderAvatar = doctorProfile.avatar;
+            if (doctorProfile.qualifications) {
+              senderTitle = `${doctorProfile.qualifications} ${sender.fullName}`;
+            }
+          }
+        }
+
         // Phát tín hiệu 'new_message' về cho tất cả mọi người đang ở trong room conversationId
         io.to(conversationId).emit('new_message', {
           id: newMessage.id,
@@ -101,8 +158,9 @@ export const configureSocket = (io: Server) => {
           isAiMessage: newMessage.isAiMessage,
           sender: {
             id: sender.id,
-            fullName: sender.fullName,
+            fullName: senderTitle,
             role: sender.role,
+            avatar: senderAvatar,
           },
         });
 

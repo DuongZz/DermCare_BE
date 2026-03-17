@@ -9,14 +9,7 @@ export const createAiConversationService = async (patientId: string): Promise<Co
   const conversationRepository = getRepository(Conversation);
   const messageRepository = getRepository(Message);
 
-  const existingActive = await conversationRepository.find({
-    where: {
-      patient: { id: patientId },
-      status: ConversationStatus.AI_CONSULTING,
-      type: ConversationType.AI_ASSISTANT,
-    },
-  });
-
+  // Nhận yêu cầu tạo mới -> Luôn tạo mới để đảm bảo tính "Fresh" cho nút New Conversation
   const newConversation = conversationRepository.create({
     patient: { id: patientId },
     type: ConversationType.AI_ASSISTANT,
@@ -24,10 +17,10 @@ export const createAiConversationService = async (patientId: string): Promise<Co
     title: 'Cuộc hội thoại mới',
   });
 
-  await conversationRepository.save(newConversation);
+  const savedConversation = await conversationRepository.save(newConversation);
 
   const welcomeMessage = messageRepository.create({
-    conversation: newConversation,
+    conversation: savedConversation,
     content:
       'Xin chào 👋 Tôi là **DARA** - Trợ lý AI của Dermcare.\n\nĐể nhận kết quả chẩn đoán, bạn hãy:\n📸 **Tải ảnh** vùng da đang bị bệnh.\n✍️ **Mô tả triệu chứng** bạn đang gặp phải.\n\nTôi sẽ phân tích và đưa ra gợi ý phù hợp!\n\n**Lưu ý:** Kết quả chẩn đoán sơ bộ chỉ là số liệu tham khảo. Nếu không chắc chắn về tình trạng bệnh, xin hãy vui lòng đặt lịch khám với bác sĩ để được tư vấn chuẩn nhất.',
     type: 'text',
@@ -37,5 +30,5 @@ export const createAiConversationService = async (patientId: string): Promise<Co
 
   await messageRepository.save(welcomeMessage);
 
-  return newConversation;
+  return savedConversation;
 };

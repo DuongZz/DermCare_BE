@@ -21,11 +21,15 @@ export const createDoctorScheduleService = async (doctorId: string, dateStr: str
   const templates = await templateRepo
     .createQueryBuilder('template')
     .leftJoinAndSelect('template.doctor', 'doctor')
-    .where('doctor.id = :doctorId', { doctorId })
+    .where('doctor.user_id = :doctorId', { doctorId })
     .andWhere('template.isAvailable = :isAvailable', { isAvailable: true })
     .getMany();
   if (!templates || templates.length === 0) {
-    throw new CustomError(404, 'General', 'Bác sĩ chưa lặp lịch làm việc hoặc đang chọn nghỉ cả tuần.');
+    throw new CustomError(
+      404,
+      'NOT_FOUND',
+      'Bạn chưa cấu hình "Mẫu lịch làm việc" (Work Template). Hệ thống không thể sinh lịch tự động nếu không có thông tin này.',
+    );
   }
 
   const dayMap: Record<string, number> = {
@@ -42,11 +46,12 @@ export const createDoctorScheduleService = async (doctorId: string, dateStr: str
 
   const dayTemplate = templates.find((t) => dayMap[t.dayOfWeek.toLowerCase()] === dayOfWeekNum);
   if (!dayTemplate) {
-    throw new CustomError(
-      400,
-      'Validation',
-      `Bạn chưa cấu hình khung giờ làm việc hoặc đã chọn nghỉ vào Thứ ${dayOfWeekNum === 0 ? 'CN' : dayOfWeekNum + 1}`,
-    );
+    return {
+      totalGenerated: 0,
+      totalIgnored: 0,
+      message: `Bác sĩ hiện đang chọn nghỉ vào Thứ ${dayOfWeekNum === 0 ? 'CN' : dayOfWeekNum + 1}.`,
+      schedulesToSave: [],
+    };
   }
 
   const morningSlots =
@@ -81,7 +86,8 @@ export const createDoctorScheduleService = async (doctorId: string, dateStr: str
 
   const existingSchedules = await scheduleRepo
     .createQueryBuilder('schedule')
-    .where('schedule.doctorId = :doctorId', { doctorId })
+    .leftJoin('schedule.doctor', 'doctor')
+    .where('doctor.id = :doctorId', { doctorId })
     .andWhere('schedule.date = :dateStr', { dateStr })
     .getMany();
 

@@ -12,6 +12,7 @@ import {
 import { Appointment } from './appointment';
 import { Gender, Role } from './enum';
 import { MedicalInfo } from './medicalInfo';
+import { Doctor } from './doctor';
 
 @Entity('users')
 export class User {
@@ -87,6 +88,9 @@ export class User {
 
   @OneToOne(() => MedicalInfo, (medicalInfo) => medicalInfo.user)
   medicalInfo: MedicalInfo;
+
+  @OneToOne(() => Doctor, (doctor) => doctor.user)
+  doctorProfile: Doctor;
 
   @OneToMany(() => Appointment, (appointment) => appointment.patient)
   patientAppointments: Appointment[];

@@ -9,6 +9,7 @@ export const getDoctorAppointmentService = async (doctorId: string) => {
       .createQueryBuilder('appointment')
       .leftJoin('appointment.patient', 'patient')
       .leftJoinAndSelect('appointment.payments', 'payments')
+      .leftJoinAndSelect('appointment.conversation', 'conversation')
       .select([
         'appointment.id',
         'appointment.appointmentDate',
@@ -41,8 +42,8 @@ export const getDoctorAppointmentService = async (doctorId: string) => {
           status = apt.payments[0].paymentStatus;
         }
       }
-      const { payments, ...rest } = apt as any;
-      return { ...rest, paymentStatus: status };
+      const { payments, conversation, ...rest } = apt as any;
+      return { ...rest, paymentStatus: status, conversationId: conversation?.id };
     });
   } catch (error) {
     throw error;

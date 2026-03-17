@@ -4,3 +4,7 @@ export * from './getConversationMessagesController';
 export * from './getDoctorBySpecializationController';
 export * from './analyzeAiController';
 export * from './knowledgeQueryController';
+export * from './completeConversationController';
+export * from './getOrCreateAppointmentConversationController';
+export * from './getConversationByIdController';
+export * from './deleteConversationController';

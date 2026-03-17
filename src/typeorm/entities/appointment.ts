@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  OneToOne,
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
@@ -63,4 +64,7 @@ export class Appointment {
 
   @OneToMany(() => Payment, (payment) => payment.appointment)
   payments: Payment[];
+
+  @OneToOne('Conversation', 'appointment')
+  conversation: any;
 }

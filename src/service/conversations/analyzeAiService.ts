@@ -7,6 +7,7 @@ import { Conversation } from 'typeorm/entities/conversation';
 import { Diagnosis } from 'typeorm/entities/diagnosis';
 import { Message } from 'typeorm/entities/message';
 import { User } from 'typeorm/entities/user';
+import { ConversationStatus } from 'typeorm/entities/enum';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { supabase } from 'configs/supabase';
 import { AnalyzeRequest } from 'interfaces/analyzeRequest';
@@ -22,16 +23,27 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
   const messageRepository = getRepository(Message);
   const userRepository = getRepository(User);
 
-  // 1. Kiểm tra conversation hợp lệ
+  // 1. Kiểm tra conversation hợp lệ (Cho phép cả bệnh nhân và bác sĩ đã phân công truy cập)
   const conversation = await conversationRepository.findOne({
-    where: { id: conversationId, patient: { id: patientId } },
+    where: { id: conversationId },
+    relations: ['patient', 'doctor', 'doctor.doctorProfile'],
   });
 
   if (!conversation) {
     throw new CustomError(404, 'General', 'Không tìm thấy cuộc hội thoại');
   }
 
-  const patient = await userRepository.findOne({ where: { id: patientId } });
+  // Kiểm tra quyền: Phải là bệnh nhân hoặc bác sĩ của cuộc hội thoại
+  if (conversation.patient?.id !== patientId && conversation.doctor?.id !== patientId) {
+    throw new CustomError(403, 'General', 'Bạn không có quyền tham gia cuộc hội thoại này');
+  }
+
+  // Nếu cuộc hội thoại đã chuyển sang Bác sĩ tư vấn, AI không tự tiện tham gia nữa
+  if (conversation.status === ConversationStatus.DOCTOR_CONSULTING) {
+    throw new CustomError(400, 'General', 'Cuộc hội thoại này đã có bác sĩ tham gia. AI sẽ không trả lời nữa.');
+  }
+
+  const patient = conversation.patient;
 
   // 2. Sử dụng URL ảnh đã được upload sẵn qua middleware Supabase
   const imageUrl = fileUrl;

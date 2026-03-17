@@ -16,11 +16,17 @@ export const getPublicDoctorScheduleService = async (doctorId: string) => {
     .andWhere('schedule.date >= :today', { today })
     .andWhere('schedule.date <= :endDate', { endDate });
 
+  const now = dayjs();
   const doctorSchedules = await query.orderBy('schedule.date', 'ASC').addOrderBy('schedule.startTime', 'ASC').getMany();
 
-  return doctorSchedules.map((s: any) => ({
-    ...s,
-    doctorId: s.doctor ? s.doctor.id : doctorId,
-    availableDate: dayjs(s.date).format('YYYY-MM-DD'),
-  }));
+  return doctorSchedules
+    .filter((s: any) => {
+      const slotDateTime = dayjs(`${dayjs(s.date).format('YYYY-MM-DD')} ${s.startTime}`, 'YYYY-MM-DD HH:mm');
+      return slotDateTime.isAfter(now);
+    })
+    .map((s: any) => ({
+      ...s,
+      doctorId: s.doctor ? s.doctor.id : doctorId,
+      availableDate: dayjs(s.date).format('YYYY-MM-DD'),
+    }));
 };
