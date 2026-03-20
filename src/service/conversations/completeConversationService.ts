@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { Conversation } from '../../typeorm/entities/conversation';
 import { Appointment } from '../../typeorm/entities/appointment';
+import { Conversation } from '../../typeorm/entities/conversation';
 import { ConversationStatus, AppointmentStatus } from '../../typeorm/entities/enum';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 

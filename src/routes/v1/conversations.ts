@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { checkJwt } from 'middleware/checkJwt';
+import { uploadToSupabase } from 'middleware/uploadSupabase';
 
 import {
   analyzeAiController,
@@ -15,6 +15,7 @@ import {
   getOrCreateAppointmentConversationController,
   getConversationByIdController,
   deleteConversationController,
+  createFeedbackController,
 } from '../../controllers/conversations';
 
 const router = Router();
@@ -34,6 +35,7 @@ router.get('/:id/messages', getConversationMessagesController);
 
 router.post('/:id/analyze', upload.single('file'), uploadToSupabase('disease_picture'), analyzeAiController);
 router.post('/:id/complete', completeConversationController);
+router.post('/:id/feedback', createFeedbackController);
 
 router.get('/appointments/:appointmentId', getOrCreateAppointmentConversationController);
 

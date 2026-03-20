@@ -5,7 +5,7 @@ import { getOrCreateAppointmentConversationService } from '../../service/convers
 export const getOrCreateAppointmentConversationController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { appointmentId } = req.params;
-    const userId = (req as any).user.id;
+    const userId = req.jwtPayload.id;
 
     const conversation = await getOrCreateAppointmentConversationService(appointmentId, userId);
 

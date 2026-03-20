@@ -3,10 +3,10 @@ import { Server, Socket } from 'socket.io';
 import { getRepository } from 'typeorm';
 
 import { Conversation } from 'typeorm/entities/conversation';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
 import { Doctor } from 'typeorm/entities/doctor';
 import { ConversationStatus } from 'typeorm/entities/enum';
+import { Message } from 'typeorm/entities/message';
+import { User } from 'typeorm/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 
 export const configureSocket = (io: Server) => {
@@ -170,15 +170,15 @@ export const configureSocket = (io: Server) => {
           const recipientId = user.role === 'DOCTOR' ? conversation.patient.id : conversation.doctor.id;
           if (recipientId) {
             const { createNotificationsService } = await import('../service/notifications/createNotificationsService');
-            await createNotificationsService(
-              'Tin nhắn mới',
-              `Bạn có tin nhắn mới từ ${sender.fullName}: "${content.substring(0, 50)}${
+            await createNotificationsService({
+              title: 'Tin nhắn mới',
+              content: `Bạn có tin nhắn mới từ ${sender.fullName}: "${content.substring(0, 50)}${
                 content.length > 50 ? '...' : ''
               }"`,
-              'NOTI_MESSAGE',
-              conversationId,
-              recipientId,
-            );
+              type: 'NOTI_MESSAGE',
+              referenceId: conversationId,
+              recipientId: recipientId,
+            });
           }
         } catch (notiErr) {
           console.error('[Socket] Error creating notification for message:', notiErr);

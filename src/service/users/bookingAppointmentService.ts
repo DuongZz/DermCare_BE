@@ -1,21 +1,17 @@
 import { getRepository, getConnection } from 'typeorm';
 
+import { BookingAppointmentInput } from '../../interfaces/appointment';
 import { Appointment } from '../../typeorm/entities/appointment';
+import { Conversation } from '../../typeorm/entities/conversation';
 import { Doctor } from '../../typeorm/entities/doctor';
 import { DoctorSchedule } from '../../typeorm/entities/doctorSchedule';
 import { ScheduleStatus, ConversationType, ConversationStatus } from '../../typeorm/entities/enum';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { User } from '../../typeorm/entities/user';
 import { Message } from '../../typeorm/entities/message';
+import { User } from '../../typeorm/entities/user';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
-export const bookingAppointmentService = async (
-  patientId: string,
-  doctorId: string,
-  date: string,
-  time: string,
-  conversationId?: string,
-) => {
+export const bookingAppointmentService = async (data: BookingAppointmentInput) => {
+  const { patientId, doctorId, date, time, conversationId } = data;
   const doctorRepo = getRepository(Doctor);
   const scheduleRepo = getRepository(DoctorSchedule);
 
@@ -129,13 +125,13 @@ export const bookingAppointmentService = async (
     // Notify Doctor (Post-transaction)
     try {
       const { createNotificationsService } = await import('../notifications/createNotificationsService');
-      await createNotificationsService(
-        'Bạn có lịch hẹn mới',
-        `Có bệnh nhân đặt lịch khám lúc ${time} giờ ngày ${date}`,
-        'NOTI_APPOINTMENT',
-        appointment.id,
-        doctorId,
-      );
+      await createNotificationsService({
+        title: 'Bạn có lịch hẹn mới',
+        content: `Có bệnh nhân đặt lịch khám lúc ${time} giờ ngày ${date}`,
+        type: 'NOTI_APPOINTMENT',
+        referenceId: appointment.id,
+        recipientId: doctorId,
+      });
     } catch (notiErr) {
       console.error('Error creating notification for booking:', notiErr);
     }

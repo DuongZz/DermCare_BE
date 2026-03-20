@@ -5,8 +5,8 @@ import { getRepository } from 'typeorm';
 
 import { zaloPayConfig } from '../../configs/zalopay';
 import { Appointment } from '../../typeorm/entities/appointment';
-import { Payment } from '../../typeorm/entities/payment';
 import { PaymentMethod, PaymentStatus } from '../../typeorm/entities/enum';
+import { Payment } from '../../typeorm/entities/payment';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const createZaloPaymentService = async (appointmentId: string) => {

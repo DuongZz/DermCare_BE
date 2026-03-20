@@ -2,9 +2,9 @@ import { getRepository } from 'typeorm';
 
 import { Appointment } from '../../typeorm/entities/appointment';
 import { Conversation } from '../../typeorm/entities/conversation';
+import { ConversationType, ConversationStatus, AppointmentStatus } from '../../typeorm/entities/enum';
 import { Message } from '../../typeorm/entities/message';
 import { User } from '../../typeorm/entities/user';
-import { ConversationType, ConversationStatus, AppointmentStatus } from '../../typeorm/entities/enum';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const getOrCreateAppointmentConversationService = async (appointmentId: string, userId: string) => {

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { upRoleDoctorController } from '../../controllers/admin/upRoleDoctorController';
+import { destroy } from '../../controllers/admin/destroyController';
 import { list } from '../../controllers/admin/listController';
 import { show } from '../../controllers/admin/showController';
-import { destroy } from '../../controllers/admin/destroyController';
+import { upRoleDoctorController } from '../../controllers/admin/upRoleDoctorController';
 import { checkJwt } from '../../middleware/checkJwt';
 import { checkRole } from '../../middleware/checkRole';
 import { Role } from '../../typeorm/entities/enum';

@@ -1,18 +1,42 @@
+import dayjs from 'dayjs';
 import { getRepository, In } from 'typeorm';
 
 import { Appointment } from 'typeorm/entities/appointment';
+import { Conversation } from 'typeorm/entities/conversation';
 import { Doctor } from 'typeorm/entities/doctor';
 import { DoctorSchedule } from 'typeorm/entities/doctorSchedule';
-import { Conversation } from 'typeorm/entities/conversation';
-import { User } from 'typeorm/entities/user';
-import { Message } from 'typeorm/entities/message';
 import { AppointmentStatus, ConversationType, ConversationStatus } from 'typeorm/entities/enum';
+import { Message } from 'typeorm/entities/message';
+import { User } from 'typeorm/entities/user';
 
-export const getMyAppointmentService = async (userId: string) => {
-  const appointments = await getRepository(Appointment).find({
-    where: { patient: { id: userId } },
+export const getMyAppointmentService = async (
+  userId: string,
+  tab: 'upcoming' | 'past' = 'upcoming',
+  page: number = 1,
+  limit: number = 10,
+) => {
+  const appointmentRepo = getRepository(Appointment);
+
+  const skip = (page - 1) * limit;
+  const take = limit;
+
+  // Xây dựng điều kiện lọc theo Tab
+  let statusFilter: AppointmentStatus[] = [];
+  if (tab === 'upcoming') {
+    statusFilter = [AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED];
+  } else {
+    statusFilter = [AppointmentStatus.COMPLETED, AppointmentStatus.CANCELLED];
+  }
+
+  const [appointments, total] = await appointmentRepo.findAndCount({
+    where: {
+      patient: { id: userId },
+      appointmentStatus: In(statusFilter),
+    },
     relations: ['doctor', 'conversation'],
-    order: { appointmentDate: 'DESC' },
+    order: { appointmentDate: 'DESC', appointmentTime: 'DESC' },
+    skip,
+    take,
   });
 
   // Lấy toàn bộ hội thoại của patient này (bao gồm cả những cái không gắn với appointment cụ thể)
@@ -41,22 +65,39 @@ export const getMyAppointmentService = async (userId: string) => {
   const doctorRepo = getRepository(Doctor);
   const scheduleRepo = getRepository(DoctorSchedule);
 
-  const result = [];
-  for (const apt of appointments) {
-    // Lấy thêm thông tin doctor profile
-    const doctorProfile = apt.doctor ? await doctorRepo.findOne({ where: { user_id: apt.doctor.id } }) : null;
+  // Collect doctor IDs and dates for batch fetching
+  const doctorIds = [...new Set(appointments.map((a) => a.doctor?.id).filter(Boolean))] as string[];
+  const dates = [...new Set(appointments.map((a) => dayjs(a.appointmentDate).format('YYYY-MM-DD')))];
 
-    // Lấy giờ kết thúc từ bảng DoctorSchedule
-    const scheduleSlot = apt.doctor
-      ? await scheduleRepo.findOne({
+  // Batch fetch Doctor Profiles
+  const doctorProfiles = doctorIds.length > 0 ? await doctorRepo.find({ where: { user_id: In(doctorIds) } }) : [];
+  const doctorProfileMap = new Map(doctorProfiles.map((p) => [p.user_id, p]));
+
+  // Batch fetch Doctor Schedules
+  const schedules =
+    doctorIds.length > 0 && dates.length > 0
+      ? await scheduleRepo.find({
           where: {
-            doctor: { id: apt.doctor.id },
-            date: apt.appointmentDate,
-            startTime: apt.appointmentTime,
+            doctor: { id: In(doctorIds) },
+            date: In(dates as any), // TypeORM In handles string arrays for dates usually
           },
           relations: ['doctor'],
         })
-      : null;
+      : [];
+
+  // Create a composite key for schedule lookup: doctorId_date_startTime
+  const scheduleMap = new Map(
+    schedules.map((s) => [`${s.doctor.id}_${dayjs(s.date).format('YYYY-MM-DD')}_${s.startTime}`, s]),
+  );
+
+  const result = [];
+  for (const apt of appointments) {
+    const doctorId = apt.doctor?.id;
+    const doctorProfile = doctorId ? doctorProfileMap.get(doctorId) : null;
+
+    const dateKey = dayjs(apt.appointmentDate).format('YYYY-MM-DD');
+    const scheduleKey = `${doctorId}_${dateKey}_${apt.appointmentTime}`;
+    const scheduleSlot = scheduleMap.get(scheduleKey);
 
     const appointmentDetail = {
       id: apt.id,
@@ -81,5 +122,11 @@ export const getMyAppointmentService = async (userId: string) => {
     result.push(appointmentDetail);
   }
 
-  return result;
+  return {
+    items: result,
+    total,
+    page,
+    limit,
+    hasMore: skip + result.length < total,
+  };
 };

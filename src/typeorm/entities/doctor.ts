@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { User } from './user';
 import { DoctorWorkTemplate } from './doctorWorkTemplate';
+import { User } from './user';
 
 @Entity('doctors')
 export class Doctor {

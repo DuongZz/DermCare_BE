@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
 import { Conversation } from 'typeorm/entities/conversation';
-import { Message } from 'typeorm/entities/message';
 import { ConversationStatus, ConversationType } from 'typeorm/entities/enum';
+import { Message } from 'typeorm/entities/message';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const createAiConversationService = async (patientId: string): Promise<Conversation> => {

@@ -8,8 +8,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-import { User } from './user';
 import { Appointment } from './appointment';
+import { User } from './user';
 
 @Entity('notifications')
 export class Notification {

@@ -10,9 +10,9 @@ import {
 } from 'typeorm';
 
 import { Appointment } from './appointment';
+import { Doctor } from './doctor';
 import { Gender, Role } from './enum';
 import { MedicalInfo } from './medicalInfo';
-import { Doctor } from './doctor';
 
 @Entity('users')
 export class User {

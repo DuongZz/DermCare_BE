@@ -14,13 +14,13 @@ export const bookingAppointmentController = async (req: Request, res: Response, 
       return next(customError);
     }
 
-    const booking = await bookingAppointmentService(
+    const booking = await bookingAppointmentService({
       patientId,
       doctorId,
-      appointmentDate,
-      appointmentTime,
+      date: appointmentDate,
+      time: appointmentTime,
       conversationId,
-    );
+    });
     res.customSuccess(200, 'Đặt lịch khám thành công', booking);
   } catch (error) {
     const customError = new CustomError(

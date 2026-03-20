@@ -7,7 +7,7 @@ export const getConversationByIdService = async (id: string, userId: string, rol
   const conversationRepository = getRepository(Conversation);
 
   const conversation = await conversationRepository.findOne(id, {
-    relations: ['patient', 'doctor', 'doctor.doctorProfile'],
+    relations: ['patient', 'doctor', 'doctor.doctorProfile', 'appointment', 'appointment.feedback'],
   });
 
   if (!conversation) {

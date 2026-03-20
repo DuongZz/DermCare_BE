@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { changeAvatarController } from 'controllers/doctor/changeAvatarController';
 import { getAllDoctorsController } from 'controllers/doctor/getAllDoctorsController';
 import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
@@ -11,6 +10,7 @@ import { getDoctorScheduleController } from 'controllers/doctorSchedule/getDocto
 import { createWorkTemplateController, getWorkTemplateController } from 'controllers/workTemplate';
 import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
+import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSchedule/validatorCreateDoctorSchedule';
 import { Role } from 'typeorm/entities/enum';
 

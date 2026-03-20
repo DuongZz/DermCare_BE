@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
 import {
   me,
   getMedicalInfo,
@@ -10,7 +11,6 @@ import {
   updateMyProfileController,
   getPublicSpecializationController,
 } from 'controllers/users';
-import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
 import { checkJwt } from 'middleware/checkJwt';
 
 const router = Router();

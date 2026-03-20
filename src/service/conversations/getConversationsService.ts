@@ -30,7 +30,7 @@ export const getConversationsService = async (
 
   const [conversations, total] = await conversationRepository.findAndCount({
     where: whereClause,
-    relations: ['patient', 'doctor', 'doctor.doctorProfile'],
+    relations: ['patient', 'doctor', 'doctor.doctorProfile', 'appointment', 'appointment.feedback'],
     order: {
       updated_at: 'DESC',
     },

@@ -8,3 +8,4 @@ export * from './completeConversationController';
 export * from './getOrCreateAppointmentConversationController';
 export * from './getConversationByIdController';
 export * from './deleteConversationController';
+export * from './createFeedbackController';

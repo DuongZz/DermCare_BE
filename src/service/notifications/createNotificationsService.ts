@@ -1,15 +1,11 @@
 import { getRepository } from 'typeorm';
 
+import { CreateNotificationInput } from '../../interfaces/notification';
 import { Notification } from '../../typeorm/entities/notification';
 import { User } from '../../typeorm/entities/user';
 
-export const createNotificationsService = async (
-  title: string,
-  content: string,
-  type: string,
-  referenceId: string,
-  recipientId: string,
-) => {
+export const createNotificationsService = async (data: CreateNotificationInput) => {
+  const { title, content, type, referenceId, recipientId } = data;
   const notificationRepository = getRepository(Notification);
   const userRepository = getRepository(User);
 

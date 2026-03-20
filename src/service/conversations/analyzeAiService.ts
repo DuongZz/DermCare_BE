@@ -3,14 +3,14 @@ import FormData from 'form-data';
 import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Conversation } from 'typeorm/entities/conversation';
-import { Diagnosis } from 'typeorm/entities/diagnosis';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
-import { ConversationStatus } from 'typeorm/entities/enum';
-import { CustomError } from 'utils/response/custom-error/CustomError';
 import { supabase } from 'configs/supabase';
 import { AnalyzeRequest } from 'interfaces/analyzeRequest';
+import { Conversation } from 'typeorm/entities/conversation';
+import { Diagnosis } from 'typeorm/entities/diagnosis';
+import { ConversationStatus } from 'typeorm/entities/enum';
+import { Message } from 'typeorm/entities/message';
+import { User } from 'typeorm/entities/user';
+import { CustomError } from 'utils/response/custom-error/CustomError';
 
 import { getIo } from '../../socket/socketInstance';
 
@@ -280,13 +280,13 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
   // 9. Notify Patient
   try {
     const { createNotificationsService } = await import('../notifications/createNotificationsService');
-    await createNotificationsService(
-      'Kết quả phân tích AI',
-      `Kết quả chẩn đoán sơ bộ cho hình ảnh của bạn đã có: ${aiResponse.disease_name}.`,
-      'NOTI_AI_RESULT',
-      diagnosis.id,
-      patientId,
-    );
+    await createNotificationsService({
+      title: 'Kết quả phân tích AI',
+      content: `Kết quả chẩn đoán sơ bộ cho hình ảnh của bạn đã có: ${aiResponse.disease_name}.`,
+      type: 'NOTI_AI_RESULT',
+      referenceId: diagnosis.id,
+      recipientId: patientId,
+    });
   } catch (notiErr) {
     console.error('Error creating notification for AI analysis:', notiErr);
   }

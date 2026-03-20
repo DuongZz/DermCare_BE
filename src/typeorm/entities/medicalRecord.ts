@@ -5,54 +5,48 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
-  OneToMany,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
 
 import { Appointment } from './appointment';
 import { Diagnosis } from './diagnosis';
-import { ConversationStatus, ConversationType } from './enum';
-import { Message } from './message';
 import { User } from './user';
 
-@Entity('conversation')
-export class Conversation {
+@Entity('medical_records')
+export class MedicalRecord {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    enum: ConversationType,
-    default: ConversationType.AI_ASSISTANT,
-  })
-  type: ConversationType;
-
-  @Column({
-    enum: ConversationStatus,
-    default: ConversationStatus.AI_CONSULTING,
-  })
-  status: ConversationStatus;
-
-  @Column({
+    type: 'text',
     nullable: true,
   })
-  lastMessage: string;
+  treatment: string;
 
   @Column({
+    type: 'text',
     nullable: true,
   })
-  title: string;
-
-  @Column({
-    nullable: true,
-  })
-  timestamp: Date;
+  note: string;
 
   @Column({
     type: 'jsonb',
     nullable: true,
   })
-  diagnosisInfo: any;
+  images: string[];
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  patientInfo: any;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  doctorInfo: any;
 
   @Column()
   @CreateDateColumn()
@@ -70,10 +64,11 @@ export class Conversation {
   @JoinColumn({ name: 'doctorId' })
   doctor: User;
 
-  @OneToOne(() => Appointment, { onDelete: 'CASCADE' })
+  @OneToOne(() => Diagnosis, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'diagnosisId' })
+  diagnosis: Diagnosis;
+
+  @OneToOne(() => Appointment, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'appointmentId' })
   appointment: Appointment;
-
-  @OneToMany(() => Message, (message) => message.conversation)
-  messages: Message[];
 }

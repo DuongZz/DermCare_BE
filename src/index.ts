@@ -1,8 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="./types/express/index.d.ts" />
 import 'dotenv/config';
 import 'reflect-metadata';
 import fs from 'fs';
-import path from 'path';
 import http from 'http';
+import path from 'path';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -17,8 +19,8 @@ import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
 import { configureSocket } from './socket';
-import { dbCreateConnection } from './typeorm/dbCreateConnection';
 import { setIo } from './socket/socketInstance';
+import { dbCreateConnection } from './typeorm/dbCreateConnection';
 import './configs/redis';
 import './configs/passport';
 

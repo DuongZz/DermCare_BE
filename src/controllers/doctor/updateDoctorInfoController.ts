@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { updateDoctorInfoService } from 'service/doctor/updateDoctorInfoService';
 import { UpdateDoctorInfoInput } from 'interfaces/doctor';
+import { updateDoctorInfoService } from 'service/doctor/updateDoctorInfoService';
 
 export const updateDoctorInfoController = async (req: Request, res: Response, next: NextFunction) => {
   try {
