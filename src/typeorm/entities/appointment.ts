@@ -3,28 +3,21 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
 
-import { AppointmentStatus, PaymentStatus } from './enum';
+import { AppointmentStatus } from './enum';
+import { Payment } from './payment';
 import { User } from './user';
 
 @Entity('appointments')
 export class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({
-    nullable: false,
-  })
-  patientId: string;
-
-  @Column({
-    nullable: false,
-  })
-  doctorId: string;
 
   @Column({
     nullable: false,
@@ -39,6 +32,7 @@ export class Appointment {
   @Column({
     enum: AppointmentStatus,
     nullable: false,
+    default: AppointmentStatus.PENDING,
   })
   appointmentStatus: string;
 
@@ -51,12 +45,6 @@ export class Appointment {
     nullable: false,
   })
   price: number;
-
-  @Column({
-    enum: PaymentStatus,
-    nullable: false,
-  })
-  paymentStatus: string;
 
   @Column()
   @CreateDateColumn()
@@ -73,4 +61,13 @@ export class Appointment {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'doctorId' })
   doctor: User;
+
+  @OneToMany(() => Payment, (payment) => payment.appointment)
+  payments: Payment[];
+
+  @OneToOne('Conversation', 'appointment')
+  conversation: any;
+
+  @OneToOne('Feedback', 'appointment')
+  feedback: any;
 }

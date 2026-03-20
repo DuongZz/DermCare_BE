@@ -2,17 +2,17 @@ import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-import { User } from 'typeorm/entities/user';
-import { otpResetPasswordTemplate } from 'consts/emailTemplates';
 import { redisClient } from 'configs/redis';
-import { CustomError } from 'utils/response/custom-error/CustomError';
+import { otpResetPasswordTemplate } from 'consts/emailTemplates';
 import { sendEmail } from 'providers/sendEmail';
+import { User } from 'typeorm/entities/user';
+import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const sendOtp = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
 
   if (!email) {
-    const customError = new CustomError(400, 'Validation', 'Email is required');
+    const customError = new CustomError(400, 'Validation', 'Vui lòng cung cấp Email');
     return next(customError);
   }
 
@@ -20,7 +20,7 @@ export const sendOtp = async (req: Request, res: Response, next: NextFunction) =
   try {
     const user = await userRepository.findOne({ where: { email } });
     if (!user) {
-      const customError = new CustomError(404, 'General', 'User not found');
+      const customError = new CustomError(404, 'General', 'Người dùng không tồn tại');
       return next(customError);
     }
 
@@ -31,9 +31,9 @@ export const sendOtp = async (req: Request, res: Response, next: NextFunction) =
     const emailContent = otpResetPasswordTemplate(otp);
     await sendEmail(email, emailContent.subject, emailContent.text, emailContent.html);
 
-    res.customSuccess(200, 'OTP sent to email');
+    res.customSuccess(200, 'Mã OTP đã được gửi đến email');
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error sending OTP', null, err);
+    const customError = new CustomError(400, 'Raw', 'Lỗi khi gửi mã OTP', null, err);
     return next(customError);
   }
 };
@@ -42,7 +42,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   const { email, otp, newPassword } = req.body;
 
   if (!email || !otp || !newPassword) {
-    const customError = new CustomError(400, 'Validation', 'Email, OTP, and new password are required');
+    const customError = new CustomError(400, 'Validation', 'Bắt buộc nhập Email, OTP và Mật khẩu mới');
     return next(customError);
   }
 
@@ -50,19 +50,19 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     const storedOtp = await redisClient.get(`otp:${email}`);
 
     if (!storedOtp) {
-      const customError = new CustomError(400, 'General', 'OTP expired or not found');
+      const customError = new CustomError(400, 'General', 'Mã OTP đã hết hạn hoặc không tìm thấy');
       return next(customError);
     }
 
     if (storedOtp !== otp) {
-      const customError = new CustomError(400, 'General', 'Invalid OTP');
+      const customError = new CustomError(400, 'General', 'Mã OTP không hợp lệ');
       return next(customError);
     }
 
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { email } });
     if (!user) {
-      const customError = new CustomError(404, 'General', 'User not found');
+      const customError = new CustomError(404, 'General', 'Người dùng không tồn tại');
       return next(customError);
     }
 
@@ -73,9 +73,9 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     // Delete OTP
     await redisClient.del(`otp:${email}`);
 
-    res.customSuccess(200, 'Password reset successfully');
+    res.customSuccess(200, 'Khôi phục mật khẩu thành công');
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error resetting password', null, err);
+    const customError = new CustomError(400, 'Raw', 'Lỗi khi đặt lại mật khẩu', null, err);
     return next(customError);
   }
 };

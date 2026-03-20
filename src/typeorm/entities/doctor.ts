@@ -1,10 +1,21 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+import { DoctorWorkTemplate } from './doctorWorkTemplate';
 import { User } from './user';
 
 @Entity('doctors')
 export class Doctor {
   @PrimaryColumn({
+    type: 'uuid',
     nullable: false,
   })
   user_id: string;
@@ -44,4 +55,7 @@ export class Doctor {
   @OneToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(() => DoctorWorkTemplate, (doctorWorkTemplate) => doctorWorkTemplate.doctor)
+  doctorWorkTemplates: DoctorWorkTemplate[];
 }

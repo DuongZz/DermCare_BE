@@ -1,15 +1,25 @@
 import { Router } from 'express';
 
 import admin from './admin';
+import appointmentRouter from './appointment';
 import auth from './auth';
+import conversationsRouter from './conversations';
 import doctors from './doctors';
+import medicalRecords from './medicalRecords';
+import notificationsRouter from './notifications';
+import paymentRouter from './payment';
 import users from './users';
 
 const router = Router();
 
 router.use('/auth', auth);
 router.use('/users', users);
-router.use('/doctors', doctors);
 router.use('/admin', admin);
+router.use('/doctors', doctors);
+router.use('/conversations', conversationsRouter);
+router.use('/notifications', notificationsRouter);
+router.use('/appointments', appointmentRouter);
+router.use('/payments', paymentRouter);
+router.use('/medical-records', medicalRecords);
 
 export default router;

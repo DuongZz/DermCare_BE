@@ -16,9 +16,9 @@ const config: ConnectionOptions = {
       rejectUnauthorized: false,
     },
   },
-  entities: ['src/typeorm/entities/**/*.ts'],
-  migrations: ['src/typeorm/migrations/**/*.ts'],
-  subscribers: ['src/typeorm/subscriber/**/*.ts'],
+  entities: ['src/typeorm/entities/**/*.ts', 'typeorm/entities/**/*.js'],
+  migrations: ['src/typeorm/migrations/**/*.ts', 'typeorm/migrations/**/*.js'],
+  subscribers: ['src/typeorm/subscriber/**/*.ts', 'typeorm/subscriber/**/*.js'],
   cli: {
     entitiesDir: 'src/typeorm/entities',
     migrationsDir: 'src/typeorm/migrations',

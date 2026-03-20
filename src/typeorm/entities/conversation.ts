@@ -12,6 +12,7 @@ import {
 
 import { Appointment } from './appointment';
 import { Diagnosis } from './diagnosis';
+import { ConversationStatus, ConversationType } from './enum';
 import { Message } from './message';
 import { User } from './user';
 
@@ -21,24 +22,16 @@ export class Conversation {
   id: string;
 
   @Column({
-    nullable: false,
+    enum: ConversationType,
+    default: ConversationType.AI_ASSISTANT,
   })
-  patientId: string;
+  type: ConversationType;
 
   @Column({
-    nullable: false,
+    enum: ConversationStatus,
+    default: ConversationStatus.AI_CONSULTING,
   })
-  doctorId: string;
-
-  @Column({
-    nullable: false,
-  })
-  appointmentId: string;
-
-  @Column({
-    nullable: false,
-  })
-  status: string;
+  status: ConversationStatus;
 
   @Column({
     nullable: true,
@@ -48,7 +41,18 @@ export class Conversation {
   @Column({
     nullable: true,
   })
+  title: string;
+
+  @Column({
+    nullable: true,
+  })
   timestamp: Date;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  diagnosisInfo: any;
 
   @Column()
   @CreateDateColumn()

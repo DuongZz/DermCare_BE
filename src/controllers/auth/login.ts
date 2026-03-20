@@ -15,12 +15,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const user = await userRepository.findOne({ where: { email } });
 
     if (!user) {
-      const customError = new CustomError(404, 'General', 'Not Found', ['Incorrect email or password']);
+      const customError = new CustomError(404, 'General', 'Không tìm thấy', ['Email hoặc mật khẩu không đúng']);
       return next(customError);
     }
 
     if (!user.checkIfPasswordMatch(password)) {
-      const customError = new CustomError(404, 'General', 'Not Found', ['Incorrect email or password']);
+      const customError = new CustomError(404, 'General', 'Không tìm thấy', ['Email hoặc mật khẩu không đúng']);
       return next(customError);
     }
 
@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       user.refreshToken = refreshToken;
       await userRepository.save(user);
 
-      res.customSuccess(200, 'Login successfully.', {
+      res.customSuccess(200, 'Đăng nhập thành công.', {
         accessToken,
         clientId: null,
         isPreAccess: false,
@@ -60,11 +60,11 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       });
     } catch (err) {
       console.error('Login token creation error:', err);
-      const customError = new CustomError(400, 'Raw', "Token can't be created", null, err);
+      const customError = new CustomError(400, 'Raw', 'Không thể tạo token', null, err);
       return next(customError);
     }
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Error', null, err);
+    const customError = new CustomError(400, 'Raw', 'Có lỗi xảy ra', null, err);
     return next(customError);
   }
 };

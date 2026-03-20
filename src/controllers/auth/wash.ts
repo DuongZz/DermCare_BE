@@ -13,7 +13,7 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {
-      const customError = new CustomError(401, 'General', 'RefreshToken not found');
+      const customError = new CustomError(401, 'General', 'Không tìm thấy Phiên đăng nhập');
       return next(customError);
     }
 
@@ -21,7 +21,7 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
     try {
       payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string);
     } catch (err) {
-      const customError = new CustomError(401, 'General', 'Invalid RefreshToken');
+      const customError = new CustomError(401, 'General', 'Phiên đăng nhập không hợp lệ');
       return next(customError);
     }
 
@@ -29,13 +29,13 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
     const user = await userRepository.findOne(payload.id);
 
     if (!user) {
-      const customError = new CustomError(404, 'General', 'User not found');
+      const customError = new CustomError(404, 'General', 'Người dùng không tồn tại');
       return next(customError);
     }
 
     // Optional: Check if refreshToken matches the one in DB (for security/invalidation)
     if (user.refreshToken !== refreshToken) {
-      const customError = new CustomError(401, 'General', 'RefreshToken mismatched');
+      const customError = new CustomError(401, 'General', 'Phiên đăng nhập không khớp');
       return next(customError);
     }
 
@@ -66,7 +66,7 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
 
     res.cookie('refreshToken', newRefreshToken, cookieOptions);
 
-    return res.customSuccess(200, 'Wash successfully.', {
+    return (res as any).customSuccess(200, 'Làm mới phiên truy cập thành công.', {
       accessToken,
       // refreshToken is now in cookie, no need to send in body, or send null
       refreshToken: null,
@@ -75,7 +75,7 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
       preAccessType: null,
     });
   } catch (error) {
-    const customError = new CustomError(500, 'Raw', 'Internal server error', null, error);
+    const customError = new CustomError(500, 'Raw', 'Lỗi hệ thống nội bộ', null, error);
     return next(customError);
   }
 };

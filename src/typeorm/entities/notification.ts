@@ -8,6 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
+import { Appointment } from './appointment';
 import { User } from './user';
 
 @Entity('notifications')
@@ -18,17 +19,17 @@ export class Notification {
   @Column({
     nullable: false,
   })
-  recipientId: string;
-
-  @Column({
-    nullable: false,
-  })
   title: string;
 
   @Column({
     nullable: false,
   })
   type: string;
+
+  @Column({
+    nullable: true,
+  })
+  content: string;
 
   @Column({
     nullable: false,
@@ -47,6 +48,10 @@ export class Notification {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToOne(() => Appointment, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'appointmentId' })
+  appointment: Appointment;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'recipientId' })

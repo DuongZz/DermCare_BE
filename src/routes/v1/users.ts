@@ -1,24 +1,28 @@
 import { Router } from 'express';
 
-import { list, show, edit, destroy, me, getMedicalInfo, updateMedicalInfo } from 'controllers/users';
+import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
+import {
+  me,
+  getMedicalInfo,
+  updateMedicalInfo,
+  bookingAppointmentController,
+  getPublicDoctorScheduleController,
+  getMyAppointmentController,
+  updateMyProfileController,
+  getPublicSpecializationController,
+} from 'controllers/users';
 import { checkJwt } from 'middleware/checkJwt';
-import { checkRole } from 'middleware/checkRole';
-import { validatorEdit } from 'middleware/validation/users';
-import { Role } from 'typeorm/entities/enum';
 
 const router = Router();
 
+router.get('/public-specialization', getPublicSpecializationController);
+router.get('/public-doctors', getDoctorsController);
 router.get('/me', [checkJwt], me);
-
+router.patch('/me', [checkJwt], updateMyProfileController);
+router.get('/me/appointments', [checkJwt], getMyAppointmentController);
 router.get('/me/medical-info', [checkJwt], getMedicalInfo);
+router.get('/doctor-schedule/:id', [checkJwt], getPublicDoctorScheduleController);
 router.patch('/me/medical-info', [checkJwt], updateMedicalInfo);
-
-router.get('/', [checkJwt, checkRole([Role.ADMIN])], list);
-
-router.get('/:id([0-9]+)', [checkJwt, checkRole([Role.ADMIN], true)], show);
-
-router.patch('/:id([0-9]+)', [checkJwt, checkRole([Role.ADMIN], true), validatorEdit], edit);
-
-router.delete('/:id([0-9]+)', [checkJwt, checkRole([Role.ADMIN], true)], destroy);
+router.post('/booking/:doctorId', [checkJwt], bookingAppointmentController);
 
 export default router;
