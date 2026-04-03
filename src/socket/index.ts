@@ -69,7 +69,10 @@ export const configureSocket = (io: Server) => {
         }
 
         // Find sender user
-        const sender = await userRepository.findOne({ where: { id: user.id } });
+        const sender = await userRepository.findOne({
+          where: { id: user.id },
+          relations: ['doctorProfile'],
+        });
         if (!sender) {
           socket.emit('error', { message: 'Sender not found' });
           return;
@@ -132,18 +135,15 @@ export const configureSocket = (io: Server) => {
           throw saveErr;
         }
 
-        // Fetch doctor profile if sender is DOCTOR
+        // Use already joined doctorProfile for DOCTOR role
         let senderAvatar = null;
         let senderTitle = sender.fullName;
 
-        if (sender.role === 'DOCTOR') {
-          const doctorRepo = getRepository(Doctor);
-          const doctorProfile = await doctorRepo.findOne({ where: { user_id: sender.id } });
-          if (doctorProfile) {
-            senderAvatar = doctorProfile.avatar;
-            if (doctorProfile.qualifications) {
-              senderTitle = `${doctorProfile.qualifications} ${sender.fullName}`;
-            }
+        if (sender.role === 'DOCTOR' && (sender as any).doctorProfile) {
+          const profile = (sender as any).doctorProfile;
+          senderAvatar = profile.avatar;
+          if (profile.qualifications) {
+            senderTitle = `${profile.qualifications} ${sender.fullName}`;
           }
         }
 
@@ -194,6 +194,79 @@ export const configureSocket = (io: Server) => {
 
     socket.on('disconnect', () => {
       console.log(`[Socket] User disconnected: ${user.email}`);
+    });
+
+    // --- WEB RTC SIGNALING ---
+
+    // 1. Khởi tạo cuộc gọi (Caller -> Recipient)
+    socket.on('call:initiate', (data: { recipientId: string; sender: any; conversationId?: string }) => {
+      console.log(
+        `[Socket] User ${user.id} initiating call to ${data.recipientId} for conversation ${data.conversationId}`,
+      );
+      // Gửi tín hiệu đến người nhận qua phòng cá nhân của họ user_${recipientId}
+      io.to(`user_${data.recipientId}`).emit('call:incoming', {
+        from: user.id,
+        sender: data.sender, // Thông tin người gọi (tên, avatar...)
+        conversationId: data.conversationId,
+      });
+    });
+
+    // 2. Phản hồi cuộc gọi (Recipient -> Caller)
+    socket.on('call:respond', (data: { callerId: string; accepted: boolean }) => {
+      console.log(`[Socket] User ${user.id} responded to call from ${data.callerId}: ${data.accepted}`);
+      io.to(`user_${data.callerId}`).emit('call:response', {
+        from: user.id,
+        accepted: data.accepted,
+      });
+    });
+
+    // 3. Chuyển tín hiệu WebRTC (Offer/Answer/Candidate)
+    socket.on('webrtc:signal', (data: { targetId: string; signal: any }) => {
+      // Chuyển tiếp signaling data tới đối phương
+      io.to(`user_${data.targetId}`).emit('webrtc:signal', {
+        from: user.id,
+        signal: data.signal,
+      });
+    });
+
+    // 4. Kết thúc cuộc gọi
+    socket.on('call:hangup', (data: { targetId: string }) => {
+      console.log(`[Socket] User ${user.id} hanging up call with ${data.targetId}`);
+      io.to(`user_${data.targetId}`).emit('call:hangup', {
+        from: user.id,
+      });
+    });
+
+    // --- VOICE CALL SIGNALING (Separate from Video) ---
+    socket.on('voice:initiate', (data: { recipientId: string; sender: any; conversationId?: string }) => {
+      console.log(`[Socket] User ${user.id} initiating VOICE call to ${data.recipientId}`);
+      io.to(`user_${data.recipientId}`).emit('voice:incoming', {
+        from: user.id,
+        sender: data.sender,
+        conversationId: data.conversationId,
+      });
+    });
+
+    socket.on('voice:respond', (data: { callerId: string; accepted: boolean }) => {
+      console.log(`[Socket] User ${user.id} responded to VOICE call from ${data.callerId}: ${data.accepted}`);
+      io.to(`user_${data.callerId}`).emit('voice:response', {
+        from: user.id,
+        accepted: data.accepted,
+      });
+    });
+
+    socket.on('voice:signal', (data: { targetId: string; signal: any }) => {
+      io.to(`user_${data.targetId}`).emit('voice:signal', {
+        from: user.id,
+        signal: data.signal,
+      });
+    });
+
+    socket.on('voice:hangup', (data: { targetId: string }) => {
+      console.log(`[Socket] User ${user.id} hanging up VOICE call with ${data.targetId}`);
+      io.to(`user_${data.targetId}`).emit('voice:hangup', {
+        from: user.id,
+      });
     });
   });
 };

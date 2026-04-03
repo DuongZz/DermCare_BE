@@ -16,7 +16,9 @@ import {
   getConversationByIdController,
   deleteConversationController,
   createFeedbackController,
+  getConversationImagesController,
 } from '../../controllers/conversations';
+import { createConversationMessageController } from '../../controllers/conversations/createConversationMessageController';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -32,6 +34,13 @@ router.get('/:id', getConversationByIdController);
 router.delete('/:id', deleteConversationController);
 
 router.get('/:id/messages', getConversationMessagesController);
+router.get('/:id/images', getConversationImagesController);
+router.post(
+  '/:id/messages',
+  upload.single('file'),
+  uploadToSupabase('disease_picture'),
+  createConversationMessageController,
+);
 
 router.post('/:id/analyze', upload.single('file'), uploadToSupabase('disease_picture'), analyzeAiController);
 router.post('/:id/complete', completeConversationController);

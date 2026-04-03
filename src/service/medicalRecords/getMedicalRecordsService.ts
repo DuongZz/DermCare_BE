@@ -1,30 +1,36 @@
 import { getRepository } from 'typeorm';
 
+import { Role } from '../../typeorm/entities/enum';
 import { MedicalRecord } from '../../typeorm/entities/medicalRecord';
 
-export const getMedicalRecordsService = async (userId: string) => {
+export const getMedicalRecordsService = async (userId: string, role: string) => {
   const medicalRecordRepository = getRepository(MedicalRecord);
 
   const query = medicalRecordRepository
     .createQueryBuilder('record')
     .leftJoinAndSelect('record.patient', 'patient')
     .leftJoinAndSelect('record.doctor', 'doctor')
+    .leftJoinAndSelect('doctor.doctorProfile', 'doctorProfile')
     .leftJoinAndSelect('record.diagnosis', 'diagnosis')
     .leftJoinAndSelect('record.appointment', 'appointment')
     .select([
       'record',
       'patient.id',
       'patient.fullName',
-      'patient.avatar',
       'doctor.id',
       'doctor.fullName',
-      'doctor.avatar',
+      'doctorProfile.avatar',
       'diagnosis',
       'appointment.id',
       'appointment.appointmentDate',
       'appointment.appointmentTime',
-    ])
-    .where('record.patientId = :userId', { userId });
+    ]);
+  console.log(query);
+  if (role === Role.PATIENT) {
+    query.where('record.patientId = :userId', { userId });
+  } else if (role === Role.DOCTOR) {
+    query.where('record.doctorId = :userId', { userId });
+  }
 
   return await query.orderBy('record.created_at', 'DESC').getMany();
 };
