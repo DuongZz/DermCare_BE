@@ -4,14 +4,15 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  OneToOne,
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
 
 import { AppointmentStatus } from './enum';
-import { User } from './user';
 import { Payment } from './payment';
+import { User } from './user';
 
 @Entity('appointments')
 export class Appointment {
@@ -63,4 +64,10 @@ export class Appointment {
 
   @OneToMany(() => Payment, (payment) => payment.appointment)
   payments: Payment[];
+
+  @OneToOne('Conversation', 'appointment')
+  conversation: any;
+
+  @OneToOne('Feedback', 'appointment')
+  feedback: any;
 }

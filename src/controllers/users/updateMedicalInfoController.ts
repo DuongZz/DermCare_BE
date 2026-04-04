@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { UpdateMedicalInfoInput } from 'interfaces/user';
 import { updateMedicalInfoService } from 'service/users/updateMedicalInfoService';
 import { CustomError } from 'utils/response/custom-error/CustomError';
-import { UpdateMedicalInfoInput } from 'interfaces/user';
 
 export const updateMedicalInfo = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.jwtPayload.id;

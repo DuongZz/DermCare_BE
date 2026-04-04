@@ -6,12 +6,15 @@ import {
   UpdateDateColumn,
   JoinColumn,
   ManyToOne,
+  Index,
 } from 'typeorm';
 
-import { User } from './user';
 import { ScheduleStatus } from './enum';
+import { User } from './user';
 
 @Entity('doctorSchedule')
+@Index(['date'])
+@Index(['doctor'])
 export class DoctorSchedule {
   @PrimaryGeneratedColumn('uuid')
   id: string;

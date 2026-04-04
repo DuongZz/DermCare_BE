@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Appointment } from './appointment';
+import { Doctor } from './doctor';
 import { Gender, Role } from './enum';
 import { MedicalInfo } from './medicalInfo';
 
@@ -87,6 +88,9 @@ export class User {
 
   @OneToOne(() => MedicalInfo, (medicalInfo) => medicalInfo.user)
   medicalInfo: MedicalInfo;
+
+  @OneToOne(() => Doctor, (doctor) => doctor.user)
+  doctorProfile: Doctor;
 
   @OneToMany(() => Appointment, (appointment) => appointment.patient)
   patientAppointments: Appointment[];

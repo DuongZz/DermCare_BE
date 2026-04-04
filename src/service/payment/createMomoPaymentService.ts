@@ -36,7 +36,7 @@ export const createMomoPaymentService = async (appointmentId: string) => {
   const orderId = `${partnerCode}${new Date().getTime()}`;
   const requestId = orderId;
   const requestType = 'captureWallet';
-  const extraData = '';
+  const extraData = appointmentId;
   const orderExpireTime = Number(momoConfig.expireTime);
 
   // 3. Tạo chữ ký điện tử HMAC SHA256 cho Momo

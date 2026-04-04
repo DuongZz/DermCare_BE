@@ -4,7 +4,7 @@ export const Role = {
   PATIENT: 'PATIENT',
 } as const;
 
-export type Role = typeof Role[keyof typeof Role];
+export type Role = (typeof Role)[keyof typeof Role];
 
 export const Gender = {
   MALE: 'MALE',
@@ -12,7 +12,7 @@ export const Gender = {
   OTHER: 'OTHER',
 } as const;
 
-export type Gender = typeof Gender[keyof typeof Gender];
+export type Gender = (typeof Gender)[keyof typeof Gender];
 
 export const SkinType = {
   OILY: 'Da dầu',
@@ -22,7 +22,7 @@ export const SkinType = {
   SENSITIVE: 'Da nhạy cảm',
 } as const;
 
-export type SkinType = typeof SkinType[keyof typeof SkinType];
+export type SkinType = (typeof SkinType)[keyof typeof SkinType];
 
 export const BloodGroup = {
   A_POSITIVE: 'A_POSITIVE',
@@ -35,7 +35,7 @@ export const BloodGroup = {
   O_NEGATIVE: 'O_NEGATIVE',
 } as const;
 
-export type BloodGroup = typeof BloodGroup[keyof typeof BloodGroup];
+export type BloodGroup = (typeof BloodGroup)[keyof typeof BloodGroup];
 
 export const PaymentStatus = {
   PENDING: 'PENDING',
@@ -43,7 +43,7 @@ export const PaymentStatus = {
   CANCELLED: 'CANCELLED',
 } as const;
 
-export type PaymentStatus = typeof PaymentStatus[keyof typeof PaymentStatus];
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
 
 export const AppointmentStatus = {
   PENDING: 'PENDING',
@@ -53,23 +53,15 @@ export const AppointmentStatus = {
   COMPLETED: 'COMPLETED',
 } as const;
 
-export type AppointmentStatus = typeof AppointmentStatus[keyof typeof AppointmentStatus];
-
-export const DiagnosisStatus = {
-  AI_PENDING: 'AI_PENDING',
-  CONSULTING: 'CONSULTING',
-  FINALIZED: 'FINALIZED',
-} as const;
-
-export type DiagnosisStatus = typeof DiagnosisStatus[keyof typeof DiagnosisStatus];
+export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus];
 
 export const ConversationStatus = {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
+  AI_CONSULTING: 'AI_CONSULTING',
+  DOCTOR_CONSULTING: 'DOCTOR_CONSULTING',
   COMPLETED: 'COMPLETED',
 } as const;
 
-export type ConversationStatus = typeof ConversationStatus[keyof typeof ConversationStatus];
+export type ConversationStatus = (typeof ConversationStatus)[keyof typeof ConversationStatus];
 
 export const Rating = {
   ONE: 1,
@@ -79,7 +71,7 @@ export const Rating = {
   FIVE: 5,
 } as const;
 
-export type Rating = typeof Rating[keyof typeof Rating];
+export type Rating = (typeof Rating)[keyof typeof Rating];
 
 export const SkinDisease = {
   ECZEMA_DERMATITIS: 'Eczema/Dermatitis',
@@ -100,7 +92,7 @@ export const DOCTOR_QUALIFICATION = {
   GS_TS_BS: 'GS.TS.BS',
 } as const;
 
-export type DOCTOR_QUALIFICATION = typeof DOCTOR_QUALIFICATION[keyof typeof DOCTOR_QUALIFICATION];
+export type DOCTOR_QUALIFICATION = (typeof DOCTOR_QUALIFICATION)[keyof typeof DOCTOR_QUALIFICATION];
 
 export const ScheduleStatus = {
   AVAILABLE: 'AVAILABLE',
@@ -108,11 +100,25 @@ export const ScheduleStatus = {
   CANCELLED: 'CANCELLED',
 } as const;
 
-export type ScheduleStatus = typeof ScheduleStatus[keyof typeof ScheduleStatus];
+export type ScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus];
 
 export const PaymentMethod = {
   MOMO: 'MOMO',
   ZALOPAY: 'ZALOPAY',
 } as const;
 
-export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
+
+export const ConversationType = {
+  AI_ASSISTANT: 'AI_ASSISTANT',
+  DOCTOR_CONSULTATION: 'DOCTOR_CONSULTATION',
+} as const;
+
+export type ConversationType = (typeof ConversationType)[keyof typeof ConversationType];
+
+export const typeNotification = {
+  NOTI_APPOINTMENT: 'NOTI_APPOINTMENT',
+  NOTI_MESSAGE: 'NOTI_MESSAGE',
+} as const;
+
+export type typeNotification = (typeof typeNotification)[keyof typeof typeNotification];

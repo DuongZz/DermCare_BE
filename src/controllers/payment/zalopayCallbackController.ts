@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
 import { Appointment } from '../../typeorm/entities/appointment';
-import { PaymentStatus, AppointmentStatus } from '../../typeorm/entities/enum';
+import { Conversation } from '../../typeorm/entities/conversation';
+import { PaymentStatus, AppointmentStatus, ConversationStatus } from '../../typeorm/entities/enum';
 import { Payment } from '../../typeorm/entities/payment';
 
 export const zalopayCallbackController = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,7 +19,7 @@ export const zalopayCallbackController = async (req: Request, res: Response, nex
 
     const payment = await paymentRepo.findOne({
       where: { appTransId: app_trans_id },
-      relations: ['appointment'],
+      relations: ['appointment', 'appointment.conversation'],
     });
 
     if (!payment) {
@@ -32,6 +33,14 @@ export const zalopayCallbackController = async (req: Request, res: Response, nex
     if (payment.appointment) {
       payment.appointment.appointmentStatus = AppointmentStatus.CONFIRMED;
       await appointmentRepo.save(payment.appointment);
+
+      // Update Conversation to DOCTOR_CONSULTING
+      if ((payment.appointment as any).conversation) {
+        const conversationRepo = getRepository(Conversation);
+        const conversation = (payment.appointment as any).conversation;
+        conversation.status = ConversationStatus.DOCTOR_CONSULTING;
+        await conversationRepo.save(conversation);
+      }
     }
 
     return res.json({ return_code: 1, return_message: 'success' });

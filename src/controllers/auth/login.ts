@@ -8,7 +8,7 @@ import { generateAccessToken, generateRefreshToken } from 'utils/createJwtToken'
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password, rememberMe } = req.body; // rememberMe should be boolean
+  const { email, password, rememberMe } = req.body;
 
   const userRepository = getRepository(User);
   try {

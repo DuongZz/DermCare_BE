@@ -8,10 +8,13 @@ const config: ConnectionOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  synchronize: true, // Auto-create tables
+  synchronize: false,
   logging: false,
   ssl: true,
   extra: {
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
     ssl: {
       rejectUnauthorized: false,
     },

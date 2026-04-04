@@ -1,12 +1,12 @@
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { getRepository } from 'typeorm';
 import bcrypt from 'bcryptjs';
+import passport from 'passport';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { User } from 'typeorm/entities/user';
 import { Role } from 'typeorm/entities/enum';
+import { User } from 'typeorm/entities/user';
 
 // Google Strategy
 passport.use(

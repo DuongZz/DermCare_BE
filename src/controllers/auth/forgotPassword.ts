@@ -2,11 +2,11 @@ import bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-import { User } from 'typeorm/entities/user';
-import { otpResetPasswordTemplate } from 'consts/emailTemplates';
 import { redisClient } from 'configs/redis';
-import { CustomError } from 'utils/response/custom-error/CustomError';
+import { otpResetPasswordTemplate } from 'consts/emailTemplates';
 import { sendEmail } from 'providers/sendEmail';
+import { User } from 'typeorm/entities/user';
+import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const sendOtp = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;

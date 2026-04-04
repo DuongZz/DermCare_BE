@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
 import {
   me,
   getMedicalInfo,
@@ -8,16 +9,21 @@ import {
   getPublicDoctorScheduleController,
   getMyAppointmentController,
   updateMyProfileController,
+  getPublicSpecializationController,
+  getUserStatisticsController,
 } from 'controllers/users';
 import { checkJwt } from 'middleware/checkJwt';
 
 const router = Router();
 
+router.get('/public-specialization', getPublicSpecializationController);
+router.get('/public-doctors', getDoctorsController);
 router.get('/me', [checkJwt], me);
 router.patch('/me', [checkJwt], updateMyProfileController);
 router.get('/me/appointments', [checkJwt], getMyAppointmentController);
 router.get('/me/medical-info', [checkJwt], getMedicalInfo);
 router.get('/doctor-schedule/:id', [checkJwt], getPublicDoctorScheduleController);
+router.get('/me/statistics', [checkJwt], getUserStatisticsController);
 router.patch('/me/medical-info', [checkJwt], updateMedicalInfo);
 router.post('/booking/:doctorId', [checkJwt], bookingAppointmentController);
 

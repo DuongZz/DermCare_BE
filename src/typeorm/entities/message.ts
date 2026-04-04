@@ -29,7 +29,12 @@ export class Message {
   type: string;
 
   @Column({
+    type: 'bigint',
     nullable: false,
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => parseInt(value, 10),
+    },
   })
   timestamp: number;
 
@@ -40,6 +45,12 @@ export class Message {
   @Column()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isAiMessage: boolean;
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'conversationId' })

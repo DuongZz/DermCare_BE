@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
 import { DayTemplateInput } from 'interfaces/workTemplate';
-import { DoctorWorkTemplate } from 'typeorm/entities/doctorWorkTemplate';
 import { Doctor } from 'typeorm/entities/doctor';
+import { DoctorWorkTemplate } from 'typeorm/entities/doctorWorkTemplate';
 
 export const createWorkTemplateService = async (doctorId: string, templates: DayTemplateInput[]) => {
   const doctorWorkTemplateRepository = getRepository(DoctorWorkTemplate);

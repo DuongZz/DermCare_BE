@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { MedicalInfo } from '../../typeorm/entities/medicalInfo';
 import { UpdateMedicalInfoInput } from '../../interfaces/user';
+import { MedicalInfo } from '../../typeorm/entities/medicalInfo';
 
 export const updateMedicalInfoService = async (userId: string, data: UpdateMedicalInfoInput) => {
   const { skinType, bloodGroup, allergies, emergencyContact, currentMedications, chronicConditions } = data;

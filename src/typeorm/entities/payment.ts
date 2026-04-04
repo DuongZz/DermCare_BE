@@ -8,9 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Appointment } from './appointment';
 import { PaymentMethod, PaymentStatus } from './enum';
 import { User } from './user';
-import { Appointment } from './appointment';
 
 @Entity('payments')
 export class Payment {

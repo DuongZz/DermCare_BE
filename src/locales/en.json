@@ -1,0 +1,15 @@
+{
+  "api": {
+    "success": {
+      "user_stats_fetched": "User statistics fetched successfully",
+      "profile_updated": "Profile updated successfully",
+      "logged_in": "Logged in successfully"
+    },
+    "error": {
+      "unauthorized": "Unauthorized access",
+      "not_found": "Information not found",
+      "server_error": "Internal server error",
+      "invalid_credentials": "Incorrect account or password"
+    }
+  }
+}

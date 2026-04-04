@@ -66,7 +66,7 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
 
     res.cookie('refreshToken', newRefreshToken, cookieOptions);
 
-    return res.customSuccess(200, 'Làm mới phiên truy cập thành công.', {
+    return (res as any).customSuccess(200, 'Làm mới phiên truy cập thành công.', {
       accessToken,
       // refreshToken is now in cookie, no need to send in body, or send null
       refreshToken: null,
