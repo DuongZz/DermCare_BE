@@ -1,3 +1,8 @@
+import { Conversation } from '@database/entities/conversation';
+import { Diagnosis } from '@database/entities/diagnosis';
+import { ConversationStatus } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 import axios from 'axios';
 import FormData from 'form-data';
 import { getRepository } from 'typeorm';
@@ -5,11 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from 'configs/supabase';
 import { AnalyzeRequest } from 'interfaces/analyzeRequest';
-import { Conversation } from '@database/entities/conversation';
-import { Diagnosis } from '@database/entities/diagnosis';
-import { ConversationStatus } from '@database/entities/enum';
-import { Message } from '@database/entities/message';
-import { User } from '@database/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 import { getIo } from '../../socket/socketInstance';
@@ -284,7 +284,7 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
       title: 'Kết quả phân tích AI',
       content: `Kết quả chẩn đoán sơ bộ cho hình ảnh của bạn đã có: ${aiResponse.disease_name}.`,
       type: 'NOTI_AI_RESULT',
-      referenceId: diagnosis.id,
+      referenceId: conversation.id,
       recipientId: patientId,
     });
   } catch (notiErr) {
