@@ -39,9 +39,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
       const cookieOptions: CookieOptions = {
         httpOnly: true,
-        secure: true, // Luôn dùng true cho sản phẩm (HTTPS)
-        sameSite: 'none', // Cần thiết để gửi cookie giữa các tên miền khác nhau
-        domain: process.env.NODE_ENV === 'production' ? '.io.vn' : undefined,
+        secure: true,
+        sameSite: 'none',
       };
 
       if (rememberMe) {
