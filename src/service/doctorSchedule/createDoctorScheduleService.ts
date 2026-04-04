@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
-import { DoctorSchedule } from 'typeorm/entities/doctorSchedule';
-import { DoctorWorkTemplate } from 'typeorm/entities/doctorWorkTemplate';
-import { ScheduleStatus } from 'typeorm/entities/enum';
+import { DoctorSchedule } from '@database/entities/doctorSchedule';
+import { DoctorWorkTemplate } from '@database/entities/doctorWorkTemplate';
+import { ScheduleStatus } from '@database/entities/enum';
 import { generateTimeSlots } from 'utils/generateTimeslot';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 

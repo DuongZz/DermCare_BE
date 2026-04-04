@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 
 import { CreateMessageData } from 'interfaces/message';
-import { Conversation } from 'typeorm/entities/conversation';
-import { Doctor } from 'typeorm/entities/doctor';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
+import { Conversation } from '@database/entities/conversation';
+import { Doctor } from '@database/entities/doctor';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 import { getIo } from '../../socket/socketInstance';

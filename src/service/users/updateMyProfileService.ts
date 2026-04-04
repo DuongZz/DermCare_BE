@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
 import { EditUserInput } from 'interfaces/user';
-import { User } from 'typeorm/entities/user';
+import { User } from '@database/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const updateMyProfileService = async (userId: string, data: EditUserInput) => {

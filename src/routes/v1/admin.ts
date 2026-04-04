@@ -7,7 +7,7 @@ import { show } from '../../controllers/admin/showController';
 import { upRoleDoctorController } from '../../controllers/admin/upRoleDoctorController';
 import { checkJwt } from '../../middleware/checkJwt';
 import { checkRole } from '../../middleware/checkRole';
-import { Role } from '../../typeorm/entities/enum';
+import { Role } from '../../database/entities/enum';
 
 const router = Router();
 

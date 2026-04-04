@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from 'configs/supabase';
 import { AnalyzeRequest } from 'interfaces/analyzeRequest';
-import { Conversation } from 'typeorm/entities/conversation';
-import { Diagnosis } from 'typeorm/entities/diagnosis';
-import { ConversationStatus } from 'typeorm/entities/enum';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
+import { Conversation } from '@database/entities/conversation';
+import { Diagnosis } from '@database/entities/diagnosis';
+import { ConversationStatus } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 import { getIo } from '../../socket/socketInstance';

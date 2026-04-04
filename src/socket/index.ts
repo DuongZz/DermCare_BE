@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken';
 import { Server, Socket } from 'socket.io';
 import { getRepository } from 'typeorm';
 
-import { Conversation } from 'typeorm/entities/conversation';
-import { Doctor } from 'typeorm/entities/doctor';
-import { ConversationStatus } from 'typeorm/entities/enum';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
+import { Conversation } from '@database/entities/conversation';
+import { Doctor } from '@database/entities/doctor';
+import { ConversationStatus } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 
 export const configureSocket = (io: Server) => {

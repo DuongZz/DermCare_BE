@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 import { createFeedbackService } from '../../service/conversations/createFeedbackService';
-import { Conversation } from '../../typeorm/entities/conversation';
+import { Conversation } from '../../database/entities/conversation';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const createFeedbackController = async (req: Request, res: Response, next: NextFunction) => {

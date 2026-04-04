@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import validator from 'validator';
 
-import { DoctorSchedule } from 'typeorm/entities/doctorSchedule';
+import { DoctorSchedule } from '@database/entities/doctorSchedule';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { ErrorValidation } from 'utils/response/custom-error/types';
 

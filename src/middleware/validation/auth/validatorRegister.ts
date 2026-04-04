@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import validator from 'validator';
 
 import { ConstsUser } from 'consts/ConstsUser';
-import { Gender } from 'typeorm/entities/enum';
+import { Gender } from '@database/entities/enum';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { ErrorValidation } from 'utils/response/custom-error/types';
 

@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
 import { UpdateDoctorInfoInput } from 'interfaces/doctor';
-import { Doctor } from 'typeorm/entities/doctor';
+import { Doctor } from '@database/entities/doctor';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const updateDoctorInfoService = async (id: string, data: UpdateDoctorInfoInput) => {

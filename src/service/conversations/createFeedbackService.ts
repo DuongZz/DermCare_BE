@@ -1,9 +1,9 @@
 import { getRepository } from 'typeorm';
 
 import { CreateFeedbackInput } from '../../interfaces/feedback';
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Feedback } from '../../typeorm/entities/feedback';
-import { User } from '../../typeorm/entities/user';
+import { Appointment } from '../../database/entities/appointment';
+import { Feedback } from '../../database/entities/feedback';
+import { User } from '../../database/entities/user';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const createFeedbackService = async (data: CreateFeedbackInput) => {

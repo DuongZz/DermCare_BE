@@ -5,8 +5,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Role } from 'typeorm/entities/enum';
-import { User } from 'typeorm/entities/user';
+import { Role } from '@database/entities/enum';
+import { User } from '@database/entities/user';
 
 // Google Strategy
 passport.use(

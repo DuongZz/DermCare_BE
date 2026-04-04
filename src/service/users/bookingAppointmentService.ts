@@ -1,13 +1,13 @@
 import { getRepository, getConnection } from 'typeorm';
 
 import { BookingAppointmentInput } from '../../interfaces/appointment';
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { Doctor } from '../../typeorm/entities/doctor';
-import { DoctorSchedule } from '../../typeorm/entities/doctorSchedule';
-import { ScheduleStatus, ConversationType, ConversationStatus } from '../../typeorm/entities/enum';
-import { Message } from '../../typeorm/entities/message';
-import { User } from '../../typeorm/entities/user';
+import { Appointment } from '../../database/entities/appointment';
+import { Conversation } from '../../database/entities/conversation';
+import { Doctor } from '../../database/entities/doctor';
+import { DoctorSchedule } from '../../database/entities/doctorSchedule';
+import { ScheduleStatus, ConversationType, ConversationStatus } from '../../database/entities/enum';
+import { Message } from '../../database/entities/message';
+import { User } from '../../database/entities/user';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const bookingAppointmentService = async (data: BookingAppointmentInput) => {

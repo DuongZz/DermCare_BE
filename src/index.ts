@@ -21,7 +21,7 @@ import { getLanguage } from './middleware/getLanguage';
 import routes from './routes';
 import { configureSocket } from './socket';
 import { setIo } from './socket/socketInstance';
-import { dbCreateConnection } from './typeorm/dbCreateConnection';
+import { dbCreateConnection } from './database/dbCreateConnection';
 import './configs/redis';
 import './configs/passport';
 

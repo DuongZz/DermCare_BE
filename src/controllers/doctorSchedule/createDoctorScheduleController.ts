@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 import { createDoctorScheduleService } from 'service/doctorSchedule/createDoctorScheduleService';
-import { Doctor } from 'typeorm/entities/doctor';
+import { Doctor } from '@database/entities/doctor';
 
 export const createDoctorScheduleController = async (req: Request, res: Response, next: NextFunction) => {
   try {

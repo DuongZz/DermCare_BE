@@ -1,11 +1,11 @@
 import { Between, MoreThanOrEqual, getRepository } from 'typeorm';
 
-import { Appointment } from 'typeorm/entities/appointment';
-import { Diagnosis } from 'typeorm/entities/diagnosis';
-import { Doctor } from 'typeorm/entities/doctor';
-import { Role } from 'typeorm/entities/enum';
-import { Payment } from 'typeorm/entities/payment';
-import { User } from 'typeorm/entities/user';
+import { Appointment } from '@database/entities/appointment';
+import { Diagnosis } from '@database/entities/diagnosis';
+import { Doctor } from '@database/entities/doctor';
+import { Role } from '@database/entities/enum';
+import { Payment } from '@database/entities/payment';
+import { User } from '@database/entities/user';
 
 export const getDashboardStatistics = async () => {
   const userRepository = getRepository(User);

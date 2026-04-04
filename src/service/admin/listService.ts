@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { User } from '../../typeorm/entities/user';
+import { User } from '../../database/entities/user';
 
 export const listUsers = async () => {
   const userRepository = getRepository(User);

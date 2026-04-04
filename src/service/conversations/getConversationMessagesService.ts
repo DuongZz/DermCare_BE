@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
-import { Conversation } from 'typeorm/entities/conversation';
-import { Role } from 'typeorm/entities/enum';
-import { Message } from 'typeorm/entities/message';
+import { Conversation } from '@database/entities/conversation';
+import { Role } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const getConversationMessagesService = async (
