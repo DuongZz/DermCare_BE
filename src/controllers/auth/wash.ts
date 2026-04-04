@@ -1,9 +1,9 @@
+import { Role } from '@database/entities/enum';
+import { User } from '@database/entities/user';
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 
-import { Role } from '@database/entities/enum';
-import { User } from '@database/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 import { generateAccessToken, generateRefreshToken } from 'utils/createJwtToken';
 import { CustomError } from 'utils/response/custom-error/CustomError';
@@ -56,8 +56,9 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
 
     const cookieOptions: CookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
+      domain: process.env.NODE_ENV === 'production' ? '.io.vn' : undefined,
     };
 
     if (payload.rememberMe) {
