@@ -12,7 +12,7 @@ export const uploadToSupabase = (bucketName: string) => {
 
     try {
       // Lấy id người dùng để chia folder trên Supabase (giúp dễ quản lý data)
-      const userId = req.jwtPayload?.id || 'public';
+      const userId = (req as any).jwtPayload?.id || 'public';
 
       const file = req.file;
       const fileExt = file.originalname.split('.').pop() || 'jpg';
