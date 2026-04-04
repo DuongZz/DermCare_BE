@@ -4,7 +4,7 @@ import { createMedicalRecordService } from '../../service/medicalRecords/createM
 import { CustomSuccess } from '../../utils/response/custom-success/customSuccess';
 
 export const createMedicalRecordController = async (req: Request, res: Response, next: NextFunction) => {
-  const doctorId = (req as any).jwtPayload?.id;
+  const doctorId = req.jwtPayload?.id;
   const { appointmentId, treatment, note, images, patientInfo, doctorInfo } = req.body;
 
   try {

@@ -8,7 +8,7 @@ export const analyzeAiController = async (req: Request, res: Response, next: Nex
     const conversationId = req.params.id; // TypeORM Router fallback support
     const patientId = req.jwtPayload.id;
     const file = req.file;
-    const fileUrl = (req as any).fileUrl;
+    const fileUrl = req.fileUrl;
     const description = req.body.description; // Multimodal text
 
     if ((!file || !fileUrl) && !description) {

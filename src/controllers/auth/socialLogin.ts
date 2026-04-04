@@ -9,7 +9,7 @@ const handleSocialCallback = async (req: Request, res: Response, provider: strin
     const user = req.user as User;
     const { accessToken, refreshToken } = await authCoreService.socialLogin(user);
 
-    // Cookie cho Refresh Token
+    // Cookie cho Refresh Token - Dùng tiện ích chuẩn hóa
     const cookieOptions = getCookieOptions(req, false);
     res.cookie('refreshToken', refreshToken, cookieOptions);
 

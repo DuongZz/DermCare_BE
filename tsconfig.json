@@ -12,7 +12,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "baseUrl": "src/",
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -27,6 +30,7 @@
       "config/*": ["../config/*"]
     }
   },
-  "include": ["./src/**/*.tsx", "./src/**/*.ts", "./config/**/*.ts"],
+  "files": ["./src/types/index.d.ts"],
+  "include": ["./src/**/*.tsx", "./src/**/*.ts", "./src/types/**/*.ts", "./config/**/*.ts"],
   "exclude": ["node_modules", "test/**/*.ts"]
 }
