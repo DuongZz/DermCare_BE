@@ -58,7 +58,6 @@ export const wash = async (req: Request, res: Response, next: NextFunction) => {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      domain: process.env.NODE_ENV === 'production' ? '.io.vn' : undefined,
     };
 
     if (payload.rememberMe) {
