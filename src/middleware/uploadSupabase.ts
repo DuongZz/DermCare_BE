@@ -12,7 +12,7 @@ export const uploadToSupabase = (bucketName: string) => {
 
     try {
       // Lấy id người dùng để chia folder trên Supabase (giúp dễ quản lý data)
-      const userId = (req as any).jwtPayload?.id || 'public';
+      const userId = req.jwtPayload?.id || 'public';
 
       const file = req.file;
       const fileExt = file.originalname.split('.').pop() || 'jpg';
@@ -33,7 +33,7 @@ export const uploadToSupabase = (bucketName: string) => {
       const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(fileName);
 
       // Gắn public URL vào object request để các Controller có thể dùng
-      (req as any).fileUrl = publicUrlData.publicUrl;
+      req.fileUrl = publicUrlData.publicUrl;
 
       next();
     } catch (error) {

@@ -5,10 +5,10 @@ import { clearAuthResponse } from '../../utils/authHandler';
 
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = (req as any).jwtPayload;
+    const { id } = req.jwtPayload;
     await authCoreService.logout(id);
 
-    return clearAuthResponse(res, 'Đăng xuất thành công.');
+    return clearAuthResponse(req, res, 'Đăng xuất thành công.');
   } catch (err) {
     return next(err);
   }

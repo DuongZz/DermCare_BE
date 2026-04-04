@@ -20,7 +20,7 @@ export const sendAuthResponse = (
   res.cookie('refreshToken', refreshToken, cookieOptions);
 
   // Trả về AccessToken trong Body
-  return (res as any).customSuccess(200, message, {
+  return res.customSuccess(200, message, {
     accessToken,
     refreshToken: isDev ? refreshToken : null, // Fallback chỉ dành cho môi trường Dev
     clientId: null,
@@ -32,13 +32,9 @@ export const sendAuthResponse = (
 /**
  * Xóa thông tin xác thực (Clear Cookie)
  */
-export const clearAuthResponse = (res: Response, message: string = 'Đăng xuất thành công.') => {
-  res.clearCookie('refreshToken', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : ('lax' as any),
-    path: '/',
-  });
+export const clearAuthResponse = (req: Request, res: Response, message: string = 'Đăng xuất thành công.') => {
+  const cookieOptions = getCookieOptions(req);
+  res.clearCookie('refreshToken', { ...cookieOptions, path: '/' });
 
-  return (res as any).customSuccess(200, message, null);
+  return res.customSuccess(200, message, null);
 };

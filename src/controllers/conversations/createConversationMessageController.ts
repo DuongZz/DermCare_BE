@@ -6,8 +6,8 @@ export const createConversationMessageController = async (req: Request, res: Res
   try {
     const { id: conversationId } = req.params;
     const { content } = req.body;
-    const userId = (req as any).jwtPayload?.id;
-    const fileUrl = (req as any).fileUrl; // From uploadToSupabase middleware
+    const userId = req.jwtPayload?.id;
+    const fileUrl = req.fileUrl; // From uploadToSupabase middleware
 
     const type = fileUrl ? 'image' : 'text';
 
@@ -19,7 +19,7 @@ export const createConversationMessageController = async (req: Request, res: Res
       type,
     });
 
-    (res as any).customSuccess(201, 'Gửi tin nhắn thành công');
+    res.customSuccess(201, 'Gửi tin nhắn thành công');
   } catch (err) {
     next(err);
   }
