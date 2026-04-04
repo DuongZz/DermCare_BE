@@ -13,6 +13,6 @@ log/*
 !log/.gitkeep 
 
 # keep config folder with env files ONLY for demo purposes
-config/
+/config/
 .env*
 firebase-service-account.json
