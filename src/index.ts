@@ -1,14 +1,23 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="./types/express/index.d.ts" />
-import 'dotenv/config';
-import 'reflect-metadata';
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
+const env = process.env.NODE_ENV || 'development';
+
+if (env !== 'production') {
+  const localEnvPath = path.resolve(process.cwd(), '.env.local');
+  if (fs.existsSync(localEnvPath)) {
+    dotenv.config({ path: localEnvPath });
+  }
+}
+
+dotenv.config();
+
+import 'reflect-metadata';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
