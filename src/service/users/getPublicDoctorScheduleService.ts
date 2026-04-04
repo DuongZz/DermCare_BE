@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { getRepository } from 'typeorm';
 
-import { DoctorSchedule } from '../../typeorm/entities/doctorSchedule';
+import { DoctorSchedule } from '../../database/entities/doctorSchedule';
 
 export const getPublicDoctorScheduleService = async (doctorId: string) => {
   const scheduleRepo = getRepository(DoctorSchedule);

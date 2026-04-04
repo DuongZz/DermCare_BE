@@ -2,11 +2,11 @@ import { getRepository } from 'typeorm';
 
 import { CreateMedicalRecordDto } from '../../interfaces/medicalRecord';
 import { getIo } from '../../socket/socketInstance';
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { Diagnosis } from '../../typeorm/entities/diagnosis';
-import { MedicalRecord } from '../../typeorm/entities/medicalRecord';
-import { Message } from '../../typeorm/entities/message';
+import { Appointment } from '../../database/entities/appointment';
+import { Conversation } from '../../database/entities/conversation';
+import { Diagnosis } from '../../database/entities/diagnosis';
+import { MedicalRecord } from '../../database/entities/medicalRecord';
+import { Message } from '../../database/entities/message';
 
 export const createMedicalRecordService = async (data: CreateMedicalRecordDto) => {
   const medicalRecordRepo = getRepository(MedicalRecord);

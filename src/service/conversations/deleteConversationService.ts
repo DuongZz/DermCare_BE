@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { Conversation } from '../../typeorm/entities/conversation';
-import { ConversationType } from '../../typeorm/entities/enum';
+import { Conversation } from '../../database/entities/conversation';
+import { ConversationType } from '../../database/entities/enum';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const deleteConversationService = async (id: string, userId: string): Promise<void> => {

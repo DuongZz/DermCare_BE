@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { Conversation } from '../../typeorm/entities/conversation';
+import { Conversation } from '../../database/entities/conversation';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const getConversationByIdService = async (id: string, userId: string, role: string): Promise<Conversation> => {

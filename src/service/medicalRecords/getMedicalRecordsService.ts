@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { Role } from '../../typeorm/entities/enum';
-import { MedicalRecord } from '../../typeorm/entities/medicalRecord';
+import { Role } from '../../database/entities/enum';
+import { MedicalRecord } from '../../database/entities/medicalRecord';
 
 export const getMedicalRecordsService = async (userId: string, role: string) => {
   const medicalRecordRepository = getRepository(MedicalRecord);

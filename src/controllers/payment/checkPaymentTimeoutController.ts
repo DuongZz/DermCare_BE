@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { DoctorSchedule } from '../../typeorm/entities/doctorSchedule';
-import { ScheduleStatus, AppointmentStatus, PaymentStatus } from '../../typeorm/entities/enum';
-import { Payment } from '../../typeorm/entities/payment';
+import { Appointment } from '../../database/entities/appointment';
+import { DoctorSchedule } from '../../database/entities/doctorSchedule';
+import { ScheduleStatus, AppointmentStatus, PaymentStatus } from '../../database/entities/enum';
+import { Payment } from '../../database/entities/payment';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const checkPaymentTimeoutController = async (req: Request, res: Response, next: NextFunction) => {

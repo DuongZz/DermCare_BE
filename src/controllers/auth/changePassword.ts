@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-import { User } from 'typeorm/entities/user';
+import { User } from '@database/entities/user';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {

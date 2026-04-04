@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { PaymentStatus, AppointmentStatus, ConversationStatus } from '../../typeorm/entities/enum';
-import { Payment } from '../../typeorm/entities/payment';
+import { Appointment } from '../../database/entities/appointment';
+import { Conversation } from '../../database/entities/conversation';
+import { PaymentStatus, AppointmentStatus, ConversationStatus } from '../../database/entities/enum';
+import { Payment } from '../../database/entities/payment';
 
 export const zalopayCallbackController = async (req: Request, res: Response, next: NextFunction) => {
   try {

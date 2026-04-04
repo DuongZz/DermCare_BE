@@ -1,7 +1,7 @@
 import { getRepository, In } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Notification } from '../../typeorm/entities/notification';
+import { Appointment } from '../../database/entities/appointment';
+import { Notification } from '../../database/entities/notification';
 
 export const getNotificationsService = async (userId: string) => {
   const notificationRepository = getRepository(Notification);

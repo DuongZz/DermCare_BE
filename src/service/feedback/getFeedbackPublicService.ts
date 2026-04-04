@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { Feedback } from '../../typeorm/entities/feedback';
+import { Feedback } from '../../database/entities/feedback';
 
 export const getFeedbackPublicService = async () => {
   const feedbackRepo = getRepository(Feedback);

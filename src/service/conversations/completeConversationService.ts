@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { ConversationStatus, AppointmentStatus } from '../../typeorm/entities/enum';
+import { Appointment } from '../../database/entities/appointment';
+import { Conversation } from '../../database/entities/conversation';
+import { ConversationStatus, AppointmentStatus } from '../../database/entities/enum';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const completeConversationService = async (conversationId: string, userId: string) => {

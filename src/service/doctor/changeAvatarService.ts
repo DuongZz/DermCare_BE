@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Doctor } from 'typeorm/entities/doctor';
+import { Doctor } from '@database/entities/doctor';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const changeAvatarService = async (id: string, fileUrl: string) => {

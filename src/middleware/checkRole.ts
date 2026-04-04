@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { Role } from '../typeorm/entities/enum';
+import { Role } from '../database/entities/enum';
 import { CustomError } from '../utils/response/custom-error/CustomError';
 
 export const checkRole = (roles: Role[], isSelfAllowed = false) => {

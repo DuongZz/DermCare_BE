@@ -21,7 +21,7 @@
       "constants/*": ["constants/*"],
       "consts/*": ["consts/*"],
       "utils/*": ["utils/*"],
-      "typeorm/*": ["typeorm/*"],
+      "@database/*": ["database/*"],
       "configs/*": ["configs/*"],
       "providers/*": ["providers/*"],
       "config/*": ["../config/*"]

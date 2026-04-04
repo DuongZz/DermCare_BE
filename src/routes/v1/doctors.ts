@@ -12,7 +12,7 @@ import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSchedule/validatorCreateDoctorSchedule';
-import { Role } from 'typeorm/entities/enum';
+import { Role } from '@database/entities/enum';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
