@@ -15,13 +15,13 @@ import morgan from 'morgan';
 import passport from 'passport';
 import { Server } from 'socket.io';
 
+import { dbCreateConnection } from './database/dbCreateConnection';
 import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import { getLanguage } from './middleware/getLanguage';
 import routes from './routes';
 import { configureSocket } from './socket';
 import { setIo } from './socket/socketInstance';
-import { dbCreateConnection } from './database/dbCreateConnection';
 import './configs/redis';
 import './configs/passport';
 
@@ -29,7 +29,7 @@ export const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: [process.env.APP_URL_FRONTEND, 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -41,7 +41,7 @@ configureSocket(io);
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: [process.env.APP_URL_FRONTEND, 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
     credentials: true,
   }),
 );

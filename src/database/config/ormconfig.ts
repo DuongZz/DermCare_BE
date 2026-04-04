@@ -19,9 +19,15 @@ const config: ConnectionOptions = {
       rejectUnauthorized: false,
     },
   },
-  entities: ['src/database/entities/**/*.ts', 'database/entities/**/*.js'],
-  migrations: ['src/database/migrations/**/*.ts', 'database/migrations/**/*.js'],
-  subscribers: ['src/database/subscriber/**/*.ts', 'database/subscriber/**/*.js'],
+  entities: [
+    process.env.NODE_ENV === 'production' ? 'dist/database/entities/**/*.js' : 'src/database/entities/**/*.ts',
+  ],
+  migrations: [
+    process.env.NODE_ENV === 'production' ? 'dist/database/migrations/**/*.js' : 'src/database/migrations/**/*.ts',
+  ],
+  subscribers: [
+    process.env.NODE_ENV === 'production' ? 'dist/database/subscriber/**/*.js' : 'src/database/subscriber/**/*.ts',
+  ],
   cli: {
     entitiesDir: 'src/database/entities',
     migrationsDir: 'src/database/migrations',
