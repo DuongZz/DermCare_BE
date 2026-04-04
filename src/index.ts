@@ -35,6 +35,12 @@ const CORS_ORIGINS = [
 ];
 
 export const app = express();
+
+// QUAN TRỌNG: Render chạy sau reverse proxy (HTTPS → HTTP)
+// Cần trust proxy để Express nhận biết request gốc là HTTPS
+// → Cookie secure: true sẽ hoạt động đúng
+app.set('trust proxy', 1);
+
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
