@@ -5,6 +5,7 @@ import appointmentRouter from './appointment';
 import auth from './auth';
 import conversationsRouter from './conversations';
 import doctors from './doctors';
+import feedbacks from './feedbacks';
 import medicalRecords from './medicalRecords';
 import notificationsRouter from './notifications';
 import paymentRouter from './payment';
@@ -20,6 +21,7 @@ router.use('/conversations', conversationsRouter);
 router.use('/notifications', notificationsRouter);
 router.use('/appointments', appointmentRouter);
 router.use('/payments', paymentRouter);
+router.use('/feedbacks', feedbacks);
 router.use('/medical-records', medicalRecords);
 
 export default router;

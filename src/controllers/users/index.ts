@@ -6,3 +6,4 @@ export * from './getPublicDoctorScheduleController';
 export * from './getMyAppointmentController';
 export * from './updateMyProfileController';
 export * from './getPublicSpecializationController';
+export * from './getUserStatisticsController';

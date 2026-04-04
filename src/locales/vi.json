@@ -1,0 +1,15 @@
+{
+  "api": {
+    "success": {
+      "user_stats_fetched": "Lấy thống kê người dùng thành công",
+      "profile_updated": "Cập nhật hồ sơ thành công",
+      "logged_in": "Đăng nhập thành công"
+    },
+    "error": {
+      "unauthorized": "Không có quyền truy cập",
+      "not_found": "Không tìm thấy thông tin",
+      "server_error": "Lỗi hệ thống",
+      "invalid_credentials": "Tài khoản hoặc mật khẩu không chính xác"
+    }
+  }
+}

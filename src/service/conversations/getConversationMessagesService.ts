@@ -35,7 +35,7 @@ export const getConversationMessagesService = async (
 
   const messages = await messageRepository.find({
     where: { conversation: { id: conversationId } },
-    relations: ['sender'],
+    relations: ['sender', 'sender.doctorProfile'],
     order: {
       created_at: 'ASC', // Cũ nhất trước, mới nhất sau
     },

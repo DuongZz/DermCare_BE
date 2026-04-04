@@ -17,6 +17,7 @@ import { Server } from 'socket.io';
 
 import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
+import { getLanguage } from './middleware/getLanguage';
 import routes from './routes';
 import { configureSocket } from './socket';
 import { setIo } from './socket/socketInstance';
@@ -48,6 +49,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(getLanguage);
 app.use(passport.initialize());
 
 try {
@@ -64,13 +66,14 @@ app.use('/', routes);
 
 app.use(errorHandler);
 
-const port = process.env.PORT || 4000;
-httpServer.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
 (async () => {
-  await dbCreateConnection();
+  try {
+    await dbCreateConnection();
+    const port = process.env.PORT || 4000;
+    httpServer.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (err) {
+    console.error('Lỗi khi khởi tạo kết nối database hoặc server:', err);
+  }
 })();
-
-// Force restart

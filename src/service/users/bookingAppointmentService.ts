@@ -67,28 +67,19 @@ export const bookingAppointmentService = async (data: BookingAppointmentInput) =
     let conversation: Conversation | undefined;
 
     if (conversationId) {
+      // Nếu có truyền conversationId (thường là chuyển từ AI chat sang bác sĩ)
       conversation = await conversationRepo.findOne(conversationId);
-    } else {
-      // Tìm xem đã có hội thoại nào giữa 2 người này chưa để dùng lại
-      conversation = await conversationRepo.findOne({
-        where: {
-          patient: { id: patientId },
-          doctor: { id: doctorId },
-          type: ConversationType.DOCTOR_CONSULTATION,
-        },
-        order: { created_at: 'DESC' },
-      });
+    }
 
-      if (!conversation) {
-        // Nếu thực sự chưa có thì mới tạo mới
-        conversation = conversationRepo.create({
-          patient: { id: patientId } as User,
-          doctor: { id: doctorId } as User,
-          type: ConversationType.DOCTOR_CONSULTATION,
-          status: ConversationStatus.DOCTOR_CONSULTING,
-          title: `Tư vấn với bác sĩ`,
-        });
-      }
+    if (!conversation) {
+      // Luôn tạo hội thoại mới cho mỗi cuộc hẹn mới nếu không có ID truyền vào
+      conversation = conversationRepo.create({
+        patient: { id: patientId } as User,
+        doctor: { id: doctorId } as User,
+        type: ConversationType.DOCTOR_CONSULTATION,
+        status: ConversationStatus.DOCTOR_CONSULTING,
+        title: `Tư vấn với bác sĩ`,
+      });
     }
 
     if (conversation) {

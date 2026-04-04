@@ -32,7 +32,7 @@ export const createZaloPaymentService = async (appointmentId: string) => {
   const app_trans_id = `${dateStr}_${app_id}_${now.getTime()}`;
 
   const app_time = now.getTime();
-  const embed_data = JSON.stringify({ redirecturl: zaloPayConfig.redirectUrl });
+  const embed_data = JSON.stringify({ redirecturl: zaloPayConfig.redirectUrl, appointmentId });
   const item = JSON.stringify([
     {
       itemid: appointmentId,

@@ -12,12 +12,15 @@ export const getPublicDoctorScheduleService = async (doctorId: string) => {
   const now = dayjs();
   const nowTime = now.format('HH:mm');
 
-  console.time('DR_SHEDULE_QUERY');
+  console.log(`[DEBUG] Fetching public schedule for doctorId: ${doctorId}`);
+  console.log(`[DEBUG] Current date: ${today}, currentTime: ${nowTime}`);
+
   const query = scheduleRepo
     .createQueryBuilder('schedule')
-    .leftJoin('schedule.doctor', 'doctor')
-    .select(['schedule', 'doctor.id', 'doctor.fullName', 'doctor.avatar'])
+    .leftJoinAndSelect('schedule.doctor', 'doctor')
     .where('doctor.id = :doctorId', { doctorId })
+    .andWhere('schedule.status = :status', { status: 'AVAILABLE' })
+    .andWhere('schedule.isBooked = :isBooked', { isBooked: false })
     .andWhere('schedule.date >= :today', { today })
     .andWhere('schedule.date <= :endDate', { endDate })
     .andWhere('(schedule.date > :today OR (schedule.date = :today AND schedule.startTime > :nowTime))', {
@@ -26,13 +29,13 @@ export const getPublicDoctorScheduleService = async (doctorId: string) => {
     });
 
   const doctorSchedules = await query.orderBy('schedule.date', 'ASC').addOrderBy('schedule.startTime', 'ASC').getMany();
-  console.timeEnd('DR_SHEDULE_QUERY');
 
-  console.log(`[RAG] Found ${doctorSchedules.length} slots for doctor ${doctorId}`);
+  console.log(`[DEBUG] Found ${doctorSchedules.length} available slots for doctor ${doctorId}`);
 
   return doctorSchedules.map((s: any) => ({
     ...s,
     doctorId: s.doctor ? s.doctor.id : doctorId,
+    // Ensure binary date matches string format precisely for FE grouping
     availableDate: dayjs(s.date).format('YYYY-MM-DD'),
   }));
 };
