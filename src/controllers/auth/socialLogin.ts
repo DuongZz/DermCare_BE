@@ -13,11 +13,11 @@ const handleSocialCallback = async (req: Request, res: Response, provider: strin
     const cookieOptions = getCookieOptions(req, false);
     res.cookie('refreshToken', refreshToken, cookieOptions);
 
-    const frontendUrl = process.env.FRONTEND_URL;
+    const frontendUrl = process.env.APP_URL_FRONTEND || 'http://localhost:3000';
     res.redirect(`${frontendUrl}/auth/social-callback?token=${accessToken}`);
   } catch (err) {
     console.error(`${provider} callback error:`, err);
-    const frontendUrl = process.env.FRONTEND_URL;
+    const frontendUrl = process.env.APP_URL_FRONTEND || 'http://localhost:3000';
     res.redirect(`${frontendUrl}/login?error=social_login_failed`);
   }
 };

@@ -1,3 +1,5 @@
+import { Role } from '@database/entities/enum';
+import { User } from '@database/entities/user';
 import bcrypt from 'bcryptjs';
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
@@ -5,16 +7,13 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { getRepository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Role } from '@database/entities/enum';
-import { User } from '@database/entities/user';
-
 // Google Strategy
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: `https://localhost/v1/auth/google/callback`,
+      callbackURL: `${process.env.APP_URL_BACKEND}/v1/auth/google/callback`,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
@@ -57,7 +56,7 @@ passport.use(
     {
       clientID: process.env.FB_APP_ID!,
       clientSecret: process.env.FB_APP_SECRET!,
-      callbackURL: `https://localhost/v1/auth/facebook/callback`,
+      callbackURL: `${process.env.APP_URL_BACKEND || 'http://localhost:4000'}/v1/auth/facebook/callback`,
       profileFields: ['id', 'displayName', 'email'],
     },
     async (_accessToken: string, _refreshToken: string, profile: any, done: any) => {
