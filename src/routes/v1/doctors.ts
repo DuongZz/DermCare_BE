@@ -1,9 +1,10 @@
+import { Role } from '@database/entities/enum';
 import { Router } from 'express';
 import multer from 'multer';
 
 import { changeAvatarController } from 'controllers/doctor/changeAvatarController';
 import { getAllDoctorsController } from 'controllers/doctor/getAllDoctorsController';
-import { getDoctorsController } from 'controllers/doctor/getDoctorsController';
+import { syncRatingsController } from 'controllers/doctor/syncRatingsController';
 import { updateDoctorInfoController } from 'controllers/doctor/updateDoctorInfoController';
 import { createDoctorScheduleController } from 'controllers/doctorSchedule/createDoctorScheduleController';
 import { getDoctorScheduleController } from 'controllers/doctorSchedule/getDoctorScheduleController';
@@ -12,12 +13,12 @@ import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { uploadToSupabase } from 'middleware/uploadSupabase';
 import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSchedule/validatorCreateDoctorSchedule';
-import { Role } from '@database/entities/enum';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/all', getAllDoctorsController);
+router.get('/sync-ratings', syncRatingsController);
 router.patch('/update-info', [checkJwt, checkRole([Role.DOCTOR])], updateDoctorInfoController);
 router.patch(
   '/update-avatar',
