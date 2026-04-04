@@ -25,11 +25,20 @@ import { setIo } from './socket/socketInstance';
 import './configs/redis';
 import './configs/passport';
 
+const CORS_ORIGINS = [
+  process.env.APP_URL_FRONTEND,
+  'https://www.dermcare.io.vn',
+  'https://dermcare.io.vn',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://localhost',
+];
+
 export const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: [process.env.APP_URL_FRONTEND, 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: CORS_ORIGINS,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -41,7 +50,7 @@ configureSocket(io);
 
 app.use(
   cors({
-    origin: [process.env.APP_URL_FRONTEND, 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: CORS_ORIGINS,
     credentials: true,
   }),
 );

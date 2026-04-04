@@ -1,8 +1,8 @@
+import { Role } from '@database/entities/enum';
+import { User } from '@database/entities/user';
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import { getRepository } from 'typeorm';
 
-import { Role } from '@database/entities/enum';
-import { User } from '@database/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 import { generateAccessToken, generateRefreshToken } from 'utils/createJwtToken';
 import { CustomError } from 'utils/response/custom-error/CustomError';
@@ -39,8 +39,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
       const cookieOptions: CookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: true, // Luôn dùng true cho sản phẩm (HTTPS)
+        sameSite: 'none', // Cần thiết để gửi cookie giữa các tên miền khác nhau
+        domain: process.env.NODE_ENV === 'production' ? '.io.vn' : undefined,
       };
 
       if (rememberMe) {
