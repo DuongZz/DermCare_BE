@@ -32,11 +32,11 @@ USER node
 # Copy package configurations
 COPY --chown=node:node package*.json ./
 
+# Force sequential build to save memory on Render (Wait for builder to finish first)
+COPY --from=builder --chown=node:node /app/dist ./dist
+
 # Install strictly production dependencies to keep the image minimal
 RUN npm install --legacy-peer-deps --omit=dev && npm cache clean --force
-
-# Copy only the compiled deployment-ready files from the builder stage
-COPY --from=builder --chown=node:node /app/dist ./dist
 
 EXPOSE 4000
 
