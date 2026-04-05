@@ -1,0 +1,41 @@
+# Stage 1: Builder
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Dependencies needed for native compilation
+RUN apk add --no-cache libc6-compat
+
+# Install ALL dependencies (including dev)
+COPY package*.json ./
+RUN npm install
+
+# Copy source code and compile TypeScript to JavaScript
+COPY . .
+RUN npm run build
+
+# Stage 2: Runner (Production)
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV TZ=Asia/Ho_Chi_Minh
+
+# Only root can install some global things, but it's not needed here
+# Secure container by switching to the built-in 'node' non-root user
+USER node
+
+# Copy package configurations
+COPY --chown=node:node package*.json ./
+
+# Install strictly production dependencies to keep the image minimal
+RUN npm ci --omit=dev && npm cache clean --force
+
+# Copy only the compiled deployment-ready files from the builder stage
+COPY --from=builder --chown=node:node /app/dist ./dist
+
+EXPOSE 4000
+
+# Run Node.js directly (avoiding npm start footprint)
+CMD ["node", "./dist/index.js"]

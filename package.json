@@ -14,7 +14,6 @@
     "test": "cross-env NODE_PATH=./src mocha --require ts-node/register 'test/integration/**/*.test.ts' --timeout 20000 --exit",
     "commit": "git-cz",
     "docker:dev": "docker-compose --file docker-compose.yml --file docker-compose.dev.yml --compatibility up --build",
-    "docker:stage": "docker-compose --file docker-compose.yml --file docker-compose.stage.yml --compatibility up --build",
     "docker:prod": "docker-compose --file docker-compose.yml --file docker-compose.prod.yml --compatibility up --build",
     "migration:run": "cross-env NODE_PATH=./src ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run --config ./src/database/config/ormconfig.ts",
     "migration:run:dev": "cross-env PG_HOST=localhost NODE_PATH=./src ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run --config ./src/database/config/ormconfig.ts",
