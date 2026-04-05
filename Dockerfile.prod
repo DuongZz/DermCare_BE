@@ -23,6 +23,9 @@ ENV NODE_ENV=production
 ENV TZ=Asia/Ho_Chi_Minh
 
 # Only root can install some global things, but it's not needed here
+# Give the non-root user ownership of the working directory so it can install node_modules
+RUN chown node:node /app
+
 # Secure container by switching to the built-in 'node' non-root user
 USER node
 
