@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "RESTful API boilerplate with Typescript, TypeORM, ExpressJs & Mocha.",
   "scripts": {
-    "dev": "cross-env NODE_PATH=./src ts-node-dev -r tsconfig-paths/register --respawn ./src/index.ts",
+    "dev": "cross-env TZ=Asia/Ho_Chi_Minh NODE_PATH=./src ts-node-dev -r tsconfig-paths/register --respawn ./src/index.ts",
     "build": "rimraf dist && tsc && tsc-alias",
-    "start": "cross-env NODE_ENV=production NODE_PATH=./dist node ./dist/index.js",
+    "start": "cross-env TZ=Asia/Ho_Chi_Minh NODE_ENV=production NODE_PATH=./dist node ./dist/index.js",
     "prepare": "husky install",
     "lint": "eslint --max-warnings 0 --ext .js,ts src",
     "lint-staged-husky": "lint-staged",

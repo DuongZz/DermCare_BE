@@ -1,15 +1,20 @@
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { getRepository } from 'typeorm';
 
 import { DoctorSchedule } from '../../database/entities/doctorSchedule';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export const getPublicDoctorScheduleService = async (doctorId: string) => {
   const scheduleRepo = getRepository(DoctorSchedule);
 
-  const today = dayjs().format('YYYY-MM-DD');
-  const endDate = dayjs().add(6, 'day').format('YYYY-MM-DD');
+  const now = dayjs().tz('Asia/Ho_Chi_Minh');
+  const today = now.format('YYYY-MM-DD');
+  const endDate = now.add(6, 'day').format('YYYY-MM-DD');
 
-  const now = dayjs();
   const nowTime = now.format('HH:mm');
 
   console.log(`[DEBUG] Fetching public schedule for doctorId: ${doctorId}`);
