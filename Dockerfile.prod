@@ -8,7 +8,7 @@ RUN apk add --no-cache libc6-compat
 
 # Install ALL dependencies (including dev)
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy source code and compile TypeScript to JavaScript
 COPY . .
@@ -30,7 +30,7 @@ USER node
 COPY --chown=node:node package*.json ./
 
 # Install strictly production dependencies to keep the image minimal
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --legacy-peer-deps --omit=dev && npm cache clean --force
 
 # Copy only the compiled deployment-ready files from the builder stage
 COPY --from=builder --chown=node:node /app/dist ./dist

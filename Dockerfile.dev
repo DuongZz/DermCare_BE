@@ -10,7 +10,7 @@ COPY package*.json ./
 
 # Install ALL dependencies (including devDependencies)
 # We use npm install instead of npm ci to be faster and more forgiving in dev
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # We do NOT copy the source code here, because docker-compose.dev.yml 
 # will mount your local directory into /app to enable hot-reloading.
