@@ -36,7 +36,7 @@ COPY --chown=node:node package*.json ./
 COPY --from=builder --chown=node:node /app/dist ./dist
 
 # Install strictly production dependencies to keep the image minimal
-RUN npm install --legacy-peer-deps --omit=dev && npm cache clean --force
+RUN npm install --legacy-peer-deps --omit=dev --ignore-scripts && npm cache clean --force
 
 EXPOSE 4000
 
