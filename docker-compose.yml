@@ -3,7 +3,8 @@ version: '3'
 services:
   be_boilerplate:
     container_name: 'be_boilerplate'
-    build: .
+    build:
+      context: .
     restart: always
     volumes:
       - .:/app/
