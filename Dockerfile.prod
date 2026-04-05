@@ -29,6 +29,9 @@ RUN chown node:node /app
 # Secure container by switching to the built-in 'node' non-root user
 USER node
 
+# Create log directory naturally required by Morgan to stream access outputs
+RUN mkdir -p /app/log
+
 # Copy package configurations
 COPY --chown=node:node package*.json ./
 
