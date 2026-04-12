@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import { CacheKeyGroup } from 'constants/cache-keys';
+import { cacheMiddleware } from 'middleware/cache.middleware';
 import { checkJwt } from 'middleware/checkJwt';
 import { uploadToSupabase } from 'middleware/uploadSupabase';
 
@@ -27,7 +29,11 @@ router.use(checkJwt);
 
 router.post('/ai', createAiConversationController);
 router.post('/knowledge', knowledgeQueryController);
-router.get('/doctors', getDoctorBySpecializationController);
+router.get(
+  '/doctors',
+  cacheMiddleware(CacheKeyGroup.DOCTOR_BY_SPECIALIZATION, 3600),
+  getDoctorBySpecializationController,
+);
 
 router.get('/', getConversationsController);
 router.get('/:id', getConversationByIdController);

@@ -1,7 +1,9 @@
+import { User } from '@database/entities/user';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import { User } from '@database/entities/user';
+import { CacheKeyGroup } from 'constants/cache-keys';
+import { deleteCacheByPrefix } from 'helpers/cache.helper';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const updateMyProfileController = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +25,10 @@ export const updateMyProfileController = async (req: Request, res: Response, nex
     if (address !== undefined) user.address = address;
 
     await userRepo.save(user);
+
+    // Xóa Cache thông tin cá nhân của User này ngay lập tức
+    const cacheKeyPrefix = `${CacheKeyGroup.ME_PROFILE}:${userId}:`;
+    await deleteCacheByPrefix(cacheKeyPrefix);
 
     res.status(200).json({
       success: true,

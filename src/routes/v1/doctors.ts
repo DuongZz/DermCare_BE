@@ -2,6 +2,7 @@ import { Role } from '@database/entities/enum';
 import { Router } from 'express';
 import multer from 'multer';
 
+import { CacheKeyGroup } from 'constants/cache-keys';
 import { changeAvatarController } from 'controllers/doctor/changeAvatarController';
 import { getAllDoctorsController } from 'controllers/doctor/getAllDoctorsController';
 import { syncRatingsController } from 'controllers/doctor/syncRatingsController';
@@ -9,6 +10,7 @@ import { updateDoctorInfoController } from 'controllers/doctor/updateDoctorInfoC
 import { createDoctorScheduleController } from 'controllers/doctorSchedule/createDoctorScheduleController';
 import { getDoctorScheduleController } from 'controllers/doctorSchedule/getDoctorScheduleController';
 import { createWorkTemplateController, getWorkTemplateController } from 'controllers/workTemplate';
+import { cacheMiddleware } from 'middleware/cache.middleware';
 import { checkJwt } from 'middleware/checkJwt';
 import { checkRole } from 'middleware/checkRole';
 import { uploadToSupabase } from 'middleware/uploadSupabase';
@@ -17,7 +19,7 @@ import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSched
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/all', getAllDoctorsController);
+router.get('/all', cacheMiddleware(CacheKeyGroup.DOCTOR_LIST_ALL, 3600), getAllDoctorsController);
 router.get('/sync-ratings', syncRatingsController);
 router.patch('/update-info', [checkJwt, checkRole([Role.DOCTOR])], updateDoctorInfoController);
 router.patch(
@@ -27,8 +29,16 @@ router.patch(
 );
 
 router.post('/work-template', [checkJwt, checkRole([Role.DOCTOR])], createWorkTemplateController);
-router.get('/work-template', [checkJwt, checkRole([Role.DOCTOR])], getWorkTemplateController);
-router.get('/schedule', [checkJwt, checkRole([Role.DOCTOR])], getDoctorScheduleController);
+router.get(
+  '/work-template',
+  [checkJwt, checkRole([Role.DOCTOR]), cacheMiddleware(CacheKeyGroup.DOCTOR_WORK_TEMPLATE, 3600, true)],
+  getWorkTemplateController,
+);
+router.get(
+  '/schedule',
+  [checkJwt, checkRole([Role.DOCTOR]), cacheMiddleware(CacheKeyGroup.DOCTOR_SCHEDULE_PRIVATE, 120, true)],
+  getDoctorScheduleController,
+);
 router.post(
   '/schedule',
   [checkJwt, checkRole([Role.DOCTOR]), validatorCreateDoctorSchedule],
