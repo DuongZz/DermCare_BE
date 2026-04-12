@@ -1,8 +1,10 @@
+import { Doctor } from '@database/entities/doctor';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
+import { CacheKeyGroup } from 'constants/cache-keys';
+import { deleteCacheByPrefix } from 'helpers/cache.helper';
 import { createDoctorScheduleService } from 'service/doctorSchedule/createDoctorScheduleService';
-import { Doctor } from '@database/entities/doctor';
 
 export const createDoctorScheduleController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -28,6 +30,11 @@ export const createDoctorScheduleController = async (req: Request, res: Response
 
     // Gọi Service tự động sinh lịch theo Ngày được chọn
     const result = await createDoctorScheduleService(doctorId, date);
+
+    // Xóa Cache Lịch khám của bác sĩ này (Cả bản riêng tư của BS và bản công khai cho Patient)
+    const privateCacheKeyPrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PRIVATE}:${userId}:`;
+    const publicCacheKeyPrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC}:/v1/users/doctor-schedule/${doctorId}`;
+    await Promise.all([deleteCacheByPrefix(privateCacheKeyPrefix), deleteCacheByPrefix(publicCacheKeyPrefix)]);
 
     res.customSuccess(200, `Tạo lịch khám cho ngày ${date} thành công`, result);
   } catch (error) {
