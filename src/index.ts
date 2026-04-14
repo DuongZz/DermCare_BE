@@ -96,6 +96,7 @@ app.use(errorHandler);
   try {
     await dbCreateConnection();
     const port = process.env.PORT || 4000;
+    console.log('ANTIGRAVITY_DEBUG: Server is starting...');
     httpServer.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
