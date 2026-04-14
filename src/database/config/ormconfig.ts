@@ -1,5 +1,18 @@
 import path from 'path';
 
+import { Appointment } from '@database/entities/appointment';
+import { Conversation } from '@database/entities/conversation';
+import { Diagnosis } from '@database/entities/diagnosis';
+import { Doctor } from '@database/entities/doctor';
+import { DoctorSchedule } from '@database/entities/doctorSchedule';
+import { DoctorWorkTemplate } from '@database/entities/doctorWorkTemplate';
+import { Feedback } from '@database/entities/feedback';
+import { MedicalInfo } from '@database/entities/medicalInfo';
+import { MedicalRecord } from '@database/entities/medicalRecord';
+import { Message } from '@database/entities/message';
+import { Notification } from '@database/entities/notification';
+import { Payment } from '@database/entities/payment';
+import { User } from '@database/entities/user';
 import { ConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -21,9 +34,29 @@ const config: ConnectionOptions = {
       rejectUnauthorized: false,
     },
   },
-  entities: [path.join(__dirname, '..', 'entities', '**', '*.{ts,js}')],
-  migrations: [path.join(__dirname, '..', 'migrations', '**', '*.{ts,js}')],
-  subscribers: [path.join(__dirname, '..', 'subscriber', '**', '*.{ts,js}')],
+  entities: [
+    Appointment,
+    Conversation,
+    Diagnosis,
+    Doctor,
+    DoctorSchedule,
+    DoctorWorkTemplate,
+    Feedback,
+    MedicalInfo,
+    MedicalRecord,
+    Message,
+    Notification,
+    Payment,
+    User,
+  ],
+  migrations: [
+    path.join(process.cwd(), 'src/database/migrations/**/*.{ts,js}'),
+    path.join(process.cwd(), 'dist/database/migrations/**/*.js'),
+  ],
+  subscribers: [
+    path.join(process.cwd(), 'src/database/subscriber/**/*.{ts,js}'),
+    path.join(process.cwd(), 'dist/database/subscriber/**/*.js'),
+  ],
   cli: {
     entitiesDir: 'src/database/entities',
     migrationsDir: 'src/database/migrations',
