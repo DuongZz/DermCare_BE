@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { ConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -19,15 +21,9 @@ const config: ConnectionOptions = {
       rejectUnauthorized: false,
     },
   },
-  entities: [
-    process.env.NODE_ENV === 'production' ? 'dist/database/entities/**/*.js' : 'src/database/entities/**/*.ts',
-  ],
-  migrations: [
-    process.env.NODE_ENV === 'production' ? 'dist/database/migrations/**/*.js' : 'src/database/migrations/**/*.ts',
-  ],
-  subscribers: [
-    process.env.NODE_ENV === 'production' ? 'dist/database/subscriber/**/*.js' : 'src/database/subscriber/**/*.ts',
-  ],
+  entities: [path.join(__dirname, '..', 'entities', '**', '*.{ts,js}')],
+  migrations: [path.join(__dirname, '..', 'migrations', '**', '*.{ts,js}')],
+  subscribers: [path.join(__dirname, '..', 'subscriber', '**', '*.{ts,js}')],
   cli: {
     entitiesDir: 'src/database/entities',
     migrationsDir: 'src/database/migrations',
