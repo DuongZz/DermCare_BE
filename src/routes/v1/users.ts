@@ -19,11 +19,11 @@ import { checkJwt } from 'middleware/checkJwt';
 const router = Router();
 
 router.get(
-  '/public-specialization',
+  '/specializations',
   cacheMiddleware(CacheKeyGroup.SPECIALIZATIONS, 86400),
   getPublicSpecializationController,
 );
-router.get('/public-doctors', cacheMiddleware(CacheKeyGroup.TOP_DOCTORS, 3600), getDoctorsController);
+router.get('/doctors/public', cacheMiddleware(CacheKeyGroup.TOP_DOCTORS, 3600), getDoctorsController);
 router.get('/me', [checkJwt, cacheMiddleware(CacheKeyGroup.ME_PROFILE, 300, true)], me);
 router.patch('/me', [checkJwt], updateMyProfileController);
 router.get(
@@ -33,7 +33,7 @@ router.get(
 );
 router.get('/me/medical-info', [checkJwt, cacheMiddleware(CacheKeyGroup.MY_MEDICAL_INFO, 600, true)], getMedicalInfo);
 router.get(
-  '/doctor-schedule/:id',
+  '/doctors/:id/schedule',
   [checkJwt, cacheMiddleware(CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC, 300)],
   getPublicDoctorScheduleController,
 );
@@ -43,6 +43,6 @@ router.get(
   getUserStatisticsController,
 );
 router.patch('/me/medical-info', [checkJwt], updateMedicalInfo);
-router.post('/booking/:doctorId', [checkJwt], bookingAppointmentController);
+router.post('/appointments/booking/:doctorId', [checkJwt], bookingAppointmentController);
 
 export default router;

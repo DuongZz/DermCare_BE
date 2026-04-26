@@ -19,11 +19,11 @@ import { validatorCreateDoctorSchedule } from 'middleware/validation/doctorSched
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/all', cacheMiddleware(CacheKeyGroup.DOCTOR_LIST_ALL, 3600), getAllDoctorsController);
-router.get('/sync-ratings', syncRatingsController);
-router.patch('/update-info', [checkJwt, checkRole([Role.DOCTOR])], updateDoctorInfoController);
+router.get('/', cacheMiddleware(CacheKeyGroup.DOCTOR_LIST_ALL, 3600), getAllDoctorsController);
+router.post('/ratings/sync', syncRatingsController);
+router.patch('/profile', [checkJwt, checkRole([Role.DOCTOR])], updateDoctorInfoController);
 router.patch(
-  '/update-avatar',
+  '/avatar',
   [checkJwt, checkRole([Role.DOCTOR]), upload.single('avatar'), uploadToSupabase('avatars')],
   changeAvatarController,
 );
