@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { Message } from '../../typeorm/entities/message';
+import { Message } from '../../database/entities/message';
 
 export const getConversationImagesService = async (conversationId: string): Promise<string[]> => {
   const messageRepo = getRepository(Message);

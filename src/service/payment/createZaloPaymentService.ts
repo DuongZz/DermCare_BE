@@ -4,9 +4,9 @@ import axios from 'axios';
 import { getRepository } from 'typeorm';
 
 import { zaloPayConfig } from '../../configs/zalopay';
-import { Appointment } from '../../typeorm/entities/appointment';
-import { PaymentMethod, PaymentStatus } from '../../typeorm/entities/enum';
-import { Payment } from '../../typeorm/entities/payment';
+import { Appointment } from '../../database/entities/appointment';
+import { PaymentMethod, PaymentStatus } from '../../database/entities/enum';
+import { Payment } from '../../database/entities/payment';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const createZaloPaymentService = async (appointmentId: string) => {

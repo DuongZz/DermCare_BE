@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { Notification } from '../../typeorm/entities/notification';
+import { Notification } from '../../database/entities/notification';
 
 export const markAllAsReadService = async (userId: string) => {
   const notificationRepository = getRepository(Notification);

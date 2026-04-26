@@ -10,7 +10,7 @@ export const getLanguage = (req: Request, res: Response, next: NextFunction) => 
     language = 'vi';
   }
 
-  // Use explicit cast to avoid compilation error if Request augmentation fails
-  (req as any).language = language;
+  // Use global Request augmentation correctly
+  req.language = language;
   next();
 };

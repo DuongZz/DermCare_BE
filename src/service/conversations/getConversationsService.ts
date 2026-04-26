@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { Conversation } from 'typeorm/entities/conversation';
-import { Role } from 'typeorm/entities/enum';
+import { Conversation } from '@database/entities/conversation';
+import { Role } from '@database/entities/enum';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const getConversationsService = async (

@@ -1,12 +1,12 @@
+import { Conversation } from '@database/entities/conversation';
+import { Doctor } from '@database/entities/doctor';
+import { ConversationStatus } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 import jwt from 'jsonwebtoken';
 import { Server, Socket } from 'socket.io';
 import { getRepository } from 'typeorm';
 
-import { Conversation } from 'typeorm/entities/conversation';
-import { Doctor } from 'typeorm/entities/doctor';
-import { ConversationStatus } from 'typeorm/entities/enum';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
 import { JwtPayload } from 'types/JwtPayload';
 
 export const configureSocket = (io: Server) => {
@@ -14,18 +14,20 @@ export const configureSocket = (io: Server) => {
   io.use((socket, next) => {
     const token = socket.handshake.auth.token || socket.handshake.headers['authorization'];
     if (!token) {
+      console.error('[Socket] Authentication error: Token missing');
       return next(new Error('Authentication error: Token missing'));
     }
 
+    const rawToken = token.replace('Bearer ', '');
     try {
-      const jwtPayload = jwt.verify(
-        token.replace('Bearer ', ''),
-        process.env.JWT_ACCESS_SECRET as string,
-      ) as JwtPayload;
+      const jwtPayload = jwt.verify(rawToken, process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
       socket.data.user = jwtPayload;
       next();
-    } catch (err) {
-      return next(new Error('Authentication error: Invalid token'));
+    } catch (err: any) {
+      console.error(`[Socket] Authentication error: ${err.message}`, { token: rawToken.substring(0, 10) + '...' });
+      return next(
+        new Error(`Authentication error: ${err.message === 'jwt expired' ? 'Token expired' : 'Invalid token'}`),
+      );
     }
   });
 

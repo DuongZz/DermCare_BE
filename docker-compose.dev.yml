@@ -13,6 +13,8 @@ services:
       - ./database/boilerplate:/var/lib/postgresql/data/
 
   be_boilerplate:
+    build:
+      dockerfile: Dockerfile.dev
     entrypoint: /bin/sh './scripts/be-node-dev.sh'
     env_file:
       - .env

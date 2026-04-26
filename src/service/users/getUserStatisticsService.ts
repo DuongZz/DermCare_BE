@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { MedicalRecord } from '../../typeorm/entities/medicalRecord';
+import { Appointment } from '../../database/entities/appointment';
+import { MedicalRecord } from '../../database/entities/medicalRecord';
 
 export const getUserStatisticsService = async (userId: string) => {
   const appointmentRepository = getRepository(Appointment);

@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 
-import { Appointment } from '../../typeorm/entities/appointment';
-import { Conversation } from '../../typeorm/entities/conversation';
-import { ConversationType, ConversationStatus, AppointmentStatus } from '../../typeorm/entities/enum';
-import { Message } from '../../typeorm/entities/message';
-import { User } from '../../typeorm/entities/user';
+import { Appointment } from '../../database/entities/appointment';
+import { Conversation } from '../../database/entities/conversation';
+import { ConversationType, ConversationStatus, AppointmentStatus } from '../../database/entities/enum';
+import { Message } from '../../database/entities/message';
+import { User } from '../../database/entities/user';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const getOrCreateAppointmentConversationService = async (appointmentId: string, userId: string) => {

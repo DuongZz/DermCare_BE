@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import { getRepository, In } from 'typeorm';
 
-import { Appointment } from 'typeorm/entities/appointment';
-import { Conversation } from 'typeorm/entities/conversation';
-import { Doctor } from 'typeorm/entities/doctor';
-import { DoctorSchedule } from 'typeorm/entities/doctorSchedule';
-import { AppointmentStatus, ConversationType, ConversationStatus } from 'typeorm/entities/enum';
-import { Message } from 'typeorm/entities/message';
-import { User } from 'typeorm/entities/user';
+import { Appointment } from '@database/entities/appointment';
+import { Conversation } from '@database/entities/conversation';
+import { Doctor } from '@database/entities/doctor';
+import { DoctorSchedule } from '@database/entities/doctorSchedule';
+import { AppointmentStatus, ConversationType, ConversationStatus } from '@database/entities/enum';
+import { Message } from '@database/entities/message';
+import { User } from '@database/entities/user';
 
 export const getMyAppointmentService = async (
   userId: string,

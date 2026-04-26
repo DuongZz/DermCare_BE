@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm';
 
-import { Doctor } from '../../typeorm/entities/doctor';
-import { Role } from '../../typeorm/entities/enum';
-import { User } from '../../typeorm/entities/user';
+import { Doctor } from '../../database/entities/doctor';
+import { Role } from '../../database/entities/enum';
+import { User } from '../../database/entities/user';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const upRoleDoctorService = async (id: string) => {

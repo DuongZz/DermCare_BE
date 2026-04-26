@@ -4,9 +4,9 @@ import axios from 'axios';
 import { getRepository } from 'typeorm';
 
 import { momoConfig } from '../../configs/momo';
-import { Appointment } from '../../typeorm/entities/appointment';
-import { PaymentStatus } from '../../typeorm/entities/enum';
-import { Payment } from '../../typeorm/entities/payment';
+import { Appointment } from '../../database/entities/appointment';
+import { PaymentStatus } from '../../database/entities/enum';
+import { Payment } from '../../database/entities/payment';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const createMomoPaymentService = async (appointmentId: string) => {

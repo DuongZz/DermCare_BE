@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { Appointment } from 'typeorm/entities/appointment';
+import { Appointment } from '@database/entities/appointment';
 
 export const getDoctorAppointmentService = async (doctorId: string) => {
   try {

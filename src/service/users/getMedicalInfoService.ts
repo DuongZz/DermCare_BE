@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 
-import { MedicalInfo } from '../../typeorm/entities/medicalInfo';
+import { MedicalInfo } from '../../database/entities/medicalInfo';
 
 export const getMedicalInfoService = async (userId: string) => {
   const medicalInfoRepository = getRepository(MedicalInfo);

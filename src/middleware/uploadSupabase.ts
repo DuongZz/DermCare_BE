@@ -33,7 +33,7 @@ export const uploadToSupabase = (bucketName: string) => {
       const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(fileName);
 
       // Gắn public URL vào object request để các Controller có thể dùng
-      (req as any).fileUrl = publicUrlData.publicUrl;
+      req.fileUrl = publicUrlData.publicUrl;
 
       next();
     } catch (error) {

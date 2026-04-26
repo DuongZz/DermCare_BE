@@ -1,30 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import { NextFunction, Request, Response } from 'express';
 
-import { User } from 'typeorm/entities/user';
-import { CustomError } from 'utils/response/custom-error/CustomError';
+import { authCoreService } from '../../service/auth/auth.service';
+import { clearAuthResponse } from '../../utils/authHandler';
 
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.jwtPayload;
-    const userRepository = getRepository(User);
+    await authCoreService.logout(id);
 
-    const user = await userRepository.findOne(id);
-    if (user) {
-      user.refreshToken = null as any;
-      await userRepository.save(user);
-    }
-
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      path: '/',
-    });
-
-    res.customSuccess(200, 'Đăng xuất thành công.', null);
+    return clearAuthResponse(req, res, 'Đăng xuất thành công.');
   } catch (err) {
-    const customError = new CustomError(400, 'Raw', 'Có lỗi khi đăng xuất', null, err);
-    return next(customError);
+    return next(err);
   }
 };

@@ -1,35 +1,61 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="./types/express/index.d.ts" />
-import 'dotenv/config';
-import 'reflect-metadata';
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
 
+import 'reflect-metadata';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import passport from 'passport';
 import { Server } from 'socket.io';
 
+const env = process.env.NODE_ENV || 'development';
+
+if (env !== 'production') {
+  const localEnvPath = path.resolve(process.cwd(), '.env.local');
+  if (fs.existsSync(localEnvPath)) {
+    dotenv.config({ path: localEnvPath });
+  }
+}
+
+dotenv.config();
+
+import { dbCreateConnection } from './database/dbCreateConnection';
 import './utils/response/custom-success/customSuccess';
 import { errorHandler } from './middleware/errorHandler';
 import { getLanguage } from './middleware/getLanguage';
 import routes from './routes';
 import { configureSocket } from './socket';
 import { setIo } from './socket/socketInstance';
-import { dbCreateConnection } from './typeorm/dbCreateConnection';
 import './configs/redis';
 import './configs/passport';
 
+const CORS_ORIGINS = [
+  process.env.APP_URL_FRONTEND,
+  'https://www.dermcare.io.vn',
+  'https://dermcare.io.vn',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://127.0.0.1:3000',
+  'https://localhost',
+];
+
 export const app = express();
+
+// QUAN TRỌNG: Render chạy sau reverse proxy (HTTPS → HTTP)
+// Cần trust proxy để Express nhận biết request gốc là HTTPS
+// → Cookie secure: true sẽ hoạt động đúng
+app.set('trust proxy', 1);
+
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: CORS_ORIGINS,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -41,7 +67,7 @@ configureSocket(io);
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://localhost'],
+    origin: CORS_ORIGINS,
     credentials: true,
   }),
 );
@@ -70,6 +96,7 @@ app.use(errorHandler);
   try {
     await dbCreateConnection();
     const port = process.env.PORT || 4000;
+    console.log('ANTIGRAVITY_DEBUG: Server is starting...');
     httpServer.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

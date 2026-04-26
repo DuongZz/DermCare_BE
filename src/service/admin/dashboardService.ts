@@ -1,11 +1,10 @@
-import { Between, MoreThanOrEqual, getRepository } from 'typeorm';
-
-import { Appointment } from 'typeorm/entities/appointment';
-import { Diagnosis } from 'typeorm/entities/diagnosis';
-import { Doctor } from 'typeorm/entities/doctor';
-import { Role } from 'typeorm/entities/enum';
-import { Payment } from 'typeorm/entities/payment';
-import { User } from 'typeorm/entities/user';
+import { Appointment } from '@database/entities/appointment';
+import { Diagnosis } from '@database/entities/diagnosis';
+import { Doctor } from '@database/entities/doctor';
+import { Role } from '@database/entities/enum';
+import { Payment } from '@database/entities/payment';
+import { User } from '@database/entities/user';
+import { Between, getRepository } from 'typeorm';
 
 export const getDashboardStatistics = async () => {
   const userRepository = getRepository(User);
@@ -27,15 +26,13 @@ export const getDashboardStatistics = async () => {
   // 2. Total Appointments (all time)
   const totalAppointments = await appointmentRepository.count();
 
-  // 3. Revenue (Month)
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const paymentsThisMonth = await paymentRepository.find({
+  // 3. Total Revenue (all time)
+  const allPayments = await paymentRepository.find({
     where: {
       paymentStatus: 'PAID',
-      createdAt: MoreThanOrEqual(startOfMonth),
     },
   });
-  const revenueMonth = paymentsThisMonth.reduce((acc, current) => acc + Number(current.amount), 0);
+  const totalRevenue = allPayments.reduce((acc, current) => acc + Number(current.amount), 0);
 
   // 4. Revenue Overview (Last 7 Months)
   const revenueData = [];
@@ -67,21 +64,25 @@ export const getDashboardStatistics = async () => {
   const specialtyData = Object.entries(specialtyMap)
     .map(([name, count], index) => ({
       name,
+      count,
       pct: Math.round((count / totalDoctors) * 100),
       color: colors[index % colors.length],
     }))
     .sort((a, b) => b.pct - a.pct);
 
   // 6. AI Diagnoses by Disease (AI Accuracy bar chart)
-  const diagnoses = await diagnosisRepository.find();
-  const diseaseMap: Record<string, { count: number; totalConf: number }> = {};
+  const diagnoses = await diagnosisRepository.find({
+    relations: ['appointment', 'appointment.doctor'],
+  });
+  const diseaseMap: Record<string, { count: number; totalConf: number; doctorIds: Set<string> }> = {};
   diagnoses.forEach((d) => {
     if (d.AIResult) {
       if (!diseaseMap[d.AIResult]) {
-        diseaseMap[d.AIResult] = { count: 0, totalConf: 0 };
+        diseaseMap[d.AIResult] = { count: 0, totalConf: 0, doctorIds: new Set() };
       }
       diseaseMap[d.AIResult].count += 1;
       diseaseMap[d.AIResult].totalConf += Number(d.AIConfidence || 0);
+      if (d.appointment?.doctor) diseaseMap[d.AIResult].doctorIds.add(d.appointment.doctor.id);
     }
   });
 
@@ -93,6 +94,7 @@ export const getDashboardStatistics = async () => {
       return {
         name,
         count: data.count,
+        doctorCount: data.doctorIds.size,
         accuracy: Number(accuracy.toFixed(1)),
         color: diseaseColors[index % diseaseColors.length],
       };
@@ -109,13 +111,17 @@ export const getDashboardStatistics = async () => {
     }
   }
 
-  const formatRevenue = revenueMonth >= 1000 ? `${(revenueMonth / 1000).toFixed(1)}K` : revenueMonth.toString();
-
   const stats = [
     { label: 'Total Patients', value: totalPatients.toString(), change: '+12%', up: true, color: '#4776e6' },
     { label: 'Total Appointments', value: totalAppointments.toString(), change: '+3', up: true, color: '#9d6ef5' },
     { label: 'Total Doctors', value: doctors.length.toString(), change: '+1', up: true, color: '#38bdf8' },
-    { label: 'Revenue (Month)', value: `$${formatRevenue}`, change: '+8%', up: true, color: '#1db974' },
+    {
+      label: 'Total Revenue',
+      value: totalRevenue.toLocaleString('vi-VN') + ' đ',
+      change: '+8%',
+      up: true,
+      color: '#1db974',
+    },
     { label: 'AI Accuracy', value: `${avgAiAccuracy.toFixed(1)}%`, change: '+0.2%', up: true, color: '#e8a838' },
   ];
 
