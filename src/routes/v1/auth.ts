@@ -20,10 +20,10 @@ const router = Router();
 router.post('/login', [validatorLogin], login);
 router.post('/register', [validatorRegister], register);
 router.post('/wash', wash);
-router.post('/change-password', [checkJwt, validatorChangePassword], changePassword);
+router.post('/password/change', [checkJwt, validatorChangePassword], changePassword);
 router.post('/logout', [checkJwt], logout);
 router.post('/send-otp', sendOtp);
-router.post('/reset-password', resetPassword);
+router.post('/password/reset', resetPassword);
 
 // Google OAuth
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));
