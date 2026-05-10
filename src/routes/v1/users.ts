@@ -18,12 +18,7 @@ import { checkJwt } from 'middleware/checkJwt';
 
 const router = Router();
 
-router.get(
-  '/specializations',
-  cacheMiddleware(CacheKeyGroup.SPECIALIZATIONS, 86400),
-  getPublicSpecializationController,
-);
-router.get('/doctors/public', cacheMiddleware(CacheKeyGroup.TOP_DOCTORS, 3600), getDoctorsController);
+// Public routes moved to top-level or other routers
 router.get('/me', [checkJwt, cacheMiddleware(CacheKeyGroup.ME_PROFILE, 300, true)], me);
 router.patch('/me', [checkJwt], updateMyProfileController);
 router.get(
