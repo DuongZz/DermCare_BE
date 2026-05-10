@@ -102,5 +102,6 @@ app.use(errorHandler);
     });
   } catch (err) {
     console.error('Lỗi khi khởi tạo kết nối database hoặc server:', err);
+    process.exit(1); // Ép Node.js thoát để ts-node-dev hoặc pm2 có thể tự động restart lại
   }
 })();

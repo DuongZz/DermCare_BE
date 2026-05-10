@@ -26,8 +26,10 @@ export const cacheMiddleware = (keyPrefix: string, ttl: number, isPrivate: boole
       const originalJson = res.json.bind(res);
 
       res.json = (body: any) => {
-        // Lưu giá trị vào Redis bằng ioredis, 'EX' là cờ cho thời hạn (seconds)
-        redisClient.set(cacheKey, JSON.stringify(body), 'EX', ttl);
+        // CHỈ LƯU CACHE NẾU STATUS CODE LÀ THÀNH CÔNG (VD: 200, 201)
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          redisClient.set(cacheKey, JSON.stringify(body), 'EX', ttl);
+        }
         // Trả kết quả JSON ngược lại cho Response gốc
         return originalJson(body);
       };
