@@ -32,7 +32,9 @@ export class CustomError extends Error {
 
   get JSON(): ErrorResponse {
     return {
+      success: false,
       errorType: this.errorType,
+      message: this.message,
       errorMessage: this.message,
       errors: this.errors,
       errorRaw: this.errorRaw,
