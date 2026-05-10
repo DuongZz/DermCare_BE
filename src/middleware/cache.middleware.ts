@@ -28,7 +28,9 @@ export const cacheMiddleware = (keyPrefix: string, ttl: number, isPrivate: boole
       res.json = (body: any) => {
         // CHỈ LƯU CACHE NẾU STATUS CODE LÀ THÀNH CÔNG (VD: 200, 201)
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          redisClient.set(cacheKey, JSON.stringify(body), 'EX', ttl);
+          redisClient.set(cacheKey, JSON.stringify(body), 'EX', ttl).catch((err) => {
+            console.error(`[Redis Cache Set Error] ${err}`);
+          });
         }
         // Trả kết quả JSON ngược lại cho Response gốc
         return originalJson(body);
