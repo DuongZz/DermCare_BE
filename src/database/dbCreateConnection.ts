@@ -11,6 +11,7 @@ export const dbCreateConnection = async (): Promise<Connection | null> => {
         await oldConnection.close();
         console.log('Closed stale database connection.');
       }
+
       // Xóa hoàn toàn connection cũ khỏi TypeORM cache để tạo lại mới
       // @ts-ignore
       if (connectionManager.connectionMap) {
@@ -22,7 +23,6 @@ export const dbCreateConnection = async (): Promise<Connection | null> => {
           connectionManager.connections.splice(index, 1);
         }
       }
-
     }
 
     const conn = await createConnection(config);
@@ -35,6 +35,20 @@ export const dbCreateConnection = async (): Promise<Connection | null> => {
     return conn;
   } catch (err) {
     console.error('Database connection error:', err);
+    const connectionManager = getConnectionManager();
+    // Xóa connection lỗi (chưa có entities do lỗi ở bước connect) khỏi bộ nhớ
+    // @ts-ignore
+    if (connectionManager.connectionMap) {
+      // @ts-ignore
+      connectionManager.connectionMap.delete('default');
+    } else {
+      const index = connectionManager.connections.findIndex((c) => c.name === 'default');
+      if (index !== -1) {
+        connectionManager.connections.splice(index, 1);
+      }
+    }
+    // Ném lỗi để Node.js process có thể restart (cần thiết cho PM2/Docker/Render)
+    throw err;
   }
   return null;
 };
