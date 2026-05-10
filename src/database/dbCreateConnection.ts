@@ -11,6 +11,17 @@ export const dbCreateConnection = async (): Promise<Connection | null> => {
         await oldConnection.close();
         console.log('Closed stale database connection.');
       }
+      // Xóa hoàn toàn connection cũ khỏi TypeORM cache để tạo lại mới
+      // @ts-ignore
+      if (connectionManager.connectionMap) {
+        // @ts-ignore
+        connectionManager.connectionMap.delete('default');
+      } else {
+        const index = connectionManager.connections.findIndex((c) => c.name === 'default');
+        if (index !== -1) {
+          connectionManager.connections.splice(index, 1);
+        }
+      }
     }
 
     const conn = await createConnection(config);
