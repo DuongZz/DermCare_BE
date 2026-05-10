@@ -22,6 +22,7 @@ export const dbCreateConnection = async (): Promise<Connection | null> => {
           connectionManager.connections.splice(index, 1);
         }
       }
+
     }
 
     const conn = await createConnection(config);

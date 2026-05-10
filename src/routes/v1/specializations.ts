@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
 import { CacheKeyGroup } from '../../constants/cache-keys';
-import { getFeedbackPublicController } from '../../controllers/feedback/getFeedbackPublicController';
+import { getPublicSpecializationController } from '../../controllers/users';
 import { cacheMiddleware } from '../../middleware/cache.middleware';
 
 const router = Router();
 
-router.get('/', cacheMiddleware(CacheKeyGroup.PUBLIC_FEEDBACKS, 3600), getFeedbackPublicController);
+router.get('/', cacheMiddleware(CacheKeyGroup.SPECIALIZATIONS, 86400), getPublicSpecializationController);
 
 export default router;
