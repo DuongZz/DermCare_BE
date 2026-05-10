@@ -33,7 +33,7 @@ export const createDoctorScheduleController = async (req: Request, res: Response
 
     // Xóa Cache Lịch khám của bác sĩ này (Cả bản riêng tư của BS và bản công khai cho Patient)
     const privateCacheKeyPrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PRIVATE}:${userId}:`;
-    const publicCacheKeyPrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC}:/v1/users/doctor-schedule/${doctorId}`;
+    const publicCacheKeyPrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC}:/v1/users/doctors/${doctorId}/schedule`;
     await Promise.all([deleteCacheByPrefix(privateCacheKeyPrefix), deleteCacheByPrefix(publicCacheKeyPrefix)]);
 
     res.customSuccess(200, `Tạo lịch khám cho ngày ${date} thành công`, result);

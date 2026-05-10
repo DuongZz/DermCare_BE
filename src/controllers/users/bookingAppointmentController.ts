@@ -25,7 +25,7 @@ export const bookingAppointmentController = async (req: Request, res: Response, 
     });
 
     // Xóa Cache Lịch khám của bác sĩ này ngay sau khi đặt lịch thành công
-    const doctorScheduleCachePrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC}:/v1/users/doctor-schedule/${doctorId}`;
+    const doctorScheduleCachePrefix = `${CacheKeyGroup.DOCTOR_SCHEDULE_PUBLIC}:/v1/users/doctors/${doctorId}/schedule`;
     // Xóa Cache Thống kê của bệnh nhân vừa đặt lịch
     const patientStatsCachePrefix = `${CacheKeyGroup.USER_STATISTICS}:${patientId}:`;
 

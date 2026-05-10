@@ -1,4 +1,6 @@
 export type ErrorResponse = {
+  success: boolean;
+  message: string;
   errorType: ErrorType;
   errorMessage: string;
   errors: string[] | null;
