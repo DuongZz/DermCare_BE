@@ -11,6 +11,7 @@ import notificationsRouter from './notifications';
 import paymentRouter from './payment';
 import specializations from './specializations';
 import users from './users';
+import webrtcRouter from './webrtc';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use('/appointments', appointmentRouter);
 router.use('/payments', paymentRouter);
 router.use('/feedbacks', feedbacks);
 router.use('/medical-records', medicalRecords);
+router.use('/webrtc', webrtcRouter);
 
 export default router;
