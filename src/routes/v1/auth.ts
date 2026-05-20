@@ -11,6 +11,7 @@ import {
   resetPassword,
   googleCallback,
   facebookCallback,
+  googleMobileLogin,
 } from 'controllers/auth';
 import { checkJwt } from 'middleware/checkJwt';
 import { validatorLogin, validatorRegister, validatorChangePassword } from 'middleware/validation/auth';
@@ -32,6 +33,7 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/login', session: false }),
   googleCallback,
 );
+router.post('/google/mobile', googleMobileLogin);
 
 // Facebook OAuth
 router.get('/facebook', passport.authenticate('facebook', { scope: ['email'], session: false }));
