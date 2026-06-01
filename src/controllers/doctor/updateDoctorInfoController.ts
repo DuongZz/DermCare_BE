@@ -11,11 +11,12 @@ export const updateDoctorInfoController = async (req: Request, res: Response, ne
     const data = req.body as UpdateDoctorInfoInput;
     const doctor = await updateDoctorInfoService(id, data);
 
-    // Xóa Cache danh sách bác sĩ công khai vì thông tin đã thay đổi
+    // Xóa Cache danh sách bác sĩ công khai & thông tin cá nhân của Bác sĩ này
     await Promise.all([
       deleteCacheByPrefix(CacheKeyGroup.TOP_DOCTORS),
       deleteCacheByPrefix(CacheKeyGroup.DOCTOR_LIST_ALL),
       deleteCacheByPrefix(CacheKeyGroup.SPECIALIZATIONS),
+      deleteCacheByPrefix(`${CacheKeyGroup.ME_PROFILE}:${id}:`),
     ]);
     res.status(200).json({
       success: true,

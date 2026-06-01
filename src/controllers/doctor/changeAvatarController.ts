@@ -15,10 +15,11 @@ export const changeAvatarController = async (req: Request, res: Response, next: 
     }
     const doctor = await changeAvatarService(id, fileUrl);
 
-    // Xóa Cache danh sách bác sĩ công khai vì Avatar đã thay đổi
+    // Xóa Cache danh sách bác sĩ công khai & thông tin cá nhân của Bác sĩ này
     await Promise.all([
       deleteCacheByPrefix(CacheKeyGroup.TOP_DOCTORS),
       deleteCacheByPrefix(CacheKeyGroup.DOCTOR_LIST_ALL),
+      deleteCacheByPrefix(`${CacheKeyGroup.ME_PROFILE}:${id}:`),
     ]);
 
     res.customSuccess(200, 'Cập nhật ảnh đại diện thành công', doctor);

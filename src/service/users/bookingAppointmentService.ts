@@ -1,6 +1,5 @@
 import { getRepository, getConnection } from 'typeorm';
 
-import { BookingAppointmentInput } from '../../interfaces/appointment';
 import { Appointment } from '../../database/entities/appointment';
 import { Conversation } from '../../database/entities/conversation';
 import { Doctor } from '../../database/entities/doctor';
@@ -8,6 +7,7 @@ import { DoctorSchedule } from '../../database/entities/doctorSchedule';
 import { ScheduleStatus, ConversationType, ConversationStatus } from '../../database/entities/enum';
 import { Message } from '../../database/entities/message';
 import { User } from '../../database/entities/user';
+import { BookingAppointmentInput } from '../../interfaces/appointment';
 import { CustomError } from '../../utils/response/custom-error/CustomError';
 
 export const bookingAppointmentService = async (data: BookingAppointmentInput) => {
@@ -62,53 +62,15 @@ export const bookingAppointmentService = async (data: BookingAppointmentInput) =
     schedule.status = ScheduleStatus.BOOKED;
     await queryRunner.manager.getRepository(DoctorSchedule).save(schedule);
 
-    // Link or Create Conversation
-    const conversationRepo = queryRunner.manager.getRepository(Conversation);
-    let conversation: Conversation | undefined;
-
+    // Link Conversation if conversationId is passed (AI chat transition)
     if (conversationId) {
-      // Nếu có truyền conversationId (thường là chuyển từ AI chat sang bác sĩ)
-      conversation = await conversationRepo.findOne(conversationId);
-    }
-
-    if (!conversation) {
-      // Luôn tạo hội thoại mới cho mỗi cuộc hẹn mới nếu không có ID truyền vào
-      conversation = conversationRepo.create({
-        patient: { id: patientId } as User,
-        doctor: { id: doctorId } as User,
-        type: ConversationType.DOCTOR_CONSULTATION,
-        status: ConversationStatus.DOCTOR_CONSULTING,
-        title: `Tư vấn với bác sĩ`,
-      });
-    }
-
-    if (conversation) {
-      conversation.appointment = appointment;
-      conversation.doctor = { id: doctorId } as User;
-      conversation.status = ConversationStatus.DOCTOR_CONSULTING;
-
-      const doctorUser = await queryRunner.manager.getRepository(User).findOne(doctorId, {
-        relations: ['doctorProfile'],
-      });
-
-      if (doctorUser) {
-        const qualifications = doctorUser.doctorProfile?.qualifications || '';
-        const fullDoctorTitle = qualifications ? `${qualifications} ${doctorUser.fullName}` : doctorUser.fullName;
-        conversation.title = `Tư vấn với BS. ${doctorUser.fullName}`;
-
-        // Tạo tin nhắn hệ thống thông báo bác sĩ đã tham gia
-        const messageRepo = queryRunner.manager.getRepository(Message);
-        const joinMessage = messageRepo.create({
-          conversation,
-          content: `Bác sĩ **${fullDoctorTitle}** đã tham gia cuộc hội thoại`,
-          type: 'text',
-          timestamp: Date.now(),
-          isAiMessage: true,
-        });
-        await messageRepo.save(joinMessage);
+      const conversationRepo = queryRunner.manager.getRepository(Conversation);
+      const conversation = await conversationRepo.findOne(conversationId);
+      if (conversation) {
+        conversation.appointment = appointment;
+        conversation.doctor = { id: doctorId } as User;
+        await conversationRepo.save(conversation);
       }
-
-      await conversationRepo.save(conversation);
     }
 
     await queryRunner.commitTransaction();

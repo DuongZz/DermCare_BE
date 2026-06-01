@@ -1,12 +1,12 @@
 import { getRepository } from 'typeorm';
 
-import { CreateMedicalRecordDto } from '../../interfaces/medicalRecord';
-import { getIo } from '../../socket/socketInstance';
 import { Appointment } from '../../database/entities/appointment';
 import { Conversation } from '../../database/entities/conversation';
 import { Diagnosis } from '../../database/entities/diagnosis';
 import { MedicalRecord } from '../../database/entities/medicalRecord';
 import { Message } from '../../database/entities/message';
+import { CreateMedicalRecordDto } from '../../interfaces/medicalRecord';
+import { getIo } from '../../socket/socketInstance';
 
 export const createMedicalRecordService = async (data: CreateMedicalRecordDto) => {
   const medicalRecordRepo = getRepository(MedicalRecord);
@@ -62,7 +62,7 @@ export const createMedicalRecordService = async (data: CreateMedicalRecordDto) =
 
     const io = getIo();
     if (io) {
-      io.to(conversation.id).emit('new_message', {
+      const payload = {
         id: recordMessage.id,
         content: recordMessage.content,
         type: recordMessage.type,
@@ -75,7 +75,11 @@ export const createMedicalRecordService = async (data: CreateMedicalRecordDto) =
           fullName: appointment.doctor.fullName,
           role: appointment.doctor.role,
         },
-      });
+      };
+      io.to(conversation.id).emit('new_message', payload);
+      if (appointment.patient?.id) {
+        io.to(`user_${appointment.patient.id}`).emit('new_message', payload);
+      }
     }
   }
 

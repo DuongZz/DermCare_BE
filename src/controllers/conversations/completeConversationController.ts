@@ -12,11 +12,20 @@ export const completeConversationController = async (req: Request, res: Response
 
     // Emit socket event
     const io = getIo();
-    io.to(id).emit('conversation_updated', {
+    const payload = {
       id: result.id,
       status: result.status,
       title: result.title,
-    });
+    };
+    io.to(id).emit('conversation_updated', payload);
+
+    if (result.patient?.id) {
+      io.to(`user_${result.patient.id}`).emit('conversation_updated', payload);
+    }
+
+    if (result.doctor?.id) {
+      io.to(`user_${result.doctor.id}`).emit('conversation_updated', payload);
+    }
 
     res.status(200).json({
       message: 'Hoàn thành ca khám thành công',

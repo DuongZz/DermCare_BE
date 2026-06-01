@@ -97,14 +97,21 @@ export const configureSocket = (io: Server) => {
           await messageRepository.save(joinMessage);
 
           // Phát thông báo cập nhật hội thoại cho Client để đổi giao diện/tiêu đề ngay lập tức
-          io.to(conversationId).emit('conversation_updated', {
+          const conversationUpdatedPayload = {
             id: conversation.id,
             status: conversation.status,
             title: conversation.title,
-          });
+          };
+          io.to(conversationId).emit('conversation_updated', conversationUpdatedPayload);
+          if (conversation.patient?.id) {
+            io.to(`user_${conversation.patient.id}`).emit('conversation_updated', conversationUpdatedPayload);
+          }
+          if (sender.id) {
+            io.to(`user_${sender.id}`).emit('conversation_updated', conversationUpdatedPayload);
+          }
 
           // Phát luôn tin nhắn hệ thống mới cho người dùng
-          io.to(conversationId).emit('new_message', {
+          const joinMessagePayload = {
             id: joinMessage.id,
             content: joinMessage.content,
             type: joinMessage.type,
@@ -117,7 +124,11 @@ export const configureSocket = (io: Server) => {
               fullName: 'Hệ thống',
               role: 'AI',
             },
-          });
+          };
+          io.to(conversationId).emit('new_message', joinMessagePayload);
+          if (conversation.patient?.id) {
+            io.to(`user_${conversation.patient.id}`).emit('new_message', joinMessagePayload);
+          }
         }
 
         // Tạo tin nhắn mới trong DB
@@ -132,6 +143,9 @@ export const configureSocket = (io: Server) => {
 
         try {
           await messageRepository.save(newMessage);
+          conversation.lastMessage = content;
+          conversation.timestamp = new Date();
+          await conversationRepository.save(conversation);
         } catch (saveErr) {
           console.error('[Socket] Failed to save message to DB:', saveErr);
           throw saveErr;
@@ -150,7 +164,7 @@ export const configureSocket = (io: Server) => {
         }
 
         // Phát tín hiệu 'new_message' về cho tất cả mọi người đang ở trong room conversationId
-        io.to(conversationId).emit('new_message', {
+        const messagePayload = {
           id: newMessage.id,
           content: newMessage.content,
           type: newMessage.type,
@@ -164,7 +178,14 @@ export const configureSocket = (io: Server) => {
             role: sender.role,
             avatar: senderAvatar,
           },
-        });
+        };
+        io.to(conversationId).emit('new_message', messagePayload);
+
+        // Phát tới room riêng của người nhận tin nhắn để cập nhật sidebar/hội thoại trong thời gian thực
+        const recipientId = sender.role === 'DOCTOR' ? conversation.patient?.id : conversation.doctor?.id;
+        if (recipientId) {
+          io.to(`user_${recipientId}`).emit('new_message', messagePayload);
+        }
 
         // Create persistent notification for the other participant
         try {

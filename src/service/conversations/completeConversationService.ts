@@ -11,7 +11,7 @@ export const completeConversationService = async (conversationId: string, userId
 
   const conversation = await conversationRepo.findOne({
     where: { id: conversationId },
-    relations: ['doctor', 'appointment'],
+    relations: ['doctor', 'patient', 'appointment'],
   });
 
   if (!conversation) {

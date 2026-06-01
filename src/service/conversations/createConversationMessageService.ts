@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
-
-import { CreateMessageData } from 'interfaces/message';
 import { Conversation } from '@database/entities/conversation';
 import { Doctor } from '@database/entities/doctor';
 import { Message } from '@database/entities/message';
 import { User } from '@database/entities/user';
+import { getRepository } from 'typeorm';
+
+import { CreateMessageData } from 'interfaces/message';
 import { CustomError } from 'utils/response/custom-error/CustomError';
 
 import { getIo } from '../../socket/socketInstance';
@@ -45,6 +45,10 @@ export const createConversationMessageService = async (data: CreateMessageData) 
 
   await messageRepository.save(newMessage);
 
+  conversation.lastMessage = newMessage.content;
+  conversation.timestamp = new Date();
+  await conversationRepository.save(conversation);
+
   // 4. Prepare sender info for socket
   let senderAvatar = null;
   let senderTitle = sender.fullName;
@@ -63,7 +67,7 @@ export const createConversationMessageService = async (data: CreateMessageData) 
   // 5. Emit socket event
   if (io) {
     console.log(`[Socket] Emitting new_message to room: ${conversationId}`);
-    io.to(conversationId).emit('new_message', {
+    const messagePayload = {
       id: newMessage.id,
       content: newMessage.content,
       type: newMessage.type,
@@ -77,7 +81,14 @@ export const createConversationMessageService = async (data: CreateMessageData) 
         role: sender.role,
         avatar: senderAvatar,
       },
-    });
+    };
+    io.to(conversationId).emit('new_message', messagePayload);
+
+    const recipientId = sender.id === conversation.patient?.id ? conversation.doctor?.id : conversation.patient?.id;
+    if (recipientId) {
+      console.log(`[Socket] Emitting new_message to personal room: user_${recipientId}`);
+      io.to(`user_${recipientId}`).emit('new_message', messagePayload);
+    }
   } else {
     console.warn('[Socket] IO instance not found, could not emit message');
   }

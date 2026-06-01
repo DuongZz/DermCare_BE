@@ -63,7 +63,7 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
     userTextMessageId = textMessage.id;
 
     if (io) {
-      io.to(conversationId).emit('new_message', {
+      const payload = {
         id: textMessage.id,
         content: textMessage.content,
         type: textMessage.type,
@@ -76,7 +76,14 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
           fullName: patient?.fullName,
           role: patient?.role,
         },
-      });
+      };
+      io.to(conversationId).emit('new_message', payload);
+      if (patient?.id) {
+        io.to(`user_${patient.id}`).emit('new_message', payload);
+      }
+      if (conversation.doctor?.id) {
+        io.to(`user_${conversation.doctor.id}`).emit('new_message', payload);
+      }
     }
   }
 
@@ -96,7 +103,7 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
 
     // Phát socket tin nhắn của Bệnh nhân ngay
     if (io) {
-      io.to(conversationId).emit('new_message', {
+      const payload = {
         id: userMessage.id,
         content: userMessage.content,
         type: userMessage.type,
@@ -109,7 +116,14 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
           fullName: patient?.fullName,
           role: patient?.role,
         },
-      });
+      };
+      io.to(conversationId).emit('new_message', payload);
+      if (patient?.id) {
+        io.to(`user_${patient.id}`).emit('new_message', payload);
+      }
+      if (conversation.doctor?.id) {
+        io.to(`user_${conversation.doctor.id}`).emit('new_message', payload);
+      }
     }
   }
 
@@ -150,8 +164,12 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
     errorMsg.timestamp = Date.now();
     await messageRepository.save(errorMsg);
 
+    conversation.lastMessage = errorMsg.content;
+    conversation.timestamp = new Date();
+    await conversationRepository.save(conversation);
+
     if (io) {
-      io.to(conversationId).emit('new_message', {
+      const payload = {
         id: errorMsg.id,
         content: errorMsg.content,
         type: errorMsg.type,
@@ -159,7 +177,11 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
         created_at: new Date().toISOString(),
         isAiMessage: true,
         conversationId: conversation.id,
-      });
+      };
+      io.to(conversationId).emit('new_message', payload);
+      if (patient?.id) {
+        io.to(`user_${patient.id}`).emit('new_message', payload);
+      }
     }
     throw new CustomError(500, 'General', 'Lỗi phân tích AI.');
   }
@@ -204,7 +226,7 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
         await messageRepository.save(aiImageMsg);
 
         if (io) {
-          io.to(conversationId).emit('new_message', {
+          const payload = {
             id: aiImageMsg.id,
             content: aiImageMsg.content,
             type: aiImageMsg.type,
@@ -213,7 +235,11 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
             isAiMessage: true,
             conversationId: conversation.id,
             sender: { id: 'dara', fullName: 'DARA AI', role: 'AI' },
-          });
+          };
+          io.to(conversationId).emit('new_message', payload);
+          if (patient?.id) {
+            io.to(`user_${patient.id}`).emit('new_message', payload);
+          }
         }
       }
     } catch (err) {
@@ -243,8 +269,20 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
   const aiMessage = new Message();
   aiMessage.conversation = conversation;
 
-  // Nếu chỉ có text (không có ảnh) và mức độ tin cậy < 50%, thì ẩn 3 dòng header đi
-  if (!fileUrl && aiResponse.confidence <= 0.5) {
+  const diseaseLower = aiResponse.disease_name?.toLowerCase() || '';
+  const isNormal =
+    diseaseLower.includes('normal') ||
+    diseaseLower.includes('healthy') ||
+    diseaseLower.includes('bình thường') ||
+    diseaseLower.includes('không phát hiện') ||
+    diseaseLower.includes('không có bệnh');
+
+  // Nếu chẩn đoán da bình thường
+  if (isNormal) {
+    aiMessage.content = `DARA AI chẩn đoán sơ bộ: **Da bình thường (Không phát hiện bệnh lý)**\n\n*${
+      aiResponse.description
+    }*\n\nKhuyến nghị:\n- ${aiResponse.recommendations.join('\n- ')}`;
+  } else if (!fileUrl && aiResponse.confidence <= 0.5) {
     aiMessage.content = `*${aiResponse.description}*\n\nKhuyến nghị:\n- ${aiResponse.recommendations.join('\n- ')}`;
   } else {
     aiMessage.content = `DARA AI chẩn đoán sơ bộ: **${aiResponse.disease_name}**\nMức độ tin cậy: **${(
@@ -263,9 +301,13 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
   aiMessage.timestamp = Date.now() + 2;
   await messageRepository.save(aiMessage);
 
+  conversation.lastMessage = aiMessage.content;
+  conversation.timestamp = new Date();
+  await conversationRepository.save(conversation);
+
   // Phát socket tin nhắn của AI
   if (io) {
-    io.to(conversationId).emit('new_message', {
+    const payload = {
       id: aiMessage.id,
       content: aiMessage.content,
       type: aiMessage.type,
@@ -274,7 +316,11 @@ export const analyzeAiService = async (data: AnalyzeRequest) => {
       isAiMessage: true,
       conversationId: conversation.id,
       sender: { id: 'dara', fullName: 'DARA AI', role: 'AI' },
-    });
+    };
+    io.to(conversationId).emit('new_message', payload);
+    if (patient?.id) {
+      io.to(`user_${patient.id}`).emit('new_message', payload);
+    }
   }
 
   // 9. Notify Patient
